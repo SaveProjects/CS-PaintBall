@@ -1,0 +1,52 @@
+#
+# Fichier configuration de jeux par Edmine Network.
+# Dev: N12cf
+# Version: 0.1
+#
+
+# MySQL.
+mysql:
+  host: '45.140.165.235'
+  database: '22728-database'
+  user: '22728-database'
+  password: 'S5bV5su4p9'
+
+# Type de match (ranked, unranked).
+type: 'ranked'
+
+# Définir les timers du jeu.
+timers:
+  start: 30
+  startfull: 10
+  round: 120
+  bomb: 30
+
+# Spawn du lobby principal.
+spawn:
+  x: 2.5
+  y: 31.0
+  z: 0.5
+  f: -90.5
+  t: -4.0
+
+# Gestion des cartes.
+maps:
+  italy:
+    spec:
+      x: -0.5
+      y: 100.0
+      z: -52.5
+      f: -0.5
+      t: 30.0
+    attacker:
+      x: -56.5
+      y: 70.0
+      z: -21.5
+      f: -90.5
+      t: -3
+    defender:
+      x: 53.5
+      y: 71.0
+      z: -2.5
+      f: -180.0
+      t: -0
