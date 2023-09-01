@@ -14,12 +14,34 @@ mysql:
 # Type de match (ranked, unranked).
 type: 'ranked'
 
+# Type de partie (long, short).
+time: 'short'
+
+# Gestion des équipes.
+teams:
+  attacker:
+    players: 5
+  defender:
+    players: 5
+
+coins:
+  start: 800
+  round: 300
+  win: 1000
+  playerleave: 300
+  kill: 300
+  bomb: 300
+  diffuse: 400
+
 # Définir les timers du jeu.
 timers:
+  rounds-short: 8
+  rounds-long: 15
   start: 30
   startfull: 10
-  round: 120
+  round: 140
   bomb: 30
+  waitleave: 150
 
 # Spawn du lobby principal.
 spawn:
