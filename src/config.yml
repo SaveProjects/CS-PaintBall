@@ -45,6 +45,7 @@ timers:
 
 # Spawn du lobby principal.
 spawn:
+  world: 'hub'
   x: 2.5
   y: 31.0
   z: 0.5
