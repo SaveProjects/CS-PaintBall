@@ -55,13 +55,13 @@ public class Teams
         if (attacker.contains(p))
         {
             attacker.remove(p);
-            p.sendMessage("§f§lPaintBall §8» §7Vous avez quitté l'équipe des §cAttaquants§7.");
+            //p.sendMessage("§f§lPaintBall §8» §7Vous avez quitté l'équipe des §cAttaquants§7.");
             return;
         }
         if (defenser.contains(p))
         {
             defenser.remove(p);
-            p.sendMessage("§f§lPaintBall §8» §7Vous avez quitté l'équipe des §9Défenseurs§7.");
+            //p.sendMessage("§f§lPaintBall §8» §7Vous avez quitté l'équipe des §9Défenseurs§7.");
             return;
         }
     }
@@ -87,8 +87,5 @@ public class Teams
         return this.attacker;
     }
 
-    public List<Player> getDefenser()
-    {
-        return this.defenser;
-    }
+    public List<Player> getDefenser() { return this.defenser; }
 }

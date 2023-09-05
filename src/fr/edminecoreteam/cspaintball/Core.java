@@ -1,11 +1,13 @@
 package fr.edminecoreteam.cspaintball;
 
+import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.teams.Teams;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +53,9 @@ public class Core extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents((Listener) new WaitingListeners(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new ChooseTeam(), (Plugin)this);
+
+        Bukkit.getPluginManager().registerEvents((Listener) new BuyMenu(), (Plugin)this);
+        this.getCommand("buymenu").setExecutor((CommandExecutor) new TestCommand());
     }
 
     public Teams teams() { return this.teams; }
