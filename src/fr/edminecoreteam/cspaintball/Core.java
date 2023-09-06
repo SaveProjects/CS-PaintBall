@@ -1,7 +1,9 @@
 package fr.edminecoreteam.cspaintball;
 
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
+import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
 import fr.edminecoreteam.cspaintball.game.teams.Teams;
+import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
@@ -19,8 +21,10 @@ public class Core extends JavaPlugin
     private State state;
     public MySQL database;
     private Teams teams;
+    private USPS usps;
 
     private int maxplayers;
+
 
     private static Plugin plugin;
 
@@ -30,6 +34,7 @@ public class Core extends JavaPlugin
         saveDefaultConfig();
         MySQLConnect();
         loadListeners();
+        loadWeapons();
 
         setState(State.WAITING);
         maxplayers = getConfig().getInt("teams.attacker.players") + getConfig().getInt("teams.defender.players");
@@ -47,7 +52,7 @@ public class Core extends JavaPlugin
 
     private void loadListeners()
     {
-        teams = new Teams();
+        this.teams = new Teams();
         Bukkit.getPluginManager().registerEvents((Listener) new JoinEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new LeaveEvent(), (Plugin)this);
 
@@ -55,9 +60,17 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new ChooseTeam(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new BuyMenu(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new BuyPistolets(), (Plugin)this);
         this.getCommand("buymenu").setExecutor((CommandExecutor) new TestCommand());
     }
 
+    private void loadWeapons()
+    {
+        Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
+        this.usps = new USPS();
+    }
+
+    public USPS usps() { return this.usps; }
     public Teams teams() { return this.teams; }
 
     public int getMaxplayers() { return this.maxplayers; }

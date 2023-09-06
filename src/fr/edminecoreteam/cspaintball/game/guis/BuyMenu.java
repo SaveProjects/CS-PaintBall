@@ -3,14 +3,19 @@ package fr.edminecoreteam.cspaintball.game.guis;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,6 +27,25 @@ public class BuyMenu implements Listener
         return SkullNBT.getSkull(url);
     }
     private static Core core = Core.getInstance();
+
+    @EventHandler
+    public void chooseTeamInteract(InventoryClickEvent e) {
+        if (e.getCurrentItem() == null) { return; }
+
+        Player p = (Player) e.getWhoClicked();
+        ItemStack it = e.getCurrentItem();
+        if (e.getView().getTopInventory().getTitle().equals("§8Menu d'achat"))
+        {
+            if (it.getType() == Material.WOOD_HOE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fPistolets"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                BuyPistolets buyPistolets = new BuyPistolets();
+                buyPistolets.gui(p);
+                return;
+            }
+        }
+    }
 
     public void gui(Player p)
     {
@@ -41,7 +65,7 @@ public class BuyMenu implements Listener
                 inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
                 inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
 
-                ItemStack pistolets = new ItemStack(Material.IRON_HOE, 1);
+                ItemStack pistolets = new ItemStack(Material.WOOD_HOE, 1);
                 ItemMeta pistoletsM = pistolets.getItemMeta();
                 pistoletsM.setDisplayName("§fPistolets");
                 ArrayList<String> lorePistolets = new ArrayList<String>();
@@ -55,7 +79,7 @@ public class BuyMenu implements Listener
                 pistolets.setItemMeta(pistoletsM);
                 inv.setItem(21, pistolets);
 
-                ItemStack lourdes = new ItemStack(Material.IRON_PICKAXE, 1);
+                ItemStack lourdes = new ItemStack(Material.GOLD_PICKAXE, 1);
                 ItemMeta lourdesM = lourdes.getItemMeta();
                 lourdesM.setDisplayName("§fLourdes");
                 ArrayList<String> loreLourdes = new ArrayList<String>();
@@ -97,9 +121,10 @@ public class BuyMenu implements Listener
                 grenades.setItemMeta(grenadesM);
                 inv.setItem(30, grenades);
 
-                ItemStack equipements = new ItemStack(Material.IRON_CHESTPLATE, 1);
-                ItemMeta equipementsM = equipements.getItemMeta();
+                ItemStack equipements = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+                LeatherArmorMeta equipementsM = (LeatherArmorMeta) equipements.getItemMeta();
                 equipementsM.setDisplayName("§fÉquipements");
+                equipementsM.setColor(Color.fromRGB(11, 38, 61));
                 ArrayList<String> loreEquipements = new ArrayList<String>();
                 loreEquipements.add("");
                 loreEquipements.add(" §dInformation:");
@@ -111,7 +136,7 @@ public class BuyMenu implements Listener
                 equipements.setItemMeta(equipementsM);
                 inv.setItem(31, equipements);
 
-                ItemStack fusils = new ItemStack(Material.IRON_AXE, 1);
+                ItemStack fusils = new ItemStack(Material.DIAMOND_AXE, 1);
                 ItemMeta fusilsM = fusils.getItemMeta();
                 fusilsM.setDisplayName("§fFusils");
                 ArrayList<String> loreFusils = new ArrayList<String>();
