@@ -7,6 +7,7 @@ import fr.edminecoreteam.cspaintball.game.weapons.WeaponsList;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
+import fr.edminecoreteam.cspaintball.utils.TitleBuilder;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
@@ -23,6 +24,7 @@ public class Core extends JavaPlugin
     public MySQL database;
     private Teams teams;
     private WeaponsList weaponsList;
+    public TitleBuilder title;
 
     private int maxplayers;
 
@@ -54,6 +56,7 @@ public class Core extends JavaPlugin
     private void loadListeners()
     {
         this.teams = new Teams();
+        this.title = new TitleBuilder();
         Bukkit.getPluginManager().registerEvents((Listener) new JoinEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new LeaveEvent(), (Plugin)this);
 

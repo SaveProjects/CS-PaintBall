@@ -26,14 +26,15 @@ public class USPS implements Listener
 
     private static final Core core = Core.getInstance();
 
-    private double recoil = 0.1;
-    private double speed_shoot = 5;
-    private int bullet_charger = 9;
-    private int max_bullet = 27;
-    private Material weapon = Material.WOOD_HOE;
-    private String weapon_name = "USP-s";
-    private int wait_for_shoot_delay = 10;
-    private int weightslow = 0;
+    private double recoil = 0.1; //recul de tir
+    private double speed_shoot = 5; //vitesse de tir
+    private int bullet_charger = 9; //nombre de balles par chargeur
+    private int max_bullet = 27; //total de munitions
+    private Material weapon = Material.WOOD_HOE; //materiel de l'ame
+    private String weapon_name = "USP-s"; //titre de l'arme
+    private int wait_for_shoot_delay = 7; //temps d'armement (ticks)
+    private int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
+    private int time_refill = 2; //temps de recharge (secondes)
 
 
 
@@ -53,7 +54,14 @@ public class USPS implements Listener
                 gunStarter.setItemMeta((ItemMeta)gunStarterM);
                 p.getInventory().addItem(gunStarter);
                 weightcheck(p);
+                return;
             }
+            ItemStack gunStarter = new ItemStack(weapon, core.weaponsList().getUsps_bullet_charger_count().get(p));
+            ItemMeta gunStarterM = gunStarter.getItemMeta();
+            gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsList().getUsps_bullet_charger_count().get(p) + "§8/§a" + core.weaponsList().getUsps_max_bullet_count().get(p));
+            gunStarter.setItemMeta((ItemMeta)gunStarterM);
+            p.getInventory().addItem(gunStarter);
+            weightcheck(p);
         }
         else
         {
@@ -138,6 +146,24 @@ public class USPS implements Listener
                             {
                                 pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
                             }
+                            core.weaponsList().getUsps_wait_for_shoot().add(p);
+                            new BukkitRunnable() {
+                                int t = 0;
+                                int f = 0;
+                                public void run() {
+
+                                    ++t;
+                                    ++f;
+                                    if (f == wait_for_shoot_delay) {
+                                        core.weaponsList().getUsps_wait_for_shoot().remove(p);
+                                        cancel();
+                                    }
+
+                                    if (t == 1) {
+                                        run();
+                                    }
+                                }
+                            }.runTaskTimer((Plugin) core, 0L, 1L);
                             return;
                         }
                         if (core.weaponsList().getUsps_bullet_charger_count().get(p) == 1)
@@ -187,55 +213,90 @@ public class USPS implements Listener
         if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
                 && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK))
         {
-            refill(p);
+            e.setCancelled(true);
+            if (!core.weaponsList().getUsps_refill().contains(p))
+            {
+                refill(p);
+                return;
+            }
+            get(p);
         }
     }
 
     public void refill(Player p)
     {
-        if (core.weaponsList().getUsps_max_bullet_count().containsKey(p) && core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
+
+        if (core.weaponsList().getUsps_refill().contains(p))
         {
-            int diff = bullet_charger - core.weaponsList().getUsps_bullet_charger_count().get(p);
-            if (core.weaponsList().getUsps_max_bullet_count().get(p) > 0)
-            {
-                if (core.weaponsList().getUsps_max_bullet_count().get(p) >= diff)
-                {
-                    int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
-                    core.weaponsList().getUsps_max_bullet_count().replace(p, new_max_bullet_count);
-                    core.weaponsList().getUsps_bullet_charger_count().replace(p, 9);
-                    get(p);
-                    return;
-                }
-                else if (core.weaponsList().getUsps_max_bullet_count().get(p) < diff)
-                {
-                    int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
-                    int real_diff = 0;
-                    for (int slot = new_max_bullet_count; slot == 0; slot++)
-                    {
-                        ++real_diff;
+            return;
+        }
+
+        if (!core.weaponsList().getUsps_max_bullet_count().containsKey(p) && !core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
+        {
+            return;
+        }
+
+        if (core.weaponsList().getUsps_max_bullet_count().get(p) == 0)
+        {
+            return;
+        }
+
+        core.weaponsList().getUsps_refill().add(p);
+        int finaltime_refill = 0;
+
+        for (int i = 0 ; i <= time_refill ; i++)
+        {
+            finaltime_refill = finaltime_refill + 20;
+        }
+        int finalTime_refill = finaltime_refill / 2;
+        new BukkitRunnable() {
+
+            int t = 0;
+            int f = 0;
+            int m = finalTime_refill;
+
+            public void run() {
+                ++t;
+                ++f;
+
+                sendProgressBar(p, "Recharge en cours...", f, m);
+
+                if (f == m) {
+                    int diff = bullet_charger - core.weaponsList().getUsps_bullet_charger_count().get(p);
+                    if (core.weaponsList().getUsps_max_bullet_count().get(p) > 0) {
+                        if (core.weaponsList().getUsps_max_bullet_count().get(p) >= diff) {
+                            int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
+                            core.weaponsList().getUsps_max_bullet_count().replace(p, new_max_bullet_count);
+                            core.weaponsList().getUsps_bullet_charger_count().replace(p, 9);
+                            get(p);
+                            core.weaponsList().getUsps_refill().remove(p);
+                            core.title.sendActionBar(p,"");
+                            cancel();
+                        } else if (core.weaponsList().getUsps_max_bullet_count().get(p) < diff) {
+                            int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
+                            int real_diff = 0;
+                            for (int slot = new_max_bullet_count; slot == 0; slot++) {
+                                ++real_diff;
+                            }
+                            int new_bullet_charger_count = core.weaponsList().getUsps_bullet_charger_count().get(p) + real_diff;
+                            core.weaponsList().getUsps_max_bullet_count().replace(p, 0);
+                            core.weaponsList().getUsps_bullet_charger_count().replace(p, new_bullet_charger_count + real_diff);
+                            get(p);
+                            core.weaponsList().getUsps_refill().remove(p);
+                            core.title.sendActionBar(p,"");
+                            cancel();
+                        }
+                    } else if (core.weaponsList().getUsps_max_bullet_count().get(p) == 0) {
+                        for (Player pls : core.getServer().getOnlinePlayers()) {
+                            pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
+                        }
                     }
-                    int new_bullet_charger_count = core.weaponsList().getUsps_bullet_charger_count().get(p) + real_diff;
-                    core.weaponsList().getUsps_max_bullet_count().replace(p, 0);
-                    core.weaponsList().getUsps_bullet_charger_count().replace(p, new_bullet_charger_count + real_diff);
-                    get(p);
-                    return;
+                }
+                if (t == 1) {
+                    run();
                 }
             }
-            else if (core.weaponsList().getUsps_max_bullet_count().get(p) == 0)
-            {
-                for (Player pls : core.getServer().getOnlinePlayers())
-                {
-                    pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-                }
-            }
-        }
-        else
-        {
-            for (Player pls : core.getServer().getOnlinePlayers())
-            {
-                pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-            }
-        }
+        }.runTaskTimer((Plugin) core, 0L, 1L);
     }
 
     public void weightcheck(Player p)
@@ -271,5 +332,22 @@ public class USPS implements Listener
                 }
             }
         }.runTaskTimer((Plugin) core, 0L, 2L);
+    }
+
+    public void sendProgressBar(Player player, String message, int current, int max) {
+
+        float percentage = (float) current / max;
+        int progressBars = Math.round(percentage * 10);
+        String progressBarString = "§a";
+        for (int i = 0; i < 10; i++) {
+            if (i < progressBars) {
+                progressBarString += "⬛";
+            } else {
+                progressBarString += "§7⬛";
+            }
+        }
+        String actionBarMessage = progressBarString + " §6" + message;
+        core.title.sendActionBar(player, actionBarMessage);
+
     }
 }
