@@ -2,9 +2,6 @@ package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 
 import fr.edminecoreteam.cspaintball.Core;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -12,11 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -29,13 +23,8 @@ import java.util.List;
 
 public class USPS implements Listener
 {
-    private final List<Player> refill;
-    private final List<Player> wait_for_shoot;
 
-    private static Core core = Core.getInstance();
-
-    private final HashMap<Player, Integer> max_bullet_count;
-    private final HashMap<Player, Integer> bullet_charger_count;
+    private static final Core core = Core.getInstance();
 
     private double recoil = 0.1;
     private double speed_shoot = 5;
@@ -46,32 +35,29 @@ public class USPS implements Listener
     private int wait_for_shoot_delay = 10;
     private int weightslow = 0;
 
-    public USPS()
-    {
-        refill = new ArrayList<Player>();
-        wait_for_shoot = new ArrayList<Player>();
-        max_bullet_count = new HashMap<Player, Integer>();
-        bullet_charger_count = new HashMap<Player, Integer>();
-    }
+
 
 
     public void get(Player p)
     {
         if (!p.getInventory().contains(weapon))
         {
-            core.usps().max_bullet_count.put(p, max_bullet);
-            core.usps().bullet_charger_count.put(p, bullet_charger);
+            if (!core.weaponsList().getUsps_max_bullet_count().containsKey(p) && !core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
+            {
+                core.weaponsList().getUsps_max_bullet_count().put(p, max_bullet);
+                core.weaponsList().getUsps_bullet_charger_count().put(p, bullet_charger);
 
-            ItemStack gunStarter = new ItemStack(weapon, core.usps().bullet_charger_count.get(p));
-            ItemMeta gunStarterM = gunStarter.getItemMeta();
-            gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.usps().bullet_charger_count.get(p) + "§8/§a" + core.usps().max_bullet_count.get(p));
-            gunStarter.setItemMeta((ItemMeta)gunStarterM);
-            p.getInventory().addItem(gunStarter);
-            weightcheck(p);
+                ItemStack gunStarter = new ItemStack(weapon, core.weaponsList().getUsps_bullet_charger_count().get(p));
+                ItemMeta gunStarterM = gunStarter.getItemMeta();
+                gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsList().getUsps_bullet_charger_count().get(p) + "§8/§a" + core.weaponsList().getUsps_max_bullet_count().get(p));
+                gunStarter.setItemMeta((ItemMeta)gunStarterM);
+                p.getInventory().addItem(gunStarter);
+                weightcheck(p);
+            }
         }
         else
         {
-            if (core.usps().max_bullet_count.get(p) == 0 && core.usps().bullet_charger_count.get(p) == 0)
+            if (core.weaponsList().getUsps_max_bullet_count().get(p) == 0 && core.weaponsList().getUsps_bullet_charger_count().get(p) == 0)
             {
                 ItemStack[] inventory = p.getInventory().getContents();
                 for (int slot = 0; slot < inventory.length; slot++) {
@@ -83,18 +69,19 @@ public class USPS implements Listener
                         gunStarterM.setDisplayName("§f" + weapon_name + " §cPlus de munitions...");
                         gunStarter.setItemMeta((ItemMeta)gunStarterM);
                         p.getInventory().setItem(slot, gunStarter);
+                        core.weaponsList().getUsps_max_bullet_count().remove(p);
+                        core.weaponsList().getUsps_bullet_charger_count().remove(p);
                     }
                 }
-                return;
             }
             ItemStack[] inventory = p.getInventory().getContents();
             for (int slot = 0; slot < inventory.length; slot++) {
                 ItemStack item = inventory[slot];
 
                 if (item != null && item.getType() == weapon) {
-                    ItemStack gunStarter = new ItemStack(weapon, core.usps().bullet_charger_count.get(p));
+                    ItemStack gunStarter = new ItemStack(weapon, core.weaponsList().getUsps_bullet_charger_count().get(p));
                     ItemMeta gunStarterM = gunStarter.getItemMeta();
-                    gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.usps().bullet_charger_count.get(p) + "§8/§a" + core.usps().max_bullet_count.get(p));
+                    gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsList().getUsps_bullet_charger_count().get(p) + "§8/§a" + core.weaponsList().getUsps_max_bullet_count().get(p));
                     gunStarter.setItemMeta((ItemMeta)gunStarterM);
                     p.getInventory().setItem(slot, gunStarter);
                 }
@@ -102,7 +89,7 @@ public class USPS implements Listener
         }
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
         if (e.getItemDrop().getItemStack().getType() == weapon)
@@ -113,7 +100,7 @@ public class USPS implements Listener
                 refill(p);
             }
         }
-    }
+    }*/
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
@@ -124,57 +111,67 @@ public class USPS implements Listener
         if (it == null) { return; }
 
         if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
-                && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
+                && (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
         {
-            e.setCancelled(true);
-            ItemStack hand = p.getInventory().getItemInHand();
-
-            if (!refill.contains(p))
+            if (core.weaponsList().getUsps_max_bullet_count().containsKey(p) && core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
             {
-                if (!wait_for_shoot.contains(p))
+                e.setCancelled(true);
+                ItemStack hand = p.getInventory().getItemInHand();
+
+                if (!core.weaponsList().getUsps_refill().contains(p))
                 {
-                    if (core.usps().bullet_charger_count.get(p) > 1)
+                    if (!core.weaponsList().getUsps_wait_for_shoot().contains(p))
                     {
-                        int get_bullet_charger_count = core.usps().bullet_charger_count.get(p) - 1;
-                        core.usps().bullet_charger_count.replace(p, get_bullet_charger_count);
-                        get(p);
-
-                        Snowball snowball = p.launchProjectile(Snowball.class);
-
-                        double speed = speed_shoot;
-                        snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
-                        Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
-                        p.setVelocity(pushDirection);
-                        for (Player pls : core.getServer().getOnlinePlayers())
+                        if (core.weaponsList().getUsps_bullet_charger_count().get(p) > 1)
                         {
-                            pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
+                            int get_bullet_charger_count = core.weaponsList().getUsps_bullet_charger_count().get(p) - 1;
+                            core.weaponsList().getUsps_bullet_charger_count().replace(p, get_bullet_charger_count);
+                            get(p);
+
+                            Snowball snowball = p.launchProjectile(Snowball.class);
+
+                            double speed = speed_shoot;
+                            snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
+                            Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                            p.setVelocity(pushDirection);
+                            for (Player pls : core.getServer().getOnlinePlayers())
+                            {
+                                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
+                            }
+                            return;
                         }
-                        return;
+                        if (core.weaponsList().getUsps_bullet_charger_count().get(p) == 1)
+                        {
+                            int get_bullet_charger_count = core.weaponsList().getUsps_bullet_charger_count().get(p) - 1;
+                            core.weaponsList().getUsps_bullet_charger_count().replace(p, get_bullet_charger_count);
+                            refill(p);
+
+                            Snowball snowball = p.launchProjectile(Snowball.class);
+
+                            double speed = speed_shoot;
+                            snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
+                            Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                            p.setVelocity(pushDirection);
+                            for (Player pls : core.getServer().getOnlinePlayers())
+                            {
+                                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
+                            }
+                        }
+                        if (core.weaponsList().getUsps_bullet_charger_count().get(p) <= 0 || core.weaponsList().getUsps_max_bullet_count().get(p) <= 0 || !core.weaponsList().getUsps_max_bullet_count().containsKey(p))
+                        {
+                            get(p);
+                            for (Player pls : core.getServer().getOnlinePlayers())
+                            {
+                                pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
+                            }
+                        }
                     }
-                    if (core.usps().bullet_charger_count.get(p) == 1)
+                }
+                else
+                {
+                    for (Player pls : core.getServer().getOnlinePlayers())
                     {
-                        int get_bullet_charger_count = core.usps().bullet_charger_count.get(p) - 1;
-                        core.usps().bullet_charger_count.replace(p, get_bullet_charger_count);
-                        refill(p);
-
-                        Snowball snowball = p.launchProjectile(Snowball.class);
-
-                        double speed = speed_shoot;
-                        snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
-                        Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
-                        p.setVelocity(pushDirection);
-                        for (Player pls : core.getServer().getOnlinePlayers())
-                        {
-                            pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
-                        }
-                    }
-                    if (core.usps().bullet_charger_count.get(p) <= 0 || core.usps().max_bullet_count.get(p) <= 0)
-                    {
-                        get(p);
-                        for (Player pls : core.getServer().getOnlinePlayers())
-                        {
-                            pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-                        }
+                        pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
                     }
                 }
             }
@@ -185,31 +182,54 @@ public class USPS implements Listener
                     pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
                 }
             }
+
+        }
+        if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
+                && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK))
+        {
+            refill(p);
         }
     }
 
     public void refill(Player p)
     {
-        int diff = bullet_charger - core.usps().bullet_charger_count.get(p);
-        if (core.usps().max_bullet_count.get(p) > 0)
+        if (core.weaponsList().getUsps_max_bullet_count().containsKey(p) && core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
         {
-            if (core.usps().max_bullet_count.get(p) >= diff)
+            int diff = bullet_charger - core.weaponsList().getUsps_bullet_charger_count().get(p);
+            if (core.weaponsList().getUsps_max_bullet_count().get(p) > 0)
             {
-                int new_max_bullet_count = core.usps().max_bullet_count.get(p) - diff;
-                core.usps().max_bullet_count.replace(p, new_max_bullet_count);
-                core.usps().bullet_charger_count.replace(p, diff);
-                get(p);
-                return;
+                if (core.weaponsList().getUsps_max_bullet_count().get(p) >= diff)
+                {
+                    int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
+                    core.weaponsList().getUsps_max_bullet_count().replace(p, new_max_bullet_count);
+                    core.weaponsList().getUsps_bullet_charger_count().replace(p, 9);
+                    get(p);
+                    return;
+                }
+                else if (core.weaponsList().getUsps_max_bullet_count().get(p) < diff)
+                {
+                    int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
+                    int real_diff = 0;
+                    for (int slot = new_max_bullet_count; slot == 0; slot++)
+                    {
+                        ++real_diff;
+                    }
+                    int new_bullet_charger_count = core.weaponsList().getUsps_bullet_charger_count().get(p) + real_diff;
+                    core.weaponsList().getUsps_max_bullet_count().replace(p, 0);
+                    core.weaponsList().getUsps_bullet_charger_count().replace(p, new_bullet_charger_count + real_diff);
+                    get(p);
+                    return;
+                }
             }
-            else if (core.usps().max_bullet_count.get(p) < diff)
+            else if (core.weaponsList().getUsps_max_bullet_count().get(p) == 0)
             {
-                int new_bullet_charger_count = core.usps().bullet_charger_count.get(p) + diff;
-                core.usps().bullet_charger_count.replace(p, new_bullet_charger_count);
-                get(p);
-                return;
+                for (Player pls : core.getServer().getOnlinePlayers())
+                {
+                    pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
+                }
             }
         }
-        else if (core.usps().max_bullet_count.get(p) == 0)
+        else
         {
             for (Player pls : core.getServer().getOnlinePlayers())
             {
