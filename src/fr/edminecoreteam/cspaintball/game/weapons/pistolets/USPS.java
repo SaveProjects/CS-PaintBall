@@ -1,12 +1,14 @@
 package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,9 +34,12 @@ public class USPS implements Listener
     private int max_bullet = 27; //total de munitions
     private Material weapon = Material.WOOD_HOE; //materiel de l'ame
     private String weapon_name = "USP-s"; //titre de l'arme
+    private int weapon_damage = 2; //dégats de l'arme (en coeurs)
     private int wait_for_shoot_delay = 7; //temps d'armement (ticks)
     private int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private int time_refill = 2; //temps de recharge (secondes)
+    private String shoot_sound = "silent"; //Bruit de tir
+    private String refill_sound = "2s"; //Bruit de recharge
 
 
 
@@ -97,18 +102,20 @@ public class USPS implements Listener
         }
     }
 
-    /*@EventHandler
-    public void onDrop(PlayerDropItemEvent e) {
-        Player p = e.getPlayer();
-        if (e.getItemDrop().getItemStack().getType() == weapon)
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event)
+    {
+        if (event.getEntity() instanceof Player)
         {
-            if (e.getItemDrop().getItemStack().getItemMeta().getDisplayName().contains(weapon_name))
+            if (event.getDamager() instanceof org.bukkit.entity.Snowball)
             {
-                e.setCancelled(true);
-                refill(p);
+                if (((Snowball) event.getDamager()).getShooter() instanceof Player)
+                {
+                    event.setDamage(weapon_damage);
+                }
             }
         }
-    }*/
+    }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
@@ -121,6 +128,7 @@ public class USPS implements Listener
         if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
                 && (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
         {
+            WeaponsSounds sound = new WeaponsSounds(p);
             if (core.weaponsList().getUsps_max_bullet_count().containsKey(p) && core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
             {
                 e.setCancelled(true);
@@ -142,10 +150,7 @@ public class USPS implements Listener
                             snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
                             Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
                             p.setVelocity(pushDirection);
-                            for (Player pls : core.getServer().getOnlinePlayers())
-                            {
-                                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
-                            }
+                            sound.shoot(shoot_sound);
                             core.weaponsList().getUsps_wait_for_shoot().add(p);
                             new BukkitRunnable() {
                                 int t = 0;
@@ -178,35 +183,23 @@ public class USPS implements Listener
                             snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
                             Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
                             p.setVelocity(pushDirection);
-                            for (Player pls : core.getServer().getOnlinePlayers())
-                            {
-                                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
-                            }
+                            sound.shoot(shoot_sound);
                         }
                         if (core.weaponsList().getUsps_bullet_charger_count().get(p) <= 0 || core.weaponsList().getUsps_max_bullet_count().get(p) <= 0 || !core.weaponsList().getUsps_max_bullet_count().containsKey(p))
                         {
                             get(p);
-                            for (Player pls : core.getServer().getOnlinePlayers())
-                            {
-                                pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-                            }
+                            sound.shoot("nobullet");
                         }
                     }
                 }
                 else
                 {
-                    for (Player pls : core.getServer().getOnlinePlayers())
-                    {
-                        pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-                    }
+                    sound.shoot("nobullet");
                 }
             }
             else
             {
-                for (Player pls : core.getServer().getOnlinePlayers())
-                {
-                    pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-                }
+                sound.shoot("nobullet");
             }
 
         }
@@ -241,7 +234,13 @@ public class USPS implements Listener
             return;
         }
 
+        if (core.weaponsList().getUsps_bullet_charger_count().get(p) == bullet_charger)
+        {
+            return;
+        }
+
         core.weaponsList().getUsps_refill().add(p);
+        WeaponsSounds sound = new WeaponsSounds(p);
         int finaltime_refill = 0;
 
         for (int i = 0 ; i <= time_refill ; i++)
@@ -249,6 +248,7 @@ public class USPS implements Listener
             finaltime_refill = finaltime_refill + 20;
         }
         int finalTime_refill = finaltime_refill / 2;
+        sound.refill(refill_sound);
         new BukkitRunnable() {
 
             int t = 0;
@@ -275,21 +275,21 @@ public class USPS implements Listener
                         } else if (core.weaponsList().getUsps_max_bullet_count().get(p) < diff) {
                             int new_max_bullet_count = core.weaponsList().getUsps_max_bullet_count().get(p) - diff;
                             int real_diff = 0;
-                            for (int slot = new_max_bullet_count; slot == 0; slot++) {
+                            for (int i = new_max_bullet_count; i < 0; i++) {
                                 ++real_diff;
                             }
                             int new_bullet_charger_count = core.weaponsList().getUsps_bullet_charger_count().get(p) + real_diff;
+                            int divise_bullet_charger_count = new_bullet_charger_count + real_diff;
+                            int final_bullet_charger_count = divise_bullet_charger_count / 2;
                             core.weaponsList().getUsps_max_bullet_count().replace(p, 0);
-                            core.weaponsList().getUsps_bullet_charger_count().replace(p, new_bullet_charger_count + real_diff);
-                            get(p);
+                            core.weaponsList().getUsps_bullet_charger_count().replace(p, final_bullet_charger_count);
                             core.weaponsList().getUsps_refill().remove(p);
                             core.title.sendActionBar(p,"");
+                            get(p);
                             cancel();
                         }
                     } else if (core.weaponsList().getUsps_max_bullet_count().get(p) == 0) {
-                        for (Player pls : core.getServer().getOnlinePlayers()) {
-                            pls.playSound(p.getLocation(), Sound.CLICK, 0.8f, 1.5f);
-                        }
+                        sound.shoot("nobullet");
                     }
                 }
                 if (t == 1) {
@@ -323,6 +323,10 @@ public class USPS implements Listener
                 }
                 else
                 {
+                    for (PotionEffect effect : p.getActivePotionEffects())
+                    {
+                        p.removePotionEffect(effect.getType());
+                    }
                     cancel();
                 }
 

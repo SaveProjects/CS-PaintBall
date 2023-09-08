@@ -2,6 +2,7 @@ package fr.edminecoreteam.cspaintball.waiting.guis;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
+import fr.edminecoreteam.cspaintball.waiting.items.ItemsWaiting;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -39,6 +40,8 @@ public class ChooseTeam implements Listener
                 e.setCancelled(true);
                 core.teams().leaveTeam(p);
                 p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                ItemsWaiting itemsWaiting = new ItemsWaiting(p);
+                itemsWaiting.changeTeam("random");
                 return;
             }
             if (it.getType() == Material.BANNER && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cÉquipe Attaquants"))
@@ -50,6 +53,8 @@ public class ChooseTeam implements Listener
                     {
                         core.teams().leaveTeam(p);
                         core.teams().joinTeam(p, "attacker");
+                        ItemsWaiting itemsWaiting = new ItemsWaiting(p);
+                        itemsWaiting.changeTeam("attacker");
                         return;
                     }
                 }
@@ -69,6 +74,8 @@ public class ChooseTeam implements Listener
                     {
                         core.teams().leaveTeam(p);
                         core.teams().joinTeam(p, "defenser");
+                        ItemsWaiting itemsWaiting = new ItemsWaiting(p);
+                        itemsWaiting.changeTeam("defenser");
                         return;
                     }
                 }
