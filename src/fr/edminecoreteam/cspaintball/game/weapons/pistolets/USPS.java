@@ -11,6 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -40,6 +41,7 @@ public class USPS implements Listener
     private int time_refill = 2; //temps de recharge (secondes)
     private String shoot_sound = "silent"; //Bruit de tir
     private String refill_sound = "2s"; //Bruit de recharge
+    private String armed_sound = "classic"; //Bruit d'armement
 
 
 
@@ -61,12 +63,25 @@ public class USPS implements Listener
                 weightcheck(p);
                 return;
             }
-            ItemStack gunStarter = new ItemStack(weapon, core.weaponsList().getUsps_bullet_charger_count().get(p));
-            ItemMeta gunStarterM = gunStarter.getItemMeta();
-            gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsList().getUsps_bullet_charger_count().get(p) + "§8/§a" + core.weaponsList().getUsps_max_bullet_count().get(p));
-            gunStarter.setItemMeta((ItemMeta)gunStarterM);
-            p.getInventory().addItem(gunStarter);
-            weightcheck(p);
+            if (core.weaponsList().getUsps_bullet_charger_count().get(p) == 0)
+            {
+                ItemStack gunStarter = new ItemStack(weapon, core.weaponsList().getUsps_bullet_charger_count().get(p) + 1);
+                ItemMeta gunStarterM = gunStarter.getItemMeta();
+                gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsList().getUsps_bullet_charger_count().get(p) + "§8/§a" + core.weaponsList().getUsps_max_bullet_count().get(p));
+                gunStarter.setItemMeta((ItemMeta)gunStarterM);
+                p.getInventory().addItem(gunStarter);
+                weightcheck(p);
+            }
+            else
+            {
+                ItemStack gunStarter = new ItemStack(weapon, core.weaponsList().getUsps_bullet_charger_count().get(p));
+                ItemMeta gunStarterM = gunStarter.getItemMeta();
+                gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsList().getUsps_bullet_charger_count().get(p) + "§8/§a" + core.weaponsList().getUsps_max_bullet_count().get(p));
+                gunStarter.setItemMeta((ItemMeta)gunStarterM);
+                p.getInventory().addItem(gunStarter);
+                weightcheck(p);
+            }
+
         }
         else
         {
@@ -113,6 +128,30 @@ public class USPS implements Listener
                 {
                     event.setDamage(weapon_damage);
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerItemHeld(PlayerItemHeldEvent e)
+    {
+        Player p = e.getPlayer();
+        int newLocation = e.getNewSlot();
+        WeaponsSounds sounds = new WeaponsSounds(p);
+        ItemStack itemInHand = p.getInventory().getItem(newLocation);
+        if (itemInHand != null && itemInHand.getType() == weapon) {
+            if (core.weaponsList().getUsps_max_bullet_count().containsKey(p) && core.weaponsList().getUsps_bullet_charger_count().containsKey(p))
+            {
+                if (core.weaponsList().getUsps_bullet_charger_count().get(p) == 0)
+                {
+                    refill(p);
+                    return;
+                }
+                sounds.armed(armed_sound);
+            }
+            else
+            {
+                sounds.shoot("nobullet");
             }
         }
     }
@@ -258,8 +297,9 @@ public class USPS implements Listener
             public void run() {
                 ++t;
                 ++f;
-
+                if (p.getItemInHand().getType() != weapon) { core.weaponsList().getUsps_refill().remove(p); core.title.sendActionBar(p,""); cancel(); }
                 sendProgressBar(p, "Recharge en cours...", f, m);
+                get(p);
 
                 if (f == m) {
                     int diff = bullet_charger - core.weaponsList().getUsps_bullet_charger_count().get(p);
