@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -35,7 +36,7 @@ public class USPS implements Listener
     private int max_bullet = 27; //total de munitions
     private Material weapon = Material.WOOD_HOE; //materiel de l'ame
     private String weapon_name = "USP-s"; //titre de l'arme
-    private int weapon_damage = 2; //dégats de l'arme (en coeurs)
+    private int weapon_damage = 3; //dégats de l'arme (en coeurs)
     private int wait_for_shoot_delay = 7; //temps d'armement (ticks)
     private int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private int time_refill = 2; //temps de recharge (secondes)
@@ -126,7 +127,30 @@ public class USPS implements Listener
             {
                 if (((Snowball) event.getDamager()).getShooter() instanceof Player)
                 {
-                    event.setDamage(weapon_damage);
+
+                    Player victim = (Player) event.getEntity();
+                    Snowball bullet = (Snowball) event.getDamager();
+
+                    // Obtenez la vélocité de la boule de neige pour déterminer la direction
+                    Vector direction = bullet.getVelocity().normalize();
+
+                    // Obtenez la direction de la tête du joueur par rapport à la boule de neige
+                    Vector relativeDirection = victim.getEyeLocation().toVector().subtract(bullet.getLocation().toVector()).normalize();
+
+                    // Calculez le produit scalaire entre les deux directions
+                    double dotProduct = direction.dot(relativeDirection);
+
+                    // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
+                    if (dotProduct > 0.99) {
+                        int damage = weapon_damage * 4;
+                        event.setDamage(damage);
+                    } else if (dotProduct < 0.99 && dotProduct > 0.50) {
+                        int damage = weapon_damage * 2;
+                        event.setDamage(damage);
+                    } else if (dotProduct < 0.50) {
+                        int damage = weapon_damage;
+                        event.setDamage(damage);
+                    }
                 }
             }
         }

@@ -113,7 +113,7 @@ public class WeaponsSounds
                         t = 0;
                     }
                 }
-            }.runTaskTimer((Plugin) core, 0L, 5L);
+            }.runTaskTimer((Plugin) core, 0L, 3L);
         }
     }
 }

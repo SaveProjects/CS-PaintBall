@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
 import fr.edminecoreteam.cspaintball.game.teams.Teams;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsList;
+import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
@@ -71,6 +72,8 @@ public class Core extends JavaPlugin
     private void loadWeapons()
     {
         this.weaponsList = new WeaponsList();
+
+        Bukkit.getPluginManager().registerEvents((Listener) new WeaponsSettings(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
     }
