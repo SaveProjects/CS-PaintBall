@@ -30,14 +30,14 @@ public class WeaponsSounds
         {
             for (Player pls : core.getServer().getOnlinePlayers())
             {
-                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 2.0f);
+                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 3.0f);
             }
         }
         if (sound.equalsIgnoreCase("noisy"))
         {
             for (Player pls : core.getServer().getOnlinePlayers())
             {
-                pls.playSound(p.getLocation(), Sound.EXPLODE, 2.0f, 0.8f);
+                pls.playSound(p.getLocation(), Sound.EXPLODE, 2.0f, 1.2f);
             }
         }
         if (sound.equalsIgnoreCase("sniper"))

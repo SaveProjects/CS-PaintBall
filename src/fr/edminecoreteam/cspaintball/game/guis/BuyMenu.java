@@ -125,6 +125,7 @@ public class BuyMenu implements Listener
                 LeatherArmorMeta equipementsM = (LeatherArmorMeta) equipements.getItemMeta();
                 equipementsM.setDisplayName("§fÉquipements");
                 equipementsM.setColor(Color.fromRGB(11, 38, 61));
+                equipementsM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 ArrayList<String> loreEquipements = new ArrayList<String>();
                 loreEquipements.add("");
                 loreEquipements.add(" §dInformation:");

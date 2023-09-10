@@ -3,8 +3,9 @@ package fr.edminecoreteam.cspaintball;
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
 import fr.edminecoreteam.cspaintball.game.teams.Teams;
-import fr.edminecoreteam.cspaintball.game.weapons.WeaponsList;
+import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
+import fr.edminecoreteam.cspaintball.game.weapons.pistolets.BERETTAS;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
@@ -24,7 +25,7 @@ public class Core extends JavaPlugin
     private State state;
     public MySQL database;
     private Teams teams;
-    private WeaponsList weaponsList;
+    private WeaponsMap weaponsMap;
     public TitleBuilder title;
 
     private int maxplayers;
@@ -71,14 +72,15 @@ public class Core extends JavaPlugin
 
     private void loadWeapons()
     {
-        this.weaponsList = new WeaponsList();
+        this.weaponsMap = new WeaponsMap();
 
         Bukkit.getPluginManager().registerEvents((Listener) new WeaponsSettings(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new BERETTAS(), (Plugin)this);
     }
 
-    public WeaponsList weaponsList() { return this.weaponsList; }
+    public WeaponsMap weaponsMap() { return this.weaponsMap; }
 
     public Teams teams() { return this.teams; }
 

@@ -1,6 +1,8 @@
 package fr.edminecoreteam.cspaintball.game.guis;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
+import fr.edminecoreteam.cspaintball.game.weapons.WeaponsList;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
 import org.bukkit.Bukkit;
@@ -50,8 +52,17 @@ public class BuyPistolets implements Listener
             {
                 e.setCancelled(true);
                 p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
-                USPS usps = new USPS();
-                usps.get(p);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.USPS);
+                return;
+            }
+
+            if (it.getType() == Material.STONE_HOE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fBerettas"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.BERETTAS);
                 return;
             }
         }

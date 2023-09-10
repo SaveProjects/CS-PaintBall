@@ -2,7 +2,7 @@ package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
-import org.bukkit.*;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -11,7 +11,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -22,23 +21,23 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public class USPS implements Listener
+public class BERETTAS implements Listener
 {
 
     private static final Core core = Core.getInstance();
 
-    private final double recoil = 0.1; //recul de tir
+    private final double recoil = 0.2; //recul de tir
     private final double speed_shoot = 3; //vitesse de tir (max 5)
-    private final int bullet_charger = 9; //nombre de balles par chargeur
-    private final int max_bullet = 27; //total de munitions
-    private final Material weapon = Material.WOOD_HOE; //materiel de l'ame
-    private final String weapon_name = "USP-s"; //titre de l'arme
-    private final String weapon_id = "usps"; //id de l'arme
-    private final int weapon_damage = 3; //dégats de l'arme (en coeurs)
-    private final int wait_for_shoot_delay = 7; //temps d'armement (ticks)
+    private final int bullet_charger = 16; //nombre de balles par chargeur
+    private final int max_bullet = 16; //total de munitions
+    private final Material weapon = Material.STONE_HOE; //materiel de l'ame
+    private final String weapon_name = "Berettas"; //titre de l'arme
+    private final String weapon_id = "berettas"; //id de l'arme
+    private final int weapon_damage = 4; //dégats de l'arme (en coeurs)
+    private final int wait_for_shoot_delay = 10; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 2; //temps de recharge (secondes)
-    private final String shoot_sound = "silent"; //Bruit de tir
+    private final String shoot_sound = "noisy"; //Bruit de tir
     private final String refill_sound = "2s"; //Bruit de recharge
     private final String armed_sound = "classic"; //Bruit d'armement
 
@@ -141,7 +140,7 @@ public class USPS implements Listener
     {
         if (event.getEntity() instanceof Player)
         {
-            if (event.getDamager() instanceof org.bukkit.entity.Snowball)
+            if (event.getDamager() instanceof Snowball)
             {
                 if (((Snowball) event.getDamager()).getShooter() instanceof Player)
                 {
