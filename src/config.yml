@@ -28,7 +28,7 @@ coins:
   start: 800
   round: 300
   win: 1000
-  playerleave: 300
+  playerleave: 500
   kill: 300
   bomb: 300
   diffuse: 400
@@ -37,11 +37,11 @@ coins:
 timers:
   rounds-short: 8
   rounds-long: 15
-  start: 30
+  start: 60
   startfull: 10
   round: 140
-  bomb: 30
-  waitleave: 150
+  bomb: 45
+  waitleave: 90
 
 # Spawn du lobby principal.
 spawn:
