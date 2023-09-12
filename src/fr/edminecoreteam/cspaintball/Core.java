@@ -10,6 +10,9 @@ import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
 import fr.edminecoreteam.cspaintball.utils.TitleBuilder;
+import fr.edminecoreteam.cspaintball.utils.scoreboards.JoinScoreboardEvent;
+import fr.edminecoreteam.cspaintball.utils.scoreboards.LeaveScoreboardEvent;
+import fr.edminecoreteam.cspaintball.utils.scoreboards.ScoreboardManager;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
@@ -18,12 +21,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 public class Core extends JavaPlugin
 {
 
     private static Core instance;
     private State state;
     public MySQL database;
+    private ScoreboardManager scoreboardManager;
+    private ScheduledExecutorService executorMonoThread;
+    private ScheduledExecutorService scheduledExecutorService;
     private Teams teams;
     private WeaponsMap weaponsMap;
     public TitleBuilder title;
@@ -37,9 +46,11 @@ public class Core extends JavaPlugin
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
-        MySQLConnect();
         loadListeners();
+        ScoreboardManager();
         loadWeapons();
+
+        MySQLConnect();
 
         setState(State.WAITING);
         maxplayers = getConfig().getInt("teams.attacker.players") + getConfig().getInt("teams.defender.players");
@@ -80,6 +91,18 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new BERETTAS(), (Plugin)this);
     }
 
+    private void ScoreboardManager()
+    {
+        instance = this;
+
+        Bukkit.getPluginManager().registerEvents(new JoinScoreboardEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new LeaveScoreboardEvent(), this);
+
+        scheduledExecutorService = Executors.newScheduledThreadPool(16);
+        executorMonoThread = Executors.newScheduledThreadPool(1);
+        scoreboardManager = new ScoreboardManager();
+    }
+
     public WeaponsMap weaponsMap() { return this.weaponsMap; }
 
     public Teams teams() { return this.teams; }
@@ -92,6 +115,18 @@ public class Core extends JavaPlugin
 
     public boolean isState(State state) {
         return this.state == state;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return this.scoreboardManager;
+    }
+
+    public ScheduledExecutorService getExecutorMonoThread() {
+        return this.executorMonoThread;
+    }
+
+    public ScheduledExecutorService getScheduledExecutorService() {
+        return this.scheduledExecutorService;
     }
 
     public static Core getInstance() { return Core.instance; }
