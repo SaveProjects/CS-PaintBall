@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball.game.teams;
 
+import fr.edminecoreteam.cspaintball.Core;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ public class Teams
 {
     private final List<Player> attacker;
     private final List<Player> defenser;
+    private static Core core = Core.getInstance();
 
     public Teams()
     {
@@ -44,6 +46,25 @@ public class Teams
         else
         {
             System.out.println("CS PaintBall error, use attacker or defenser.");
+            return;
+        }
+    }
+
+    public void joinRandomTeam(Player p)
+    {
+        if (attacker.contains(p)) { attacker.remove(p); }
+        if (defenser.contains(p)) { defenser.remove(p); }
+
+        if (attacker.size() < core.getConfig().getInt("teams.attacker.players"))
+        {
+            attacker.add(p);
+            p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §cAttaquants§7.");
+            return;
+        }
+        if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
+        {
+            defenser.add(p);
+            p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §9Défenseurs§7.");
             return;
         }
     }
