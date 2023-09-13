@@ -49,7 +49,7 @@ public class ChooseTeam implements Listener
                 e.setCancelled(true);
                 if(!core.teams().getAttacker().contains(p))
                 {
-                    if (core.teams().getAttacker().size() < 5)
+                    if (core.teams().getAttacker().size() < core.getConfig().getInt("teams.attacker.players"))
                     {
                         core.teams().leaveTeam(p);
                         core.teams().joinTeam(p, "attacker");
@@ -70,7 +70,7 @@ public class ChooseTeam implements Listener
                 e.setCancelled(true);
                 if(!core.teams().getDefenser().contains(p))
                 {
-                    if (core.teams().getDefenser().size() < 5)
+                    if (core.teams().getDefenser().size() < core.getConfig().getInt("teams.defenser.players"))
                     {
                         core.teams().leaveTeam(p);
                         core.teams().joinTeam(p, "defenser");
@@ -160,7 +160,7 @@ public class ChooseTeam implements Listener
                 ArrayList<String> loreAttacker = new ArrayList<String>();
                 loreAttacker.add("");
                 loreAttacker.add(" §dInformation:");
-                loreAttacker.add(" §f▶ §7Joueur(s): §a" + core.teams().getAttacker().size() + "§f/" + "§a5");
+                loreAttacker.add(" §f▶ §7Joueur(s): §a" + core.teams().getAttacker().size() + "§f/" + "§a" + core.getConfig().getInt("teams.attacker.players"));
                 loreAttacker.add("");
                 loreAttacker.add(" §bEmplacement(s):");
                 if (core.teams().getAttacker().size() == 0) {
@@ -196,7 +196,7 @@ public class ChooseTeam implements Listener
                 ArrayList<String> loreDefenser = new ArrayList<String>();
                 loreDefenser.add("");
                 loreDefenser.add(" §dInformation:");
-                loreDefenser.add(" §f▶ §7Joueur(s): §a" + core.teams().getDefenser().size() + "§f/" + "§a5");
+                loreDefenser.add(" §f▶ §7Joueur(s): §a" + core.teams().getDefenser().size() + "§f/" + "§a" + core.getConfig().getInt("teams.defenser.players"));
                 loreDefenser.add("");
                 loreDefenser.add(" §bEmplacement(s):");
                 if (core.teams().getDefenser().size() == 0) {

@@ -24,7 +24,7 @@ needtostart: 8
 teams:
   attacker:
     players: 5
-  defender:
+  defenser:
     players: 5
 
 coins:

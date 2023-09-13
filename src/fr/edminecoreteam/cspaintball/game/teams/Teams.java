@@ -64,11 +64,11 @@ public class Teams
         }
         else if (attacker.size() == core.getConfig().getInt("teams.attacker.players"))
         {
-            //if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
-            //{
+            if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
+            {
                 defenser.add(p);
                 p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §9Défenseurs§7.");
-            //}
+            }
         }
     }
 
