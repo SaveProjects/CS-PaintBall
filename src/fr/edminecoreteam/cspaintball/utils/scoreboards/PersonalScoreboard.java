@@ -48,7 +48,7 @@ public class PersonalScoreboard {
  
     public void reloadData(){}
  
-    public void setLines(String ip){
+    public void setLines(String ip, String wait){
 
         objectiveSign.setDisplayName("§8● §6§lPaint-Ball §8●");
 
@@ -57,7 +57,7 @@ public class PersonalScoreboard {
 
                 objectiveSign.setLine(0, "§0");
                 objectiveSign.setLine(1, " §f➡ §dInformations:");
-                objectiveSign.setLine(2, "  §8• §7Statut: §fAttente...");
+                objectiveSign.setLine(2, "  §8• §7Statut: " + wait);
                 objectiveSign.setLine(3, "§1");
                 objectiveSign.setLine(4, "  §8• §7Joueurs: §a" + core.getServer().getOnlinePlayers().size() + "/§a" + core.getMaxplayers());
     			if (core.getConfig().getString("type").equalsIgnoreCase("ranked"))

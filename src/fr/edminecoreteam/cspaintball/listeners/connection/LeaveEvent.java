@@ -16,13 +16,17 @@ public class LeaveEvent implements Listener
     public void event(PlayerQuitEvent e)
     {
         Player p = e.getPlayer();
+        e.setQuitMessage(null);
         if (core.isState(State.WAITING))
         {
-            e.setQuitMessage(null);
-            int finalcount = core.getServer().getOnlinePlayers().size() - 1;
-            core.getServer().broadcastMessage("§e" + p.getName() + "§7 a quitté le jeu. §d" + finalcount + "§d/" + core.getMaxplayers());
+            if (core.getPlayersInGame().contains(p.getName()))
+            {
+                core.getPlayersInGame().remove(p.getName());
+                int finalcount = core.getServer().getOnlinePlayers().size() - 1;
+                core.getServer().broadcastMessage("§e" + p.getName() + "§7 a quitté le jeu. §d" + finalcount + "§d/" + core.getMaxplayers());
 
-            core.teams().leaveTeam(p);
+                core.teams().leaveTeam(p);
+            }
         }
     }
 }

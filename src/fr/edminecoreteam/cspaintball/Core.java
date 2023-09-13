@@ -21,6 +21,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -36,6 +38,7 @@ public class Core extends JavaPlugin
     private Teams teams;
     private WeaponsMap weaponsMap;
     public TitleBuilder title;
+    private List<String> playersInGame;
 
     private int maxplayers;
 
@@ -45,6 +48,7 @@ public class Core extends JavaPlugin
     @Override
     public void onEnable() {
         instance = this;
+        playersInGame = new ArrayList<String>();
         saveDefaultConfig();
         loadListeners();
         ScoreboardManager();
@@ -103,6 +107,8 @@ public class Core extends JavaPlugin
         scoreboardManager = new ScoreboardManager();
     }
 
+
+    public List<String> getPlayersInGame() { return this.playersInGame; }
     public WeaponsMap weaponsMap() { return this.weaponsMap; }
 
     public Teams teams() { return this.teams; }

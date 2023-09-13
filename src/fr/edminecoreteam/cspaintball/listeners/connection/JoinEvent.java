@@ -4,12 +4,14 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.PlayerInventory;
 
 public class JoinEvent implements Listener
 {
@@ -27,16 +29,65 @@ public class JoinEvent implements Listener
     public void event(PlayerJoinEvent e)
     {
         Player p = e.getPlayer();
-        WaitingListeners waitingListeners = new WaitingListeners(p);
+        e.setJoinMessage(null);
         if (core.isState(State.WAITING))
         {
-            e.setJoinMessage(null);
-            core.getServer().broadcastMessage("§e" + p.getName() + "§7 a rejoint le jeu. §d" + core.getServer().getOnlinePlayers().size() + "§d/" + core.getMaxplayers());
-            p.playSound(p.getLocation(), Sound.NOTE_PLING, 0.5f, 1.0f);
+            if (core.getPlayersInGame().size() == core.getMaxplayers())
+            {
+                p.kickPlayer("§cPartie pleine...");
+                return;
+            }
 
+            if (!core.getPlayersInGame().contains(p.getName()))
+            {
+                core.getPlayersInGame().add(p.getName());
+                core.getServer().broadcastMessage("§e" + p.getName() + "§7 a rejoint le jeu. §d" + core.getServer().getOnlinePlayers().size() + "§d/" + core.getMaxplayers());
 
-            p.teleport(spawn);
-            waitingListeners.getWaitingItems();
+                p.teleport(spawn);
+                get(p);
+                p.playSound(p.getLocation(), Sound.NOTE_PLING, 0.5f, 1.0f);
+            }
+        }
+    }
+
+    private void get(Player p) {
+        PlayerInventory pi = p.getInventory();
+        WaitingListeners waitingListeners = new WaitingListeners(p);
+
+        pi.setHelmet(null);
+        pi.setChestplate(null);
+        pi.setLeggings(null);
+        pi.setBoots(null);
+        p.setAllowFlight(false);
+        p.setFlying(false);
+
+        p.getInventory().clear();
+        p.setLevel(0);
+        p.setFoodLevel(20);
+        p.setHealth(20.0);
+        p.setGameMode(GameMode.ADVENTURE);
+        waitingListeners.getWaitingItems();
+        if (core.getConfig().getString("type").equalsIgnoreCase("ranked"))
+        {
+            if (core.getConfig().getString("time").equalsIgnoreCase("long"))
+            {
+                p.sendTitle("§e§lPaint-Ball", "§7Mode §6Compétitif §8/ §7Durée §bLongue§8.");
+            }
+            else if (core.getConfig().getString("time").equalsIgnoreCase("short"))
+            {
+                p.sendTitle("§e§lPaint-Ball", "§7Mode §6Compétitif §8/ §7Durée §bCourte§8.");
+            }
+        }
+        if (core.getConfig().getString("type").equalsIgnoreCase("unranked"))
+        {
+            if (core.getConfig().getString("time").equalsIgnoreCase("long"))
+            {
+                p.sendTitle("§e§lPaint-Ball", "§7Mode §6Non-Compétitif §8/ §7Durée §bLongue§8.");
+            }
+            else if (core.getConfig().getString("time").equalsIgnoreCase("short"))
+            {
+                p.sendTitle("§e§lPaint-Ball", "§7Mode §6Non-Compétitif §8/ §7Durée §bCourte§8.");
+            }
         }
     }
 }

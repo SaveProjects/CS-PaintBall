@@ -33,20 +33,26 @@ public class ScoreboardManager {
 	@SuppressWarnings("unused")
 	private final ScheduledFuture<?> reloadingTask;
     private int ipCharIndex;
+
+    private int waitCharIndex;
+    private int waitcooldown;
     private int cooldown;
  
     public ScoreboardManager() {
         scoreboards = new HashMap<>();
+        waitCharIndex = 0;
         ipCharIndex = 0;
         cooldown = 10;
+        waitcooldown = 20;
  
         glowingTask = Core.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
         {
             String ip = colorIpAt();
+            String wait = animWaitText();
             //String animWaitText = animWaitText();
             //String animStartText = animStartText();
             for (PersonalScoreboard scoreboard : scoreboards.values())
-            	Core.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip));
+            	Core.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip, wait));
         }, 80, 80, TimeUnit.MILLISECONDS);
         reloadingTask = Core.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
         {
@@ -111,41 +117,41 @@ public class ScoreboardManager {
         }
  
         return ChatColor.WHITE + formattedIp.toString();
-    }
+    }*/
     
     private String animWaitText() {
     	String attente = "Attente...";
 
-        if (cooldown > 0) {
-            cooldown--;
+        if (waitcooldown > 0) {
+            waitcooldown--;
             return ChatColor.WHITE + attente;
         }
  
-        StringBuilder formattedIp = new StringBuilder();
+        StringBuilder formattedAttente = new StringBuilder();
  
-        if (ipCharIndex > 0) {
-            formattedIp.append(attente.substring(0, ipCharIndex - 1));
-            formattedIp.append(ChatColor.GRAY).append(attente.substring(ipCharIndex - 1, ipCharIndex));
+        if (waitCharIndex > 0) {
+            formattedAttente.append(attente.substring(0, waitCharIndex - 1));
+            formattedAttente.append(ChatColor.GRAY).append(attente.substring(waitCharIndex - 1, waitCharIndex));
         } else {
-            formattedIp.append(attente.substring(0, ipCharIndex));
+            formattedAttente.append(attente.substring(0, waitCharIndex));
+        }
+
+        formattedAttente.append(ChatColor.DARK_GRAY).append(attente.charAt(waitCharIndex));
+ 
+        if (waitCharIndex + 1 < attente.length()) {
+            formattedAttente.append(ChatColor.GRAY).append(attente.charAt(waitCharIndex + 1));
+ 
+            if (waitCharIndex + 2 < attente.length())
+                formattedAttente.append(ChatColor.WHITE).append(attente.substring(waitCharIndex + 2));
+
+            waitCharIndex++;
+        } else {
+            waitCharIndex = 0;
+            waitcooldown = 70;
         }
  
-        formattedIp.append(ChatColor.DARK_GRAY).append(attente.charAt(ipCharIndex));
- 
-        if (ipCharIndex + 1 < attente.length()) {
-            formattedIp.append(ChatColor.GRAY).append(attente.charAt(ipCharIndex + 1));
- 
-            if (ipCharIndex + 2 < attente.length())
-                formattedIp.append(ChatColor.WHITE).append(attente.substring(ipCharIndex + 2));
- 
-            ipCharIndex++;
-        } else {
-            ipCharIndex = 0;
-            cooldown = 50;
-        }
- 
-        return ChatColor.WHITE + formattedIp.toString();
-    }*/
+        return ChatColor.WHITE + formattedAttente.toString();
+    }
  
     private String colorIpAt() {
         String ip = "play.edmine.net";
