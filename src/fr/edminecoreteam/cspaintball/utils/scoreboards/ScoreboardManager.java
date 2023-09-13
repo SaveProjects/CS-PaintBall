@@ -36,23 +36,29 @@ public class ScoreboardManager {
 
     private int waitCharIndex;
     private int waitcooldown;
+
+    private int startCharIndex;
+    private int startcooldown;
     private int cooldown;
  
     public ScoreboardManager() {
         scoreboards = new HashMap<>();
         waitCharIndex = 0;
+        startCharIndex = 0;
         ipCharIndex = 0;
         cooldown = 10;
         waitcooldown = 20;
+        startcooldown = 20;
  
         glowingTask = Core.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
         {
             String ip = colorIpAt();
             String wait = animWaitText();
+            String start = animStartText();
             //String animWaitText = animWaitText();
             //String animStartText = animStartText();
             for (PersonalScoreboard scoreboard : scoreboards.values())
-            	Core.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip, wait));
+            	Core.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip, wait, start));
         }, 80, 80, TimeUnit.MILLISECONDS);
         reloadingTask = Core.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
         {
@@ -151,6 +157,40 @@ public class ScoreboardManager {
         }
  
         return ChatColor.WHITE + formattedAttente.toString();
+    }
+
+    private String animStartText() {
+        String attente = "Démarrage...";
+
+        if (startcooldown > 0) {
+            startcooldown--;
+            return ChatColor.GREEN + attente;
+        }
+
+        StringBuilder formattedAttente = new StringBuilder();
+
+        if (startCharIndex > 0) {
+            formattedAttente.append(attente.substring(0, startCharIndex - 1));
+            formattedAttente.append(ChatColor.GREEN).append(attente.substring(startCharIndex - 1, startCharIndex));
+        } else {
+            formattedAttente.append(attente.substring(0, startCharIndex));
+        }
+
+        formattedAttente.append(ChatColor.DARK_GREEN).append(attente.charAt(startCharIndex));
+
+        if (startCharIndex + 1 < attente.length()) {
+            formattedAttente.append(ChatColor.GREEN).append(attente.charAt(startCharIndex + 1));
+
+            if (startCharIndex + 2 < attente.length())
+                formattedAttente.append(ChatColor.GREEN).append(attente.substring(startCharIndex + 2));
+
+            startCharIndex++;
+        } else {
+            startCharIndex = 0;
+            startcooldown = 70;
+        }
+
+        return ChatColor.GREEN + formattedAttente.toString();
     }
  
     private String colorIpAt() {

@@ -17,6 +17,9 @@ type: 'ranked'
 # Type de partie (long, short).
 time: 'short'
 
+# Nombre de joueurs demandés pour lancer.
+needtostart: 8
+
 # Gestion des équipes.
 teams:
   attacker:
@@ -41,6 +44,8 @@ timers:
   startfull: 10
   round: 140
   bomb: 45
+  diffuse: 12
+  diffuse-kit: 6
   waitleave: 90
 
 # Spawn du lobby principal.

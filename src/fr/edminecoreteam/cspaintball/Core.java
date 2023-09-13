@@ -2,7 +2,11 @@ package fr.edminecoreteam.cspaintball;
 
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
+import fr.edminecoreteam.cspaintball.game.points.PointsManager;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundManager;
 import fr.edminecoreteam.cspaintball.game.teams.Teams;
+import fr.edminecoreteam.cspaintball.game.utils.LoadWorld;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.BERETTAS;
@@ -31,6 +35,7 @@ public class Core extends JavaPlugin
 
     private static Core instance;
     private State state;
+    private RoundInfo roundInfo;
     public MySQL database;
     private ScoreboardManager scoreboardManager;
     private ScheduledExecutorService executorMonoThread;
@@ -39,8 +44,15 @@ public class Core extends JavaPlugin
     private WeaponsMap weaponsMap;
     public TitleBuilder title;
     private List<String> playersInGame;
+    private PointsManager pointsManager;
+    private RoundManager roundManager;
+    public String world;
 
     private int maxplayers;
+    public boolean isForceStart = false;
+
+    public int timers;
+    public int timers(int i) { this.timers = i; return i; }
 
 
     private static Plugin plugin;
@@ -51,6 +63,7 @@ public class Core extends JavaPlugin
         playersInGame = new ArrayList<String>();
         saveDefaultConfig();
         loadListeners();
+        loadGameWorld();
         ScoreboardManager();
         loadWeapons();
 
@@ -74,6 +87,8 @@ public class Core extends JavaPlugin
     {
         this.teams = new Teams();
         this.title = new TitleBuilder();
+        this.pointsManager = new PointsManager();
+        this.roundManager = new RoundManager();
         Bukkit.getPluginManager().registerEvents((Listener) new JoinEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new LeaveEvent(), (Plugin)this);
 
@@ -107,10 +122,19 @@ public class Core extends JavaPlugin
         scoreboardManager = new ScoreboardManager();
     }
 
+    private void loadGameWorld()
+    {
+        String world = LoadWorld.getRandomSubfolderName("gameTemplate/");
+        LoadWorld.createGameWorld(world);
+        this.world = world;
+    }
+
 
     public List<String> getPlayersInGame() { return this.playersInGame; }
     public WeaponsMap weaponsMap() { return this.weaponsMap; }
 
+    public RoundManager roundManager() { return this.roundManager; }
+    public PointsManager pointsManager() { return this.pointsManager; }
     public Teams teams() { return this.teams; }
 
     public int getMaxplayers() { return this.maxplayers; }
@@ -121,6 +145,14 @@ public class Core extends JavaPlugin
 
     public boolean isState(State state) {
         return this.state == state;
+    }
+
+    public void setRoundState(RoundInfo roundInfo) {
+        this.roundInfo = roundInfo;
+    }
+
+    public boolean isRoundState(RoundInfo roundInfo) {
+        return this.roundInfo == roundInfo;
     }
 
     public ScoreboardManager getScoreboardManager() {

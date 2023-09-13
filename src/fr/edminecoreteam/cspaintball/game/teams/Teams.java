@@ -9,13 +9,17 @@ import java.util.List;
 public class Teams
 {
     private final List<Player> attacker;
+    private final List<Player> attackerDeath;
     private final List<Player> defenser;
+    private final List<Player> defenserDeath;
     private static Core core = Core.getInstance();
 
     public Teams()
     {
         this.attacker = new ArrayList<Player>();
+        this.attackerDeath = new ArrayList<Player>();
         this.defenser = new ArrayList<Player>();
+        this.defenserDeath = new ArrayList<Player>();
     }
 
     public void joinTeam(Player p, String team)
@@ -50,22 +54,21 @@ public class Teams
         }
     }
 
-    public void joinRandomTeam(Player p)
+    public void joinRandomTeamButGameIsStart(Player p)
     {
-        if (attacker.contains(p)) { attacker.remove(p); }
-        if (defenser.contains(p)) { defenser.remove(p); }
 
         if (attacker.size() < core.getConfig().getInt("teams.attacker.players"))
         {
             attacker.add(p);
             p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §cAttaquants§7.");
-            return;
         }
-        if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
+        else if (attacker.size() == core.getConfig().getInt("teams.attacker.players"))
         {
-            defenser.add(p);
-            p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §9Défenseurs§7.");
-            return;
+            //if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
+            //{
+                defenser.add(p);
+                p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §9Défenseurs§7.");
+            //}
         }
     }
 
@@ -92,7 +95,7 @@ public class Teams
         if (!attacker.contains(p) && !defenser.contains(p)) { return null; }
 
         if (attacker.contains(p))
-        {;
+        {
             return this.attacker;
         }
         if (defenser.contains(p))
@@ -103,10 +106,32 @@ public class Teams
         return null;
     }
 
+    public List<Player> getDeathTeam(Player p)
+    {
+        if (!attackerDeath.contains(p) && !defenserDeath.contains(p)) { return null; }
+
+        if (attackerDeath.contains(p))
+        {
+            return this.attackerDeath;
+        }
+        if (defenserDeath.contains(p))
+        {
+            return this.defenserDeath;
+        }
+
+        return null;
+    }
+
+
     public List<Player> getAttacker()
     {
         return this.attacker;
     }
+    public List<Player> getAttackerDeath()
+    {
+        return this.attackerDeath;
+    }
 
     public List<Player> getDefenser() { return this.defenser; }
+    public List<Player> getDefenserDeath() { return this.defenserDeath; }
 }

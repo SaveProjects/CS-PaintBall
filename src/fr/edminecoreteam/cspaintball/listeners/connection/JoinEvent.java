@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball.listeners.connection;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
+import fr.edminecoreteam.cspaintball.waiting.tasks.AutoStart;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 
 public class JoinEvent implements Listener
 {
@@ -46,6 +48,25 @@ public class JoinEvent implements Listener
                 p.teleport(spawn);
                 get(p);
                 p.playSound(p.getLocation(), Sound.NOTE_PLING, 0.5f, 1.0f);
+
+                if (core.getConfig().getString("type").equalsIgnoreCase("ranked"))
+                {
+                    if (core.getPlayersInGame().size() == core.getMaxplayers())
+                    {
+                        core.setState(State.STARTING);
+                        AutoStart start = new AutoStart(core);
+                        start.runTaskTimer((Plugin) core, 0L, 20L);
+                    }
+                }
+                else if (core.getConfig().getString("type").equalsIgnoreCase("unranked"))
+                {
+                    if (core.getPlayersInGame().size() == core.getConfig().getInt("needtostart"))
+                    {
+                        core.setState(State.STARTING);
+                        AutoStart start = new AutoStart(core);
+                        start.runTaskTimer((Plugin) core, 0L, 20L);
+                    }
+                }
             }
         }
     }
