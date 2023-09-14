@@ -126,7 +126,6 @@ public class AutoStart extends BukkitRunnable
                 System.out.println(pls);
                 core.teams().joinRandomTeamButGameIsStart(pls);
             }
-            core.setState(State.INGAME);
             Game game = new Game();
             game.preparationRound();
             cancel();

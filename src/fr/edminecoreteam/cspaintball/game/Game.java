@@ -1,11 +1,16 @@
 package fr.edminecoreteam.cspaintball.game;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.tasks.Preparation;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.game.utils.Other;
+import fr.edminecoreteam.cspaintball.waiting.tasks.AutoStart;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class Game
 {
@@ -47,6 +52,11 @@ public class Game
                 kit.equipDefault(defensers);
             }
         }
+
+        core.setState(State.INGAME);
+        core.setRoundState(RoundInfo.PREPARATION);
+        Preparation preparation = new Preparation(core);
+        preparation.runTaskTimer((Plugin) core, 0L, 20L);
     }
 
     public void startRound()

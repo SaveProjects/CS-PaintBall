@@ -56,19 +56,20 @@ public class Teams
 
     public void joinRandomTeamButGameIsStart(Player p)
     {
+        if (attacker.contains(p)) { return; }
+        if (defenser.contains(p)) { return; }
 
         if (attacker.size() < core.getConfig().getInt("teams.attacker.players"))
         {
             attacker.add(p);
             p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §cAttaquants§7.");
+            return;
         }
-        else if (attacker.size() == core.getConfig().getInt("teams.attacker.players"))
+        if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
         {
-            if (defenser.size() < core.getConfig().getInt("teams.defenser.players"))
-            {
-                defenser.add(p);
-                p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §9Défenseurs§7.");
-            }
+            defenser.add(p);
+            p.sendMessage("§f§lPaintBall §8» §7Vous avez rejoint l'équipe des §9Défenseurs§7.");
+            return;
         }
     }
 

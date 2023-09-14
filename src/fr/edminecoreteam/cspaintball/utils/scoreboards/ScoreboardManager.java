@@ -58,7 +58,7 @@ public class ScoreboardManager {
             //String animWaitText = animWaitText();
             //String animStartText = animStartText();
             for (PersonalScoreboard scoreboard : scoreboards.values())
-            	Core.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip, wait, start));
+            	Core.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip));
         }, 80, 80, TimeUnit.MILLISECONDS);
         reloadingTask = Core.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
         {
@@ -84,46 +84,19 @@ public class ScoreboardManager {
             scoreboards.remove(player.getUniqueId());
         }
     }
+
+    public void fakeLogout(Player player) {
+        if (scoreboards.containsKey(player.getUniqueId())) {
+            scoreboards.get(player.getUniqueId()).fakeLogout();
+            scoreboards.remove(player.getUniqueId());
+        }
+    }
  
     public void update(Player player) {
         if (scoreboards.containsKey(player.getUniqueId())) {
             scoreboards.get(player.getUniqueId()).reloadData();
         }
     }
-    
-    /*private String animStartText() {
-    	String attente = "Démarrage";
-
-        if (cooldown > 0) {
-            cooldown--;
-            return ChatColor.GREEN + attente;
-        }
- 
-        StringBuilder formattedIp = new StringBuilder();
- 
-        if (ipCharIndex > 0) {
-            formattedIp.append(attente.substring(0, ipCharIndex - 1));
-            formattedIp.append(ChatColor.DARK_GREEN).append(attente.substring(ipCharIndex - 1, ipCharIndex));
-        } else {
-            formattedIp.append(attente.substring(0, ipCharIndex));
-        }
- 
-        formattedIp.append(ChatColor.GREEN).append(attente.charAt(ipCharIndex));
- 
-        if (ipCharIndex + 1 < attente.length()) {
-            formattedIp.append(ChatColor.DARK_GREEN).append(attente.charAt(ipCharIndex + 1));
- 
-            if (ipCharIndex + 2 < attente.length())
-                formattedIp.append(ChatColor.GREEN).append(attente.substring(ipCharIndex + 2));
- 
-            ipCharIndex++;
-        } else {
-            ipCharIndex = 0;
-            cooldown = 50;
-        }
- 
-        return ChatColor.WHITE + formattedIp.toString();
-    }*/
     
     private String animWaitText() {
     	String attente = "Attente...";

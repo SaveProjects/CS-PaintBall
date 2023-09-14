@@ -17,6 +17,7 @@ import fr.edminecoreteam.cspaintball.utils.TitleBuilder;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.JoinScoreboardEvent;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.LeaveScoreboardEvent;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.ScoreboardManager;
+import fr.edminecoreteam.cspaintball.utils.scoreboards.WorldChangeScoreboardEvent;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
@@ -116,6 +117,7 @@ public class Core extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents(new JoinScoreboardEvent(), this);
         Bukkit.getPluginManager().registerEvents(new LeaveScoreboardEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new WorldChangeScoreboardEvent(), this);
 
         scheduledExecutorService = Executors.newScheduledThreadPool(16);
         executorMonoThread = Executors.newScheduledThreadPool(1);
