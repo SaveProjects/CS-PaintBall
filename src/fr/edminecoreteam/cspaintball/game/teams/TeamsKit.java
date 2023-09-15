@@ -1,11 +1,14 @@
 package fr.edminecoreteam.cspaintball.game.teams;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
+import fr.edminecoreteam.cspaintball.game.weapons.WeaponsList;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class TeamsKit
@@ -40,6 +43,17 @@ public class TeamsKit
             p.getEquipment().setChestplate(chestplate);
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
+
+            Weapons weapons = new Weapons(p);
+            weapons.get(WeaponsList.USPS);
+
+            ItemStack knife = new ItemStack(Material.IRON_SWORD, 1);
+            ItemMeta knifeM = knife.getItemMeta();
+            knifeM.setDisplayName("§fCouteau");
+            knife.setItemMeta(knifeM);
+
+            p.getInventory().addItem(knife);
+
         }
         else if (core.teams().getDefenser().contains(p))
         {
@@ -65,6 +79,16 @@ public class TeamsKit
             p.getEquipment().setChestplate(chestplate);
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
+
+            Weapons weapons = new Weapons(p);
+            weapons.get(WeaponsList.USPS);
+
+            ItemStack knife = new ItemStack(Material.IRON_SWORD, 1);
+            ItemMeta knifeM = knife.getItemMeta();
+            knifeM.setDisplayName("§fCouteau");
+            knife.setItemMeta(knifeM);
+
+            p.getInventory().addItem(knife);
         }
     }
 }

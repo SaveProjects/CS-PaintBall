@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -144,7 +145,7 @@ public class BERETTAS implements Listener
             {
                 if (((Snowball) event.getDamager()).getShooter() instanceof Player)
                 {
-
+                    if (core.isRoundState(RoundInfo.PREPARATION)) { event.setCancelled(true); return; }
                     Player victim = (Player) event.getEntity();
                     Snowball bullet = (Snowball) event.getDamager();
 
@@ -172,6 +173,8 @@ public class BERETTAS implements Listener
             }
         }
     }
+
+
 
     @EventHandler
     public void onPlayerItemHeld(PlayerItemHeldEvent e)
@@ -210,6 +213,8 @@ public class BERETTAS implements Listener
         if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
                 && (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
         {
+            if (core.isRoundState(RoundInfo.PREPARATION)) { e.setCancelled(true); return; }
+
             WeaponsSounds sound = new WeaponsSounds(p);
             if (core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count") && core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_bullet_charger_count"))
             {

@@ -1,16 +1,20 @@
 package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
 import org.bukkit.*;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -20,6 +24,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class USPS implements Listener
 {
@@ -144,7 +150,7 @@ public class USPS implements Listener
             {
                 if (((Snowball) event.getDamager()).getShooter() instanceof Player)
                 {
-
+                    if (core.isRoundState(RoundInfo.PREPARATION)) { event.setCancelled(true); return; }
                     Player victim = (Player) event.getEntity();
                     Snowball bullet = (Snowball) event.getDamager();
 
@@ -169,6 +175,57 @@ public class USPS implements Listener
                         event.setDamage(damage);
                     }
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDropWeapon(PlayerDropItemEvent e)
+    {
+        if (e.getItemDrop().getItemStack().getType() == weapon)
+        {
+            Player p = e.getPlayer();
+            if (p.getInventory().getItemInHand().getType() == weapon)
+            {
+                p.getInventory().setItemInHand(null);
+                core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+                core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemPickup(PlayerPickupItemEvent event) {
+        Item item = event.getItem();
+        String itemName = item.getItemStack().getItemMeta().getDisplayName();
+        Player p = event.getPlayer();
+
+        if (itemName != null && itemName.contains("§a") && itemName.contains(weapon_name)) {
+            if (p.isSneaking())
+            {
+                String[] parts = itemName.split("§a");
+                if (parts.length >= 3) {
+                    try {
+                        int int1 = Integer.parseInt(parts[1].split("§8")[0]);
+                        int int2 = Integer.parseInt(parts[2].split("§8")[0]);
+
+                        // Utilisez les valeurs int1 et int2 à votre convenance
+                        p.sendMessage("§7Vous avez récupérer: §f§l" + weapon_name);
+                        p.sendMessage("§7Munitions de l'arme: §a" + int1 + "§8/§a" + int2);
+                        core.weaponsMap().getMap().get(p).put(weapon_id + "_max_bullet_count", int2);
+                        core.weaponsMap().getMap().get(p).put(weapon_id + "_bullet_charger_count", int1);
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.HORSE_ARMOR, 1.0f, 1.0f);
+                        }
+                    } catch (NumberFormatException e) {
+                        // Gérer les erreurs de conversion en int
+                    }
+                }
+            }
+            else
+            {
+                event.setCancelled(true);
             }
         }
     }
@@ -210,6 +267,8 @@ public class USPS implements Listener
         if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
                 && (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
         {
+            if (core.isRoundState(RoundInfo.PREPARATION)) { e.setCancelled(true); return; }
+
             WeaponsSounds sound = new WeaponsSounds(p);
             if (core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count") && core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_bullet_charger_count"))
             {

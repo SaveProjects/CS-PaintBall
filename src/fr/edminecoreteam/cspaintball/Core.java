@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball;
 
+import fr.edminecoreteam.cspaintball.game.GameListeners;
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
 import fr.edminecoreteam.cspaintball.game.points.PointsManager;
@@ -95,6 +96,8 @@ public class Core extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents((Listener) new WaitingListeners(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new ChooseTeam(), (Plugin)this);
+
+        Bukkit.getPluginManager().registerEvents((Listener) new GameListeners(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new BuyMenu(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPistolets(), (Plugin)this);

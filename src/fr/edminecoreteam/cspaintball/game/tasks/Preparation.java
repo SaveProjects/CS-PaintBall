@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.utils.BarUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -24,6 +25,10 @@ public class Preparation extends BukkitRunnable
     public void run()
     {
         core.timers(timer);
+        for (Player pls : core.getServer().getOnlinePlayers())
+        {
+            BarUtil.updateBar(pls, "§7Temps de préparation: §a" + core.timers, 100);
+        }
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
             pls.setLevel(timer);
@@ -64,6 +69,10 @@ public class Preparation extends BukkitRunnable
         if (timer == 0)
         {
             core.setRoundState(RoundInfo.START);
+            for (Player pls : core.getServer().getOnlinePlayers())
+            {
+                BarUtil.removeBar(pls);
+            }
             cancel();
         }
 

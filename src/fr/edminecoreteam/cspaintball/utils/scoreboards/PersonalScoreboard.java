@@ -2,6 +2,7 @@ package fr.edminecoreteam.cspaintball.utils.scoreboards;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -115,13 +116,105 @@ public class PersonalScoreboard {
                 int getMaxRound = core.getConfig().getInt("timers.rounds-short") * 2;
                 objectiveSign.setLine(4, "  §8• §7Manche: §f" + core.roundManager().getRound() + "§8/§f" + getMaxRound);
                 objectiveSign.setLine(5, "§2");
-                objectiveSign.setLine(6, "  §8• §7Bombe: §b");
-                objectiveSign.setLine(7, "  §8• §7Temps Restant: §b" + core.timers);
+                if (core.isRoundState(RoundInfo.PREPARATION))
+                {
+                    objectiveSign.setLine(6, "  §8• §7Bombe: §c✖");
+                    objectiveSign.setLine(7, "  §8• §7Temps de préparation: §b" + core.timers + "§bs");
+                }
+                if (core.isRoundState(RoundInfo.START))
+                {
+                    objectiveSign.setLine(6, "  §8• §7Bombe: §c§l✖");
+                    objectiveSign.setLine(7, "  §8• §7Temps restant: §b" + convertTime(core.timers));
+                }
+                if (core.isRoundState(RoundInfo.BOMBPLANTED))
+                {
+                    if (core.teams().getAttacker().contains(player))
+                    {
+                        objectiveSign.setLine(6, "  §8• §7Bombe: §aProtégez la bombe §a§l✔");
+                    }
+                    else if (core.teams().getDefenser().contains(player) || core.teams().getTeam(player) == null)
+                    {
+                        objectiveSign.setLine(6, "  §8• §7Bombe: §6Désamorcez la bombe §6§l⚠");
+                    }
+                    objectiveSign.setLine(7, "  §8• §7La bombe explose dans: §b" + core.timers + "§bs");
+                }
+                if (core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.END))
+                {
+                    if (core.teams().getAttacker().contains(player))
+                    {
+                        if (core.isRoundState(RoundInfo.BOMBDIFUSE))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §cBombe désamorcé §c§l✖");
+                        }
+                        else if (core.isRoundState(RoundInfo.END))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §f...");
+                        }
+                    }
+                    else if (core.teams().getDefenser().contains(player) || core.teams().getTeam(player) == null)
+                    {
+                        if (core.isRoundState(RoundInfo.BOMBDIFUSE))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §aBombe désamorcé §a§l✔");
+                        }
+                        else if (core.isRoundState(RoundInfo.END))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §f...");
+                        }
+                    }
+                    objectiveSign.setLine(7, "  §8• §7Prochaine Manche: §b" + core.timers + "§bs");
+                }
                 objectiveSign.setLine(8, "  §8• §7Carte: §e" + core.world);
-                int getAlive = core.teams().getTeam(player).size() - core.teams().getDeathTeam(player).size();
-                objectiveSign.setLine(9, "  §8• §7En vie(s) (équipe): §e" + getAlive);
-                objectiveSign.setLine(10, "§3");
-                objectiveSign.setLine(11, " §8➡ " + ip);
+                if (core.teams().getTeam(player) != null)
+                {
+                    if (core.teams().getDeathTeam(player) != null)
+                    {
+                        int getAlive = core.teams().getTeam(player).size() - core.teams().getDeathTeam(player).size();
+
+                        objectiveSign.setLine(9, "§6");
+                        objectiveSign.setLine(10, " §f➡ §bVotre Équipe:");
+                        objectiveSign.setLine(11, "  §8• §7En vie(s): §e" + getAlive);
+                        objectiveSign.setLine(12, "§3");
+                        objectiveSign.setLine(13, " §8➡ " + ip);
+                    }
+                    else if (core.teams().getDeathTeam(player) == null)
+                    {
+                        objectiveSign.setLine(9, "§6");
+                        objectiveSign.setLine(10, " §f➡ §bVotre Équipe:");
+                        objectiveSign.setLine(11, "  §8• §7En vie(s) (équipe): §e" + core.teams().getTeam(player).size());
+                        objectiveSign.setLine(12, "§3");
+                        objectiveSign.setLine(13, " §8➡ " + ip);
+                    }
+                }
+                else if (core.teams().getTeam(player) == null)
+                {
+                    objectiveSign.setLine(9, "§6");
+                    objectiveSign.setLine(10, " §f➡ §bÉquipes:");
+                    if (core.teams().getAttackerDeath() != null)
+                    {
+                        int getAttackerAlive = core.teams().getAttacker().size() - core.teams().getAttackerDeath().size();
+                        objectiveSign.setLine(11, "  §8• §7Attaquants en vie(s): §e" + getAttackerAlive);
+                    }
+                    else if (core.teams().getAttackerDeath() == null)
+                    {
+                        int getAttackerAlive = core.teams().getAttacker().size();
+                        objectiveSign.setLine(11, "  §8• §7Attaquants en vie(s): §e" + getAttackerAlive);
+                    }
+
+                    if (core.teams().getDefenserDeath() != null)
+                    {
+                        int getDefenserAlive = core.teams().getDefenser().size() - core.teams().getDefenserDeath().size();
+                        objectiveSign.setLine(12, "  §8• §7Défenseurs en vie(s): §e" + getDefenserAlive);
+                    }
+                    else if (core.teams().getDefenserDeath() == null)
+                    {
+                        int getDefenserAlive = core.teams().getDefenser().size();
+                        objectiveSign.setLine(12, "  §8• §7Défenseurs en vie(s): §e" + getDefenserAlive);
+                    }
+
+                    objectiveSign.setLine(13, "§3");
+                    objectiveSign.setLine(14, " §8➡ " + ip);
+                }
     		}
  
         objectiveSign.updateLines();

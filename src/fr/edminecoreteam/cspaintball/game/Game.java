@@ -5,6 +5,7 @@ import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.tasks.Preparation;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
+import fr.edminecoreteam.cspaintball.game.utils.BarUtil;
 import fr.edminecoreteam.cspaintball.game.utils.Other;
 import fr.edminecoreteam.cspaintball.waiting.tasks.AutoStart;
 import org.bukkit.Bukkit;
@@ -55,6 +56,10 @@ public class Game
 
         core.setState(State.INGAME);
         core.setRoundState(RoundInfo.PREPARATION);
+        for (Player pls : core.getServer().getOnlinePlayers())
+        {
+            BarUtil.sendBar(pls, "", 100);
+        }
         Preparation preparation = new Preparation(core);
         preparation.runTaskTimer((Plugin) core, 0L, 20L);
     }
