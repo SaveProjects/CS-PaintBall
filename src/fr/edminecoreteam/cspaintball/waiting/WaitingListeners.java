@@ -4,12 +4,15 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import fr.edminecoreteam.cspaintball.waiting.items.ItemsWaiting;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -72,6 +75,30 @@ public class WaitingListeners implements Listener
     private void onDrop(PlayerDropItemEvent e) {
         if (core.isState(State.WAITING)) {
             e.setCancelled(true);
+        }
+    }
+
+    private final Location spawn = new Location(Bukkit.getWorld(
+            core.getConfig().getString("spawn.world")),
+            (float) core.getConfig().getDouble("spawn.x"),
+            (float) core.getConfig().getDouble("spawn.y"),
+            (float) core.getConfig().getDouble("spawn.z"),
+            (float) core.getConfig().getDouble("spawn.f"),
+            (float) core.getConfig().getDouble("spawn.t"));
+
+    @EventHandler
+    private void onDamage(EntityDamageEvent e) {
+
+        if (e.getEntity().getType() == EntityType.PLAYER)
+        {
+            if (core.isState(State.WAITING)) {
+                e.setCancelled(true);
+                if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID))
+                {
+                    Player p = (Player) e.getEntity();
+                    p.teleport(spawn);
+                }
+            }
         }
     }
 

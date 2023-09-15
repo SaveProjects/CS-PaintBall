@@ -4,23 +4,20 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -76,9 +73,31 @@ public class USPS implements Listener
                 ItemMeta gunStarterM = gunStarter.getItemMeta();
                 gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") + "§8/§a" + core.weaponsMap().getHashMap(p).get(weapon_id + "_max_bullet_count"));
                 gunStarter.setItemMeta((ItemMeta)gunStarterM);
-                p.getInventory().addItem(gunStarter);
-                weightcheck(p);
-                return;
+                if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) == null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(0);
+                    p.getInventory().setItem(0, null);
+                    p.getInventory().setItem(1, itemToMove);
+                    p.getInventory().setItem(0, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    p.getInventory().setItem(1, null);
+                    p.getInventory().setItem(2, itemToMove);
+                    p.getInventory().setItem(1, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
+                {
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
+                    p.getInventory().setItem(1, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
             }
             if (core.weaponsMap().getHashMap(p).get(weapon_id + "_bullet_charger_count") == 0)
             {
@@ -86,9 +105,31 @@ public class USPS implements Listener
                 ItemMeta gunStarterM = gunStarter.getItemMeta();
                 gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") + "§8/§a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count"));
                 gunStarter.setItemMeta((ItemMeta)gunStarterM);
-                p.getInventory().addItem(gunStarter);
-                weightcheck(p);
-                return;
+                if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) == null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(0);
+                    p.getInventory().setItem(0, null);
+                    p.getInventory().setItem(1, itemToMove);
+                    p.getInventory().setItem(0, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    p.getInventory().setItem(1, null);
+                    p.getInventory().setItem(2, itemToMove);
+                    p.getInventory().setItem(1, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
+                {
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
+                    p.getInventory().setItem(1, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
             }
             else
             {
@@ -96,9 +137,32 @@ public class USPS implements Listener
                 ItemMeta gunStarterM = gunStarter.getItemMeta();
                 gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") + "§8/§a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count"));
                 gunStarter.setItemMeta((ItemMeta)gunStarterM);
-                p.getInventory().addItem(gunStarter);
-                weightcheck(p);
-                return;
+
+                if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) == null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(0);
+                    p.getInventory().setItem(0, null);
+                    p.getInventory().setItem(1, itemToMove);
+                    p.getInventory().setItem(0, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    p.getInventory().setItem(1, null);
+                    p.getInventory().setItem(2, itemToMove);
+                    p.getInventory().setItem(1, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
+                {
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
+                    p.getInventory().setItem(1, gunStarter);
+                    weightcheck(p);
+                    return;
+                }
             }
 
         }
@@ -180,6 +244,97 @@ public class USPS implements Listener
     }
 
     @EventHandler
+    public void onItemSpawn(ItemSpawnEvent event) {
+        // Récupérez la position où l'item a été largué
+
+        if (event.getEntity().getItemStack().getType() == weapon)
+        {
+            new BukkitRunnable() {
+                int t = 0;
+                public void run() {
+
+                    ++t;
+                    if (event.getEntity() != null)
+                    {
+                        if (event.getEntity().isOnGround())
+                        {
+                            String name = event.getEntity().getItemStack().getItemMeta().getDisplayName();
+                            double newx = event.getEntity().getLocation().getX();
+                            double newy = event.getEntity().getLocation().getY() -1.2;
+                            double newz = event.getEntity().getLocation().getZ();
+                            Location customloc = new Location(Bukkit.getWorld(event.getEntity().getWorld().getName()), newx, newy, newz);
+                            ArmorStand armorStand = (ArmorStand)Bukkit.getWorld(event.getEntity().getWorld().getName()).spawnEntity(customloc, EntityType.ARMOR_STAND);
+                            armorStand.setVisible(false);
+                            armorStand.setSmall(false);
+                            armorStand.setCanPickupItems(false);
+                            armorStand.setArms(true);
+                            armorStand.setCustomName(name);
+                            armorStand.setCustomNameVisible(true);
+                            armorStand.setGravity(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
+                            armorStand.setItemInHand(event.getEntity().getItemStack());
+                            event.getEntity().remove();
+                            System.out.println("Arme DROP à la position : X" + newx + ", Y" + newy + ", Z" + newz);
+                            cancel();
+                        }
+
+                    }
+                    else
+                    {
+                        cancel();
+                    }
+
+                    if (t == 1) {
+                        run();
+                    }
+                }
+            }.runTaskTimer((Plugin) core, 0L, 1L);
+        }
+    }
+
+    @EventHandler
+    public void onSneak(PlayerToggleSneakEvent e)
+    {
+        Player p = e.getPlayer();
+
+        for (ArmorStand weapons : Bukkit.getWorld(p.getWorld().getName()).getEntitiesByClass(ArmorStand.class)) {
+            if (weapons.getWorld() == p.getWorld()) {
+                Location loc = weapons.getLocation();
+                double distanceSquared = p.getLocation().distanceSquared(loc);
+                if (distanceSquared <= 2 * 2) {
+                    ItemStack item = weapons.getItemInHand();
+                    String itemName = item.getItemMeta().getDisplayName();
+
+                    if (itemName != null && itemName.contains("§a") && itemName.contains(weapon_name)) {
+                        String[] parts = itemName.split("§a");
+                        if (parts.length >= 3) {
+                            try {
+                                int int1 = Integer.parseInt(parts[1].split("§8")[0]);
+                                int int2 = Integer.parseInt(parts[2].split("§8")[0]);
+
+                                // Utilisez les valeurs int1 et int2 à votre convenance
+                                p.sendMessage("§7Vous avez récupéré: §f§l" + weapon_name);
+                                p.sendMessage("§7Munitions de l'arme: §a" + int1 + "§8/§a" + int2);
+                                core.weaponsMap().getMap().get(p).put(weapon_id + "_max_bullet_count", int2);
+                                core.weaponsMap().getMap().get(p).put(weapon_id + "_bullet_charger_count", int1);
+                                get(p);
+                                weapons.remove();
+                                for (Player pls : core.getServer().getOnlinePlayers())
+                                {
+                                    pls.playSound(p.getLocation(), Sound.HORSE_ARMOR, 1.0f, 1.0f);
+                                }
+                            } catch (NumberFormatException e1) {
+                                // Gérer les erreurs de conversion en int
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onDropWeapon(PlayerDropItemEvent e)
     {
         if (e.getItemDrop().getItemStack().getType() == weapon)
@@ -187,9 +342,46 @@ public class USPS implements Listener
             Player p = e.getPlayer();
             if (p.getInventory().getItemInHand().getType() == weapon)
             {
-                p.getInventory().setItemInHand(null);
-                core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
-                core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+                if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
+                {
+                    if (p.getInventory().getItem(0).getType() == weapon)
+                    {
+                        ItemStack itemToMove = p.getInventory().getItem(2);
+                        ItemStack itemToMove2 = p.getInventory().getItem(1);
+                        p.getInventory().setItem(2, null);
+                        p.getInventory().setItem(1, null);
+                        p.getInventory().setItem(0, null);
+
+                        p.getInventory().setItem(1, itemToMove);
+                        p.getInventory().setItem(0, itemToMove2);
+
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+                        return;
+                    }
+                    else if (p.getInventory().getItem(1).getType() == weapon)
+                    {
+                        ItemStack itemToMove = p.getInventory().getItem(2);
+                        p.getInventory().setItem(2, null);
+                        p.getInventory().setItem(1, null);
+
+                        p.getInventory().setItem(1, itemToMove);
+
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+                        return;
+                    }
+                }
+                else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
+                {
+                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    p.getInventory().setItem(1, null);
+                    p.getInventory().setItem(0, itemToMove);
+
+                    core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+                    core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+                    return;
+                }
             }
         }
     }
@@ -210,7 +402,7 @@ public class USPS implements Listener
                         int int2 = Integer.parseInt(parts[2].split("§8")[0]);
 
                         // Utilisez les valeurs int1 et int2 à votre convenance
-                        p.sendMessage("§7Vous avez récupérer: §f§l" + weapon_name);
+                        p.sendMessage("§7Vous avez récupéré: §f§l" + weapon_name);
                         p.sendMessage("§7Munitions de l'arme: §a" + int1 + "§8/§a" + int2);
                         core.weaponsMap().getMap().get(p).put(weapon_id + "_max_bullet_count", int2);
                         core.weaponsMap().getMap().get(p).put(weapon_id + "_bullet_charger_count", int1);

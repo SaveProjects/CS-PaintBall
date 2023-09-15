@@ -6,6 +6,8 @@ import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +16,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class GameListeners implements Listener
@@ -79,6 +82,7 @@ public class GameListeners implements Listener
         }
     }
 
+    @EventHandler
     public void hungerBarChange(FoodLevelChangeEvent e)
     {
         if (e.getEntityType() != EntityType.PLAYER) {
@@ -86,7 +90,18 @@ public class GameListeners implements Listener
         }
 
         if (core.isState(State.INGAME)) {
-            e.setFoodLevel(18);
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractAtEntityEvent e) {
+        Entity ent = e.getRightClicked();
+        Player p = e.getPlayer();
+        if (ent instanceof ArmorStand)
+        {
+            e.setCancelled(true);
+            return;
         }
     }
 

@@ -10,6 +10,7 @@ import fr.edminecoreteam.cspaintball.game.teams.Teams;
 import fr.edminecoreteam.cspaintball.game.utils.LoadWorld;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
+import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.BERETTAS;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
@@ -109,6 +110,7 @@ public class Core extends JavaPlugin
         this.weaponsMap = new WeaponsMap();
 
         Bukkit.getPluginManager().registerEvents((Listener) new WeaponsSettings(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new Bombe(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BERETTAS(), (Plugin)this);

@@ -43,6 +43,7 @@ timers:
   start: 60
   startfull: 10
   round: 140
+  planting-bomb: 5
   bomb: 45
   diffuse: 12
   diffuse-kit: 6
@@ -78,3 +79,11 @@ maps:
       z: -2.5
       f: -180.0
       t: -0
+    a:
+      x: 1071.5
+      y: 67.0
+      z: 920.5
+    b:
+      x: 1023.5
+      y: 65.0
+      z: 918.5

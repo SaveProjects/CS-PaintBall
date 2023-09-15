@@ -1,17 +1,21 @@
 package fr.edminecoreteam.cspaintball.game;
 
 import fr.edminecoreteam.cspaintball.Core;
-import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.tasks.End;
 import fr.edminecoreteam.cspaintball.game.tasks.Preparation;
+import fr.edminecoreteam.cspaintball.game.tasks.Start;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.game.utils.BarUtil;
-import fr.edminecoreteam.cspaintball.game.utils.Other;
-import fr.edminecoreteam.cspaintball.waiting.tasks.AutoStart;
+import fr.edminecoreteam.cspaintball.game.utils.LoadHolograms;
+import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game
 {
@@ -41,6 +45,10 @@ public class Game
             {
                 TeamsKit kit = new TeamsKit();
                 kit.equipDefault(attackers);
+                if (core.teams().getAttackerDeath().contains(attackers))
+                {
+                    core.teams().getAttackerDeath().remove(attackers);
+                }
             }
         }
 
@@ -51,10 +59,14 @@ public class Game
             {
                 TeamsKit kit = new TeamsKit();
                 kit.equipDefault(defensers);
+                if (core.teams().getDefenserDeath().contains(defensers))
+                {
+                    core.teams().getDefenserDeath().remove(defensers);
+                }
             }
         }
-
-        core.setState(State.INGAME);
+        Bombe bomb = new Bombe();
+        bomb.getRandom();
         core.setRoundState(RoundInfo.PREPARATION);
         for (Player pls : core.getServer().getOnlinePlayers())
         {
@@ -66,7 +78,10 @@ public class Game
 
     public void startRound()
     {
-
+        LoadHolograms holograms = new LoadHolograms();
+        holograms.init();
+        Start start = new Start(core);
+        start.runTaskTimer((Plugin) core, 0L, 20L);
     }
 
     public void endRound()
@@ -83,13 +98,34 @@ public class Game
             if (core.roundManager().getRound() == core.getConfig().getInt("rounds-long") * 2) { endGame(); return; }
         }
 
-
-
+        End end = new End(core);
+        end.runTaskTimer((Plugin) core, 0L, 20L);
     }
 
     public void changeTeam()
     {
+        List<Player> attackers = new ArrayList<Player>(core.teams().getAttacker());
+        List<Player> defensers = new ArrayList<Player>(core.teams().getDefenser());
 
+        for (Player pls : core.teams().getAttacker())
+        {
+            core.teams().getAttacker().remove(pls);
+        }
+
+        for (Player pls : core.teams().getDefenser())
+        {
+            core.teams().getDefenser().remove(pls);
+        }
+
+        for (Player pls : attackers)
+        {
+            core.teams().getDefenser().add(pls);
+        }
+
+        for (Player pls : defensers)
+        {
+            core.teams().getAttacker().add(pls);
+        }
     }
 
     public void endGame()

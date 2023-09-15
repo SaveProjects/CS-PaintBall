@@ -53,6 +53,7 @@ public class TeamsKit
             knife.setItemMeta(knifeM);
 
             p.getInventory().addItem(knife);
+            p.setFoodLevel(18);
 
         }
         else if (core.teams().getDefenser().contains(p))
@@ -89,6 +90,7 @@ public class TeamsKit
             knife.setItemMeta(knifeM);
 
             p.getInventory().addItem(knife);
+            p.setFoodLevel(18);
         }
     }
 }
