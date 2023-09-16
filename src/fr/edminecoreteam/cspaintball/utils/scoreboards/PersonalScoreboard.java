@@ -128,38 +128,68 @@ public class PersonalScoreboard {
                 }
                 if (core.isRoundState(RoundInfo.BOMBPLANTED))
                 {
+                    if (core.teams().getTeam(player) == null)
+                    {
+                        objectiveSign.setLine(6, "  §8• §7Bombe: §6Plantée §6§l⚠");
+                    }
+
                     if (core.teams().getAttacker().contains(player))
                     {
                         objectiveSign.setLine(6, "  §8• §7Bombe: §aProtégez la bombe §a§l✔");
                     }
-                    else if (core.teams().getDefenser().contains(player) || core.teams().getTeam(player) == null)
+                    if (core.teams().getDefenser().contains(player))
                     {
-                        objectiveSign.setLine(6, "  §8• §7Bombe: §6Désamorcez la bombe §6§l⚠");
+                        objectiveSign.setLine(6, "  §8• §7Bombe: §6Plantée §6§l⚠");
                     }
+
                     objectiveSign.setLine(7, "  §8• §7La bombe explose dans: §b" + core.timers + "§bs");
                 }
-                if (core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.END))
+                if (core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.END) || core.isRoundState(RoundInfo.BOMBEXPLODE))
                 {
+                    if (core.teams().getTeam(player) == null)
+                    {
+                        if (core.isRoundState(RoundInfo.BOMBDIFUSE))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §aBombe désamorcé §a§l✔");
+                        }
+                        if (core.isRoundState(RoundInfo.END))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §fNon planté.");
+                        }
+                        if (core.isRoundState(RoundInfo.BOMBEXPLODE))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §fExplosée.");
+                        }
+                    }
+
                     if (core.teams().getAttacker().contains(player))
                     {
                         if (core.isRoundState(RoundInfo.BOMBDIFUSE))
                         {
                             objectiveSign.setLine(6, "  §8• §7Bombe: §cBombe désamorcé §c§l✖");
                         }
-                        else if (core.isRoundState(RoundInfo.END))
+                        if (core.isRoundState(RoundInfo.END))
                         {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §f...");
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §cNon planté...");
+                        }
+                        if (core.isRoundState(RoundInfo.BOMBEXPLODE))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §aExplosée §a§l✔");
                         }
                     }
-                    else if (core.teams().getDefenser().contains(player) || core.teams().getTeam(player) == null)
+                    if (core.teams().getDefenser().contains(player))
                     {
                         if (core.isRoundState(RoundInfo.BOMBDIFUSE))
                         {
                             objectiveSign.setLine(6, "  §8• §7Bombe: §aBombe désamorcé §a§l✔");
                         }
-                        else if (core.isRoundState(RoundInfo.END))
+                        if (core.isRoundState(RoundInfo.END))
                         {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §f...");
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §aNon planté §a§l✔");
+                        }
+                        if (core.isRoundState(RoundInfo.BOMBEXPLODE))
+                        {
+                            objectiveSign.setLine(6, "  §8• §7Bombe: §cExplosée §c§l✖");
                         }
                     }
                     objectiveSign.setLine(7, "  §8• §7Prochaine Manche: §b" + core.timers + "§bs");
@@ -181,7 +211,7 @@ public class PersonalScoreboard {
                     {
                         objectiveSign.setLine(9, "§6");
                         objectiveSign.setLine(10, " §f➡ §bVotre Équipe:");
-                        objectiveSign.setLine(11, "  §8• §7En vie(s) (équipe): §e" + core.teams().getTeam(player).size());
+                        objectiveSign.setLine(11, "  §8• §7En vie(s): §e" + core.teams().getTeam(player).size());
                         objectiveSign.setLine(12, "§3");
                         objectiveSign.setLine(13, " §8➡ " + ip);
                     }

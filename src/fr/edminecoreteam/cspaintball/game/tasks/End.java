@@ -3,7 +3,9 @@ package fr.edminecoreteam.cspaintball.game.tasks;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,7 +18,7 @@ public class End extends BukkitRunnable
     public End(Core core)
     {
         this.core = core;
-        this.timer = 7;
+        this.timer = 10;
     }
 
     public void run()
@@ -57,6 +59,11 @@ public class End extends BukkitRunnable
         if (timer == 0)
         {
             core.setRoundState(RoundInfo.PREPARATION);
+            core.roundManager().addRound();
+            for (ArmorStand armorStand : Bukkit.getWorld("game").getEntitiesByClass(ArmorStand.class))
+            {
+                armorStand.remove();
+            }
             Game game = new Game();
             game.preparationRound();
             cancel();

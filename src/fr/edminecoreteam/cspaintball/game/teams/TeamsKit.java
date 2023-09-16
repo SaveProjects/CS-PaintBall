@@ -44,9 +44,6 @@ public class TeamsKit
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
 
-            Weapons weapons = new Weapons(p);
-            weapons.get(WeaponsList.USPS);
-
             ItemStack knife = new ItemStack(Material.IRON_SWORD, 1);
             ItemMeta knifeM = knife.getItemMeta();
             knifeM.setDisplayName("§fCouteau");
@@ -55,6 +52,8 @@ public class TeamsKit
             p.getInventory().addItem(knife);
             p.setFoodLevel(18);
 
+            Weapons weapons = new Weapons(p);
+            weapons.get(WeaponsList.USPS);
         }
         else if (core.teams().getDefenser().contains(p))
         {
@@ -81,9 +80,6 @@ public class TeamsKit
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
 
-            Weapons weapons = new Weapons(p);
-            weapons.get(WeaponsList.USPS);
-
             ItemStack knife = new ItemStack(Material.IRON_SWORD, 1);
             ItemMeta knifeM = knife.getItemMeta();
             knifeM.setDisplayName("§fCouteau");
@@ -91,6 +87,9 @@ public class TeamsKit
 
             p.getInventory().addItem(knife);
             p.setFoodLevel(18);
+
+            Weapons weapons = new Weapons(p);
+            weapons.get(WeaponsList.USPS);
         }
     }
 }

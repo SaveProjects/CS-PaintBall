@@ -21,14 +21,14 @@ public class LoadHolograms
 
         Location customlocA = new Location(Bukkit.getWorld("game"), A_x, A_y, A_z);
         ArmorStand armorStandA = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customlocA, EntityType.ARMOR_STAND);
-        armorStandA.setVisible(true);
-        armorStandA.setCustomName("§fSite §c§lA");
+        armorStandA.setVisible(false);
+        armorStandA.setCustomName("§8⬇ §fSite §c§lA §8⬇");
         armorStandA.setCustomNameVisible(true);
 
         Location customlocB = new Location(Bukkit.getWorld("game"), B_x, B_y, B_z);
         ArmorStand armorStandB = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customlocB, EntityType.ARMOR_STAND);
-        armorStandB.setVisible(true);
-        armorStandB.setCustomName("§fSite §c§lB");
+        armorStandB.setVisible(false);
+        armorStandB.setCustomName("§8⬇ §fSite §c§lB §8⬇");
         armorStandB.setCustomNameVisible(true);
     }
 }

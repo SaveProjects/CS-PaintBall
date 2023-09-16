@@ -303,10 +303,13 @@ public class BERETTAS implements Listener
                 Location loc = weapons.getLocation();
                 double distanceSquared = p.getLocation().distanceSquared(loc);
                 if (distanceSquared <= 2 * 2) {
-                    ItemStack item = weapons.getItemInHand();
-                    String itemName = item.getItemMeta().getDisplayName();
 
-                    if (itemName != null && itemName.contains("§a") && itemName.contains(weapon_name)) {
+                    if (weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇")) { return; }
+
+                    ItemStack item = weapons.getItemInHand();
+
+                    if (item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("§a") && item.getItemMeta().getDisplayName().contains(weapon_name)) {
+                        String itemName = item.getItemMeta().getDisplayName();
                         String[] parts = itemName.split("§a");
                         if (parts.length >= 3) {
                             try {

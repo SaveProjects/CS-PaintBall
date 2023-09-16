@@ -5,8 +5,9 @@ public enum RoundInfo
     PREPARATION("PREPARATION", 0),
     START("START", 1),
     BOMBPLANTED("BOMBPLANTED", 2),
-    BOMBDIFUSE("BOMBDIFUSE", 3),
-    END("END", 4);
+    BOMBEXPLODE("BOMBEXPLODE", 3),
+    BOMBDIFUSE("BOMBDIFUSE", 4),
+    END("END", 5);
 
     private RoundInfo(final String name, final int ordinal) {
     }

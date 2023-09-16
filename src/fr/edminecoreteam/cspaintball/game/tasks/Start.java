@@ -79,7 +79,7 @@ public class Start extends BukkitRunnable
         if (timer == 0)
         {
             core.setRoundState(RoundInfo.END);
-            core.pointsManager().addAttackerPoints();
+            core.pointsManager().addDefenserPoints();
             Game game = new Game();
             game.endRound();
             cancel();

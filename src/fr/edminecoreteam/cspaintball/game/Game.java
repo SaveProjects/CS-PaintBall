@@ -89,13 +89,13 @@ public class Game
         if (Math.abs(core.pointsManager().getAttackerPoints() - core.pointsManager().getDefenserPoints()) == 8) { endGame(); return; }
         if (core.getConfig().getString("time").equalsIgnoreCase("short"))
         {
-            if (core.roundManager().getRound() == core.getConfig().getInt("rounds-short")) { changeTeam(); return; }
-            if (core.roundManager().getRound() == core.getConfig().getInt("rounds-short") * 2) { endGame(); return; }
+            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-short")) { changeTeam(); return; }
+            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-short") * 2) { endGame(); return; }
         }
-        else if (core.getConfig().getString("time").equalsIgnoreCase("long"))
+        if (core.getConfig().getString("time").equalsIgnoreCase("long"))
         {
-            if (core.roundManager().getRound() == core.getConfig().getInt("rounds-long")) { changeTeam(); return; }
-            if (core.roundManager().getRound() == core.getConfig().getInt("rounds-long") * 2) { endGame(); return; }
+            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-long")) { changeTeam(); return; }
+            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-long") * 2) { endGame(); return; }
         }
 
         End end = new End(core);
@@ -104,8 +104,21 @@ public class Game
 
     public void changeTeam()
     {
-        List<Player> attackers = new ArrayList<Player>(core.teams().getAttacker());
-        List<Player> defensers = new ArrayList<Player>(core.teams().getDefenser());
+        List<Player> attackers = new ArrayList<Player>();
+        List<Player> defensers = new ArrayList<Player>();
+
+        for (Player pls : core.teams().getAttacker())
+        {
+            attackers.add(pls);
+        }
+
+        for (Player pls : core.teams().getDefenser())
+        {
+            defensers.add(pls);
+        }
+
+        int attackerScore = core.pointsManager().getAttackerPoints();
+        int defenserScore = core.pointsManager().getDefenserPoints();
 
         for (Player pls : core.teams().getAttacker())
         {
@@ -126,6 +139,12 @@ public class Game
         {
             core.teams().getAttacker().add(pls);
         }
+
+        core.pointsManager().setAttackerPoints(defenserScore);
+        core.pointsManager().setDefenserPoints(attackerScore);
+
+        End end = new End(core);
+        end.runTaskTimer((Plugin) core, 0L, 20L);
     }
 
     public void endGame()
