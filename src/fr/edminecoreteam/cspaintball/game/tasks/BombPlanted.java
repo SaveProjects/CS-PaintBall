@@ -21,9 +21,9 @@ public class BombPlanted extends BukkitRunnable
 
     public void run()
     {
-        core.timers(timer);
-
         if (!core.isRoundState(RoundInfo.BOMBPLANTED)) { cancel(); }
+
+        core.timers(timer);
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {

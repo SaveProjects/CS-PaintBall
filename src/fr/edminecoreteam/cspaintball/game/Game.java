@@ -106,6 +106,8 @@ public class Game
     {
         List<Player> attackers = new ArrayList<Player>();
         List<Player> defensers = new ArrayList<Player>();
+        int attackerScore = core.pointsManager().getAttackerPoints();
+        int defenserScore = core.pointsManager().getDefenserPoints();
 
         for (Player pls : core.teams().getAttacker())
         {
@@ -116,9 +118,6 @@ public class Game
         {
             defensers.add(pls);
         }
-
-        int attackerScore = core.pointsManager().getAttackerPoints();
-        int defenserScore = core.pointsManager().getDefenserPoints();
 
         for (Player pls : core.teams().getAttacker())
         {
@@ -132,12 +131,12 @@ public class Game
 
         for (Player pls : attackers)
         {
-            core.teams().getDefenser().add(pls);
+            core.teams().joinTeam(pls, "defenser");
         }
 
         for (Player pls : defensers)
         {
-            core.teams().getAttacker().add(pls);
+            core.teams().joinTeam(pls, "attacker");
         }
 
         core.pointsManager().setAttackerPoints(defenserScore);

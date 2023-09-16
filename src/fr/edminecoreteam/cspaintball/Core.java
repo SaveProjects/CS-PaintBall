@@ -70,7 +70,7 @@ public class Core extends JavaPlugin
         ScoreboardManager();
         loadWeapons();
 
-        MySQLConnect();
+        //MySQLConnect();
 
         setState(State.WAITING);
         maxplayers = getConfig().getInt("teams.attacker.players") + getConfig().getInt("teams.defenser.players");

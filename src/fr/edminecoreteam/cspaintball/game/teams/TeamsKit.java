@@ -5,6 +5,7 @@ import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsList;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +18,63 @@ public class TeamsKit
     private final ItemStack getSkull(String url) {
         return SkullNBT.getSkull(url);
     }
+
+
+    public void reEquip(Player p)
+    {
+        if (core.teams().getAttacker().contains(p))
+        {
+            ItemStack helmet = getSkull("http://textures.minecraft.net/texture/49a53f43f306f4597be9aeda17eb049501d544fda8d54a528cae5aae8eb3c4d1");
+
+            ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+            LeatherArmorMeta chestplateM = (LeatherArmorMeta) chestplate.getItemMeta();
+            chestplateM.setColor(Color.fromRGB(153, 0, 0));
+            chestplate.setItemMeta(chestplateM);
+
+            ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+            LeatherArmorMeta leggingsM = (LeatherArmorMeta) leggings.getItemMeta();
+            leggingsM.setColor(Color.fromRGB(0, 51, 102));
+            leggings.setItemMeta(leggingsM);
+
+            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+            LeatherArmorMeta bootsM = (LeatherArmorMeta) boots.getItemMeta();
+            bootsM.setColor(Color.fromRGB(32, 32, 32));
+            boots.setItemMeta(bootsM);
+
+            p.getEquipment().setHelmet(helmet);
+            p.getEquipment().setChestplate(chestplate);
+            p.getEquipment().setLeggings(leggings);
+            p.getEquipment().setBoots(boots);
+        }
+        else if (core.teams().getDefenser().contains(p))
+        {
+            ItemStack helmet = getSkull("http://textures.minecraft.net/texture/331a5989478944f9b5f1a1813d598f41b34945ff08a08acd887bca027953848");
+
+            ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+            LeatherArmorMeta chestplateM = (LeatherArmorMeta) chestplate.getItemMeta();
+            chestplateM.setColor(Color.fromRGB(11, 38, 61));
+            chestplate.setItemMeta(chestplateM);
+
+            ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+            LeatherArmorMeta leggingsM = (LeatherArmorMeta) leggings.getItemMeta();
+            leggingsM.setColor(Color.fromRGB(8, 32, 54));
+            leggings.setItemMeta(leggingsM);
+
+            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+            LeatherArmorMeta bootsM = (LeatherArmorMeta) boots.getItemMeta();
+            bootsM.setColor(Color.fromRGB(11, 38, 61));
+            boots.setItemMeta(bootsM);
+
+            p.getEquipment().setHelmet(helmet);
+            p.getEquipment().setChestplate(chestplate);
+            p.getEquipment().setLeggings(leggings);
+            p.getEquipment().setBoots(boots);
+        }
+    }
+
     public void equipDefault(Player p)
     {
+        p.setGameMode(GameMode.ADVENTURE);
         if (core.teams().getAttacker().contains(p))
         {
             p.getInventory().clear();
@@ -50,7 +106,7 @@ public class TeamsKit
             knife.setItemMeta(knifeM);
 
             p.getInventory().addItem(knife);
-            p.setFoodLevel(18);
+            p.setFoodLevel(15);
 
             Weapons weapons = new Weapons(p);
             weapons.get(WeaponsList.USPS);
@@ -86,7 +142,7 @@ public class TeamsKit
             knife.setItemMeta(knifeM);
 
             p.getInventory().addItem(knife);
-            p.setFoodLevel(18);
+            p.setFoodLevel(15);
 
             Weapons weapons = new Weapons(p);
             weapons.get(WeaponsList.USPS);

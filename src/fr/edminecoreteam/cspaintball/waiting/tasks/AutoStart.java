@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball.waiting.tasks;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
+import fr.edminecoreteam.cspaintball.game.tasks.GunOrderChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -127,6 +128,10 @@ public class AutoStart extends BukkitRunnable
                 core.teams().joinRandomTeamButGameIsStart(pls);
             }
             core.setState(State.INGAME);
+            for (Player pls : core.getServer().getOnlinePlayers()) {
+                GunOrderChecker gunOrderChecker = new GunOrderChecker();
+                gunOrderChecker.check(pls);
+            }
             Game game = new Game();
             game.preparationRound();
             cancel();

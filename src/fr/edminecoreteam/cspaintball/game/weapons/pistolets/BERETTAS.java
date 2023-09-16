@@ -133,7 +133,12 @@ public class BERETTAS implements Listener
             }
             else
             {
-                ItemStack gunStarter = new ItemStack(weapon, core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count"));
+                int number = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count");
+                if (number == 1)
+                {
+                    number = 2;
+                }
+                ItemStack gunStarter = new ItemStack(weapon, number);
                 ItemMeta gunStarterM = gunStarter.getItemMeta();
                 gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") + "§8/§a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count"));
                 gunStarter.setItemMeta((ItemMeta)gunStarterM);
@@ -343,6 +348,11 @@ public class BERETTAS implements Listener
         if (e.getItemDrop().getItemStack().getType() == weapon)
         {
             Player p = e.getPlayer();
+            if (core.weaponsMap().getWeapon_refill().containsKey(p))
+            {
+                e.setCancelled(true);
+                return;
+            }
             if (p.getInventory().getItemInHand().getType() == weapon)
             {
                 if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
@@ -377,13 +387,27 @@ public class BERETTAS implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
-                    p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(0, itemToMove);
+                    if (p.getInventory().getItem(0).getType() == weapon)
+                    {
+                        ItemStack itemToMove = p.getInventory().getItem(1);
+                        p.getInventory().setItem(1, null);
+                        p.getInventory().setItem(0, null);
+                        p.getInventory().setItem(0, itemToMove);
 
-                    core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
-                    core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
-                    return;
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+                        return;
+                    }
+                    else if (p.getInventory().getItem(0).getType() == null)
+                    {
+                        ItemStack itemToMove = p.getInventory().getItem(1);
+                        p.getInventory().setItem(1, null);
+                        p.getInventory().setItem(0, itemToMove);
+
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+                        core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+                        return;
+                    }
                 }
             }
         }
