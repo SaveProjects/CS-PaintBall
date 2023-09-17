@@ -112,13 +112,16 @@ public class Bombe implements Listener
                                             if (p.isSneaking())
                                             {
                                                 if (!p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name)) { cancel(); }
-                                                if (core.isRoundState(RoundInfo.END) || core.isRoundState(RoundInfo.BOMBPLANTED) || core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.BOMBEXPLODE)) { cancel(); }
 
                                                 if (bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇") || bombGround.getCustomName().equalsIgnoreCase("bomb.planted"))
                                                 {
                                                     double distanceSquaredd = p.getLocation().distanceSquared(loc);
                                                     if (distanceSquaredd <= 2 * 2)
                                                     {
+                                                        if (core.isRoundState(RoundInfo.END) || core.isRoundState(RoundInfo.BOMBPLANTED) || core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.BOMBEXPLODE))
+                                                        {
+                                                            cancel();
+                                                        }
                                                         sendProgressBar(p, "Plantation de la bombe... ", t, plant_time);
                                                         if (t == 0)
                                                         {
@@ -139,9 +142,12 @@ public class Bombe implements Listener
                                                             armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
                                                             armorStand.setItemInHand(bomb);
                                                             p.getInventory().setItem(4, null);
-                                                            core.setRoundState(RoundInfo.BOMBPLANTED);
-                                                            BombPlanted bombPlanted = new BombPlanted(core);
-                                                            bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
+                                                            if (!core.isRoundState(RoundInfo.END))
+                                                            {
+                                                                core.setRoundState(RoundInfo.BOMBPLANTED);
+                                                                BombPlanted bombPlanted = new BombPlanted(core);
+                                                                bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
+                                                            }
                                                         }
                                                     }
                                                 }
