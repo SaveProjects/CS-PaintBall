@@ -46,6 +46,11 @@ public class GameListeners implements Listener
                     (float) core.getConfig().getDouble("maps." + core.world + ".attacker.f"),
                     (float) core.getConfig().getDouble("maps." + core.world + ".attacker.t"));
 
+            Location attackerSpawnNotEye = new Location(Bukkit.getWorld(p.getWorld().getName()),
+                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.x"),
+                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.y"),
+                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.z"));
+
             Location defenserSpawn = new Location(Bukkit.getWorld(p.getWorld().getName()),
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.x"),
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.y"),
@@ -53,13 +58,24 @@ public class GameListeners implements Listener
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.f"),
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.t"));
 
+            Location defenserSpawnNotEye = new Location(Bukkit.getWorld(p.getWorld().getName()),
+                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.x"),
+                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.y"),
+                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.z"));
+
             if (core.teams().getAttacker().contains(p))
             {
-                p.teleport(attackerSpawn);
+                if (!p.getLocation().equals(attackerSpawnNotEye))
+                {
+                    p.teleport(attackerSpawn);
+                }
             }
             if (core.teams().getDefenser().contains(p))
             {
-                p.teleport(defenserSpawn);
+                if (!p.getLocation().equals(defenserSpawnNotEye))
+                {
+                    p.teleport(defenserSpawn);
+                }
             }
         }
     }

@@ -28,4 +28,13 @@ public class Weapons
         }
     }
 
+    public void refillMax()
+    {
+        USPS usps = new USPS();
+        usps.refillMax(p);
+
+        BERETTAS berettas = new BERETTAS();
+        berettas.refillMax(p);
+    }
+
 }

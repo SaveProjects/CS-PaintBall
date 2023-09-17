@@ -50,6 +50,11 @@ public class Game
                     core.teams().getAttackerDeath().remove(attackers);
                 }
             }
+            if (!core.teams().getAttackerDeath().contains(attackers) && core.roundManager().getRound() != 1)
+            {
+                TeamsKit kit = new TeamsKit();
+                kit.equipNotDeathDefault(attackers);
+            }
         }
 
         for (Player defensers : core.teams().getDefenser())
@@ -63,6 +68,11 @@ public class Game
                 {
                     core.teams().getDefenserDeath().remove(defensers);
                 }
+            }
+            else if (!core.teams().getDefenserDeath().contains(defensers) && core.roundManager().getRound() != 1)
+            {
+                TeamsKit kit = new TeamsKit();
+                kit.equipNotDeathDefault(defensers);
             }
         }
         Bombe bomb = new Bombe();

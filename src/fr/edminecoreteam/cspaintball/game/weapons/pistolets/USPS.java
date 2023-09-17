@@ -740,4 +740,14 @@ public class USPS implements Listener
         core.title.sendActionBar(player, actionBarMessage);
 
     }
+
+    public void refillMax(Player p)
+    {
+        if (p.getInventory().contains(weapon))
+        {
+            core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", bullet_charger);
+            core.weaponsMap().getMap().get(p).replace(weapon_id + "_max_bullet_count", max_bullet);
+            get(p);
+        }
+    }
 }

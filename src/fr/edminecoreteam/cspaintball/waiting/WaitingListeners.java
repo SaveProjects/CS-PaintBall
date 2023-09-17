@@ -63,11 +63,14 @@ public class WaitingListeners implements Listener
         Player p = e.getPlayer();
         Action a = e.getAction();
         ItemStack it = e.getItem();
-        if (it.getType() == Material.BANNER && core.isState(State.WAITING) && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)) {
-            e.setCancelled(true);
-            ChooseTeam teamGui = new ChooseTeam();
-            teamGui.gui(p);
-            p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+        if (it.getType() == Material.BANNER && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)) {
+            if (core.isState(State.WAITING) || core.isState(State.STARTING))
+            {
+                e.setCancelled(true);
+                ChooseTeam teamGui = new ChooseTeam();
+                teamGui.gui(p);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+            }
         }
     }
 

@@ -112,6 +112,7 @@ public class Bombe implements Listener
                                             if (p.isSneaking())
                                             {
                                                 if (!p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name)) { cancel(); }
+                                                if (core.isRoundState(RoundInfo.END) || core.isRoundState(RoundInfo.BOMBPLANTED) || core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.BOMBEXPLODE)) { cancel(); }
 
                                                 if (bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇") || bombGround.getCustomName().equalsIgnoreCase("bomb.planted"))
                                                 {
