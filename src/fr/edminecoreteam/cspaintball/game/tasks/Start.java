@@ -28,20 +28,26 @@ public class Start extends BukkitRunnable
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {
-            core.pointsManager().addAttackerPoints();
-            core.setRoundState(RoundInfo.END);
-            Game game = new Game();
-            game.endRound();
-            cancel();
+            if (core.isRoundState(RoundInfo.START))
+            {
+                core.pointsManager().addAttackerPoints();
+                core.setRoundState(RoundInfo.END);
+                Game game = new Game();
+                game.endRound();
+                cancel();
+            }
         }
 
         if (core.teams().getAttacker().size() == core.teams().getAttackerDeath().size())
         {
-            core.pointsManager().addDefenserPoints();
-            core.setRoundState(RoundInfo.END);
-            Game game = new Game();
-            game.endRound();
-            cancel();
+            if (core.isRoundState(RoundInfo.START))
+            {
+                core.pointsManager().addDefenserPoints();
+                core.setRoundState(RoundInfo.END);
+                Game game = new Game();
+                game.endRound();
+                cancel();
+            }
         }
 
 
@@ -78,11 +84,14 @@ public class Start extends BukkitRunnable
         }
         if (timer == 0)
         {
-            core.setRoundState(RoundInfo.END);
-            core.pointsManager().addDefenserPoints();
-            Game game = new Game();
-            game.endRound();
-            cancel();
+            if (core.isRoundState(RoundInfo.START))
+            {
+                core.setRoundState(RoundInfo.END);
+                core.pointsManager().addDefenserPoints();
+                Game game = new Game();
+                game.endRound();
+                cancel();
+            }
         }
 
         --timer;

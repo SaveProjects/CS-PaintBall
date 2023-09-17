@@ -114,29 +114,32 @@ public class Game
 
     public void changeTeam()
     {
-        List<Player> attackers = new ArrayList<Player>();
-        List<Player> defensers = new ArrayList<Player>();
+        final List<Player> attackers;
+        final List<Player> defensers;
+        attackers = new ArrayList<Player>();
+        defensers = new ArrayList<Player>();
+
         int attackerScore = core.pointsManager().getAttackerPoints();
         int defenserScore = core.pointsManager().getDefenserPoints();
 
         for (Player pls : core.teams().getAttacker())
         {
             attackers.add(pls);
+            core.teams().getAttacker().remove(pls);
+            if (core.teams().getAttackerDeath().contains(pls))
+            {
+                core.teams().getAttackerDeath().remove(pls);
+            }
         }
 
         for (Player pls : core.teams().getDefenser())
         {
             defensers.add(pls);
-        }
-
-        for (Player pls : core.teams().getAttacker())
-        {
-            core.teams().getAttacker().remove(pls);
-        }
-
-        for (Player pls : core.teams().getDefenser())
-        {
             core.teams().getDefenser().remove(pls);
+            if (core.teams().getDefenserDeath().contains(pls))
+            {
+                core.teams().getDefenserDeath().remove(pls);
+            }
         }
 
         for (Player pls : attackers)

@@ -118,36 +118,36 @@ public class Bombe implements Listener
                                                     double distanceSquaredd = p.getLocation().distanceSquared(loc);
                                                     if (distanceSquaredd <= 2 * 2)
                                                     {
-                                                        if (core.isRoundState(RoundInfo.END) || core.isRoundState(RoundInfo.BOMBPLANTED) || core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.BOMBEXPLODE))
+                                                        if (!core.isRoundState(RoundInfo.END))
                                                         {
-                                                            cancel();
-                                                        }
-                                                        sendProgressBar(p, "Plantation de la bombe... ", t, plant_time);
-                                                        if (t == 0)
-                                                        {
-                                                            String name = "bomb.planted";
-                                                            double newx = p.getLocation().getX();
-                                                            double newy = p.getLocation().getY() -1.2;
-                                                            double newz = p.getLocation().getZ();
-                                                            Location customloc = new Location(Bukkit.getWorld("game"), newx, newy, newz);
-                                                            ArmorStand armorStand = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customloc, EntityType.ARMOR_STAND);
-                                                            armorStand.setVisible(false);
-                                                            armorStand.setSmall(false);
-                                                            armorStand.setCanPickupItems(false);
-                                                            armorStand.setArms(true);
-                                                            armorStand.setCustomName(name);
-                                                            armorStand.setCustomNameVisible(false);
-                                                            armorStand.setGravity(false);
-                                                            armorStand.setBasePlate(false);
-                                                            armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
-                                                            armorStand.setItemInHand(bomb);
-                                                            p.getInventory().setItem(4, null);
-                                                            if (!core.isRoundState(RoundInfo.END))
+                                                            sendProgressBar(p, "Plantation de la bombe... ", t, plant_time);
+                                                            if (t == 0)
                                                             {
+                                                                String name = "bomb.planted";
+                                                                double newx = p.getLocation().getX();
+                                                                double newy = p.getLocation().getY() -1.2;
+                                                                double newz = p.getLocation().getZ();
+                                                                Location customloc = new Location(Bukkit.getWorld("game"), newx, newy, newz);
+                                                                ArmorStand armorStand = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customloc, EntityType.ARMOR_STAND);
+                                                                armorStand.setVisible(false);
+                                                                armorStand.setSmall(false);
+                                                                armorStand.setCanPickupItems(false);
+                                                                armorStand.setArms(true);
+                                                                armorStand.setCustomName(name);
+                                                                armorStand.setCustomNameVisible(false);
+                                                                armorStand.setGravity(false);
+                                                                armorStand.setBasePlate(false);
+                                                                armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
+                                                                armorStand.setItemInHand(bomb);
+                                                                p.getInventory().setItem(4, null);
                                                                 core.setRoundState(RoundInfo.BOMBPLANTED);
                                                                 BombPlanted bombPlanted = new BombPlanted(core);
                                                                 bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
                                                             }
+                                                        }
+                                                        else
+                                                        {
+                                                            cancel();
                                                         }
                                                     }
                                                 }
