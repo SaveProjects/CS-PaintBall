@@ -23,7 +23,7 @@ public class End extends BukkitRunnable
 
     public void run()
     {
-        if (!core.isRoundState(RoundInfo.END)) { cancel(); }
+        if (!core.isRoundState(RoundInfo.END) && !core.isRoundState(RoundInfo.BOMBEXPLODE) && !core.isRoundState(RoundInfo.BOMBDIFUSE)) { cancel(); }
 
         core.timers(timer);
 
