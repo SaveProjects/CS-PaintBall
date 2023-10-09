@@ -18,7 +18,7 @@ public class End extends BukkitRunnable
     public End(Core core)
     {
         this.core = core;
-        this.timer = 10;
+        this.timer = 6;
     }
 
     public void run()

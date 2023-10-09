@@ -28,31 +28,25 @@ public class BombPlanted extends BukkitRunnable
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {
-            if (core.isRoundState(RoundInfo.BOMBPLANTED))
-            {
-                core.pointsManager().addAttackerPoints();
-                core.setRoundState(RoundInfo.END);
-                Game game = new Game();
-                game.endRound();
-                cancel();
-            }
+            core.pointsManager().addAttackerPoints();
+            core.setRoundState(RoundInfo.END);
+            Game game = new Game();
+            game.endRound();
+            cancel();
         }
 
 
         if (timer == 0)
         {
-            if (core.isRoundState(RoundInfo.BOMBPLANTED))
+            core.pointsManager().addAttackerPoints();
+            for (Player pls : core.getServer().getOnlinePlayers())
             {
-                core.setRoundState(RoundInfo.BOMBEXPLODE);
-                core.pointsManager().addAttackerPoints();
-                for (Player pls : core.getServer().getOnlinePlayers())
-                {
-                    pls.playSound(pls.getLocation(), Sound.EXPLODE, 1.0f, 0.4f);
-                }
-                Game game = new Game();
-                game.endRound();
-                cancel();
+                pls.playSound(pls.getLocation(), Sound.EXPLODE, 1.0f, 0.4f);
             }
+            core.setRoundState(RoundInfo.BOMBEXPLODE);
+            Game game = new Game();
+            game.endRound();
+            cancel();
         }
 
         --timer;

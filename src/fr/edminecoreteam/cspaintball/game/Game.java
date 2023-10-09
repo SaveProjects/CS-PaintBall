@@ -96,7 +96,6 @@ public class Game
 
     public void endRound()
     {
-        if (Math.abs(core.pointsManager().getAttackerPoints() - core.pointsManager().getDefenserPoints()) == 8) { endGame(); return; }
         if (core.getConfig().getString("time").equalsIgnoreCase("short"))
         {
             if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-short")) { changeTeam(); return; }
