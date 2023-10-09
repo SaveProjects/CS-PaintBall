@@ -113,10 +113,8 @@ public class Game
 
     public void changeTeam()
     {
-        final List<Player> attackers;
-        final List<Player> defensers;
-        attackers = new ArrayList<Player>();
-        defensers = new ArrayList<Player>();
+        final List<Player> attackers = new ArrayList<>();
+        final List<Player> defensers = new ArrayList<>();
 
         int attackerScore = core.pointsManager().getAttackerPoints();
         int defenserScore = core.pointsManager().getDefenserPoints();
