@@ -2,6 +2,7 @@ package fr.edminecoreteam.cspaintball.game;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
+import fr.edminecoreteam.cspaintball.end.EndListeners;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.tasks.End;
 import fr.edminecoreteam.cspaintball.game.tasks.Preparation;
@@ -40,11 +41,28 @@ public class Game
     public void preparationRound()
     {
         core.setRoundState(RoundInfo.PREPARATION);
+        int rounds = 0;
+        int finalrounds = 0;
+        core.getServer().broadcastMessage("§d§lTIPS§7: §7Ouvrez votre inventaire pour aller sur la §eBoutique d'armement§7.");
+        if (core.getConfig().getString("time").equalsIgnoreCase("short"))
+        {
+            rounds = core.getConfig().getInt("timers.rounds-short");
+            finalrounds = rounds * 2;
+            if (core.roundManager().getRound() == rounds) { core.getServer().broadcastMessage("§6§l⚠ §7Vous changerez d'équipe à la prochaine manche."); }
+            if (core.roundManager().getRound() == finalrounds) { core.getServer().broadcastMessage("§6§l⚠ §7La partie s'arrête à la fin de cette manche."); }
+        }
+        if (core.getConfig().getString("time").equalsIgnoreCase("long"))
+        {
+            rounds = core.getConfig().getInt("timers.rounds-long");
+            finalrounds = rounds * 2;
+            if (core.roundManager().getRound() == rounds) { core.getServer().broadcastMessage("§6§l⚠ §7Vous changerez d'équipe à la prochaine manche."); }
+            if (core.roundManager().getRound() == finalrounds) { core.getServer().broadcastMessage("§6§l⚠ §7La partie s'arrête à la fin de cette manche."); }
+        }
 
         for (Player attackers : core.teams().getAttacker())
         {
             attackers.teleport(attackerSpawn);
-            if (core.teams().getAttackerDeath().contains(attackers) || core.roundManager().getRound() == 1)
+            if (core.teams().getAttackerDeath().contains(attackers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
                 kit.equipDefault(attackers);
@@ -63,7 +81,7 @@ public class Game
         for (Player defensers : core.teams().getDefenser())
         {
             defensers.teleport(defenserSpawn);
-            if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1)
+            if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
                 kit.equipDefault(defensers);
@@ -72,7 +90,7 @@ public class Game
                     core.teams().getDefenserDeath().remove(defensers);
                 }
             }
-            else if (!core.teams().getDefenserDeath().contains(defensers) && core.roundManager().getRound() != 1)
+            if (!core.teams().getDefenserDeath().contains(defensers) && core.roundManager().getRound() != 1)
             {
                 TeamsKit kit = new TeamsKit();
                 kit.equipNotDeathDefault(defensers);
@@ -166,5 +184,7 @@ public class Game
     public void endGame()
     {
         core.setState(State.FINISH);
+        EndListeners end = new EndListeners();
+        end.end();
     }
 }

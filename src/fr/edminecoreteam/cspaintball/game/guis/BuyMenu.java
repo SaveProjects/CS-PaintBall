@@ -45,6 +45,13 @@ public class BuyMenu implements Listener
                 return;
             }
         }
+        if (it.getType() == Material.SKULL_ITEM && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eBoutique D'Armement"))
+        {
+            e.setCancelled(true);
+            p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+            gui(p);
+            return;
+        }
     }
 
     public void gui(Player p)

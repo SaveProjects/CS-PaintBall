@@ -139,6 +139,13 @@ public class TeamsKit
     public void equipDefault(Player p)
     {
         p.setGameMode(GameMode.ADVENTURE);
+
+        ItemStack shop = getSkull("http://textures.minecraft.net/texture/3e4e7384241617cca7a96d8979b0be358dcbd47427f5b2f0c370cb689be55c12");
+        ItemMeta shopM = shop.getItemMeta();
+        shopM.setDisplayName("§eBoutique D'Armement");
+        shop.setItemMeta(shopM);
+        p.getInventory().setItem(31, shop);
+
         if (core.teams().getAttacker().contains(p))
         {
             p.getInventory().clear();
