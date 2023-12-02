@@ -60,18 +60,14 @@ public class End extends BukkitRunnable
         }
         if (timer == 0)
         {
-            if (core.isRoundState(RoundInfo.END))
+            core.roundManager().addRound();
+            for (ArmorStand armorStand : Bukkit.getWorld("game").getEntitiesByClass(ArmorStand.class))
             {
-                core.setRoundState(RoundInfo.PREPARATION);
-                core.roundManager().addRound();
-                for (ArmorStand armorStand : Bukkit.getWorld("game").getEntitiesByClass(ArmorStand.class))
-                {
-                    armorStand.remove();
-                }
-                Game game = new Game();
-                game.preparationRound();
-                cancel();
+                armorStand.remove();
             }
+            Game game = new Game();
+            game.preparationRound();
+            cancel();
         }
 
         --timer;

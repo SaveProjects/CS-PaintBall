@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.game;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.tasks.End;
 import fr.edminecoreteam.cspaintball.game.tasks.Preparation;
@@ -38,6 +39,8 @@ public class Game
 
     public void preparationRound()
     {
+        core.setRoundState(RoundInfo.PREPARATION);
+
         for (Player attackers : core.teams().getAttacker())
         {
             attackers.teleport(attackerSpawn);
@@ -77,7 +80,6 @@ public class Game
         }
         Bombe bomb = new Bombe();
         bomb.getRandom();
-        core.setRoundState(RoundInfo.PREPARATION);
         for (Player pls : core.getServer().getOnlinePlayers())
         {
             BarUtil.sendBar(pls, "", 100);
@@ -98,13 +100,17 @@ public class Game
     {
         if (core.getConfig().getString("time").equalsIgnoreCase("short"))
         {
-            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-short")) { changeTeam(); return; }
-            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-short") * 2) { endGame(); return; }
+            int roundshort = core.getConfig().getInt("timers.rounds-short");
+            int finalroundshort = roundshort * 2;
+            if (core.roundManager().getRound() == roundshort) { changeTeam(); return; }
+            if (core.roundManager().getRound() == finalroundshort) { endGame(); return; }
         }
         if (core.getConfig().getString("time").equalsIgnoreCase("long"))
         {
-            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-long")) { changeTeam(); return; }
-            if (core.roundManager().getRound() == core.getConfig().getInt("timers.rounds-long") * 2) { endGame(); return; }
+            int roundlong = core.getConfig().getInt("timers.rounds-long");
+            int finalroundlong = roundlong * 2;
+            if (core.roundManager().getRound() == roundlong) { changeTeam(); return; }
+            if (core.roundManager().getRound() == finalroundlong) { endGame(); return; }
         }
 
         End end = new End(core);
@@ -113,31 +119,32 @@ public class Game
 
     public void changeTeam()
     {
-        final List<Player> attackers = new ArrayList<>();
-        final List<Player> defensers = new ArrayList<>();
+        final List<Player> attackers = new ArrayList<Player>();
+        final List<Player> defensers = new ArrayList<Player>();
 
-        int attackerScore = core.pointsManager().getAttackerPoints();
-        int defenserScore = core.pointsManager().getDefenserPoints();
+        final int attackerScore = core.pointsManager().getAttackerPoints();
+        final int defenserScore = core.pointsManager().getDefenserPoints();
 
         for (Player pls : core.teams().getAttacker())
         {
-            attackers.add(pls);
-            core.teams().getAttacker().remove(pls);
             if (core.teams().getAttackerDeath().contains(pls))
             {
                 core.teams().getAttackerDeath().remove(pls);
             }
+            attackers.add(pls);
         }
 
         for (Player pls : core.teams().getDefenser())
         {
-            defensers.add(pls);
-            core.teams().getDefenser().remove(pls);
             if (core.teams().getDefenserDeath().contains(pls))
             {
                 core.teams().getDefenserDeath().remove(pls);
             }
+            defensers.add(pls);
         }
+
+        core.teams().getAttacker().clear();
+        core.teams().getDefenser().clear();
 
         for (Player pls : attackers)
         {
@@ -158,6 +165,6 @@ public class Game
 
     public void endGame()
     {
-
+        core.setState(State.FINISH);
     }
 }
