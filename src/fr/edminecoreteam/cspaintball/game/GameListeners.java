@@ -9,6 +9,7 @@ import fr.edminecoreteam.cspaintball.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +22,10 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public class GameListeners implements Listener
 {
@@ -140,19 +145,30 @@ public class GameListeners implements Listener
 
                     if (core.teams().getAttacker().contains(victim))
                     {
-                        victim.spigot().respawn();
+                        if (haveBomb(victim, "§fBombe §c§lC4") != null)
+                        {
+                            ItemStack bomb = haveBomb(victim, "§fBombe §c§lC4");
+
+                            victim.getWorld().dropItem(victim.getLocation(), bomb);
+                            victim.getInventory().remove(bomb);
+                        }
+                        int[] slotsToRemove = {0, 1, 2};
+                        dropItemsFromSlots(victim, slotsToRemove);
                         AttackerSpec spec = new AttackerSpec();
                         spec.setSpec(victim);
                         core.teams().getAttackerDeath().add(victim);
+                        victim.spigot().respawn();
                         return;
                     }
 
                     if (core.teams().getDefenser().contains(victim))
                     {
-                        victim.spigot().respawn();
+                        int[] slotsToRemove = {0, 1, 2};
+                        dropItemsFromSlots(victim, slotsToRemove);
                         DefenserSpec spec = new DefenserSpec();
                         spec.setSpec(victim);
                         core.teams().getDefenserDeath().add(victim);
+                        victim.spigot().respawn();
                         return;
                     }
                 }
@@ -161,23 +177,87 @@ public class GameListeners implements Listener
             {
                 if (core.teams().getAttacker().contains(victim))
                 {
-                    victim.spigot().respawn();
+                    if (haveBomb(victim, "§fBombe §c§lC4") != null)
+                    {
+                        ItemStack bomb = haveBomb(victim, "§fBombe §c§lC4");
+
+                        victim.getWorld().dropItem(victim.getLocation(), bomb);
+                        victim.getInventory().remove(bomb);
+                    }
+                    int[] slotsToRemove = {0, 1, 2};
+                    dropItemsFromSlots(victim, slotsToRemove);
                     AttackerSpec spec = new AttackerSpec();
                     spec.setSpec(victim);
                     core.teams().getAttackerDeath().add(victim);
+                    victim.spigot().respawn();
                     return;
                 }
 
                 if (core.teams().getDefenser().contains(victim))
                 {
-                    victim.spigot().respawn();
+                    int[] slotsToRemove = {0, 1, 2};
+                    dropItemsFromSlots(victim, slotsToRemove);
                     DefenserSpec spec = new DefenserSpec();
                     spec.setSpec(victim);
                     core.teams().getDefenserDeath().add(victim);
+                    victim.spigot().respawn();
                     return;
                 }
             }
         }
+    }
+
+    public ItemStack haveBomb(Player player, String customName)
+    {
+        Inventory playerInventory = player.getInventory();
+        for (ItemStack item : playerInventory.getContents())
+        {
+            if (item != null && item.getType() == Material.SKULL_ITEM)
+            {
+                ItemMeta meta = item.getItemMeta();
+                if (meta instanceof SkullMeta)
+                {
+                    SkullMeta skullMeta = (SkullMeta) meta;
+                    if (skullMeta.hasDisplayName() && skullMeta.getDisplayName().equals(customName))
+                    {
+                        return item;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void dropItemsFromSlots(Player player, int[] slotsToDrop)
+    {
+        for (int slot : slotsToDrop)
+        {
+            if (slot >= 0 && slot < player.getInventory().getSize())
+            {
+                ItemStack item = player.getInventory().getItem(slot);
+
+                if (item != null && (isIronSword(item) || isCustomHead(item)))
+                {
+                    player.getWorld().dropItem(player.getLocation(), item);
+                    player.getInventory().setItem(slot, null);
+                }
+            }
+        }
+    }
+
+    private boolean isIronSword(ItemStack item)
+    {
+        return item.getType() == Material.IRON_SWORD;
+    }
+
+    private boolean isCustomHead(ItemStack item)
+    {
+        if (item.getType() == Material.SKULL_ITEM && item.getDurability() == 3)
+        {
+            ItemMeta meta = item.getItemMeta();
+            return meta != null && meta.hasDisplayName() && meta.getDisplayName().equals("§eBoutique D'Armement");
+        }
+        return false;
     }
 
     @EventHandler
