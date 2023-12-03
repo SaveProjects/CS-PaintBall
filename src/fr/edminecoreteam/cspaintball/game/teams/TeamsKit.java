@@ -22,6 +22,11 @@ public class TeamsKit
 
     public void reEquip(Player p)
     {
+        ItemStack shop = getSkull("http://textures.minecraft.net/texture/3e4e7384241617cca7a96d8979b0be358dcbd47427f5b2f0c370cb689be55c12");
+        ItemMeta shopM = shop.getItemMeta();
+        shopM.setDisplayName("§eBoutique D'Armement");
+        shop.setItemMeta(shopM);
+
         if (core.teams().getAttacker().contains(p))
         {
             ItemStack helmet = getSkull("http://textures.minecraft.net/texture/49a53f43f306f4597be9aeda17eb049501d544fda8d54a528cae5aae8eb3c4d1");
@@ -45,6 +50,7 @@ public class TeamsKit
             p.getEquipment().setChestplate(chestplate);
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
+            p.getInventory().setItem(31, shop);
         }
         if (core.teams().getDefenser().contains(p))
         {
@@ -69,12 +75,19 @@ public class TeamsKit
             p.getEquipment().setChestplate(chestplate);
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
+            p.getInventory().setItem(31, shop);
         }
     }
 
     public void equipNotDeathDefault(Player p)
     {
         p.setGameMode(GameMode.ADVENTURE);
+
+        ItemStack shop = getSkull("http://textures.minecraft.net/texture/3e4e7384241617cca7a96d8979b0be358dcbd47427f5b2f0c370cb689be55c12");
+        ItemMeta shopM = shop.getItemMeta();
+        shopM.setDisplayName("§eBoutique D'Armement");
+        shop.setItemMeta(shopM);
+
         if (core.teams().getAttacker().contains(p))
         {
             ItemStack helmet = getSkull("http://textures.minecraft.net/texture/49a53f43f306f4597be9aeda17eb049501d544fda8d54a528cae5aae8eb3c4d1");
@@ -103,6 +116,7 @@ public class TeamsKit
             p.setHealth(p.getMaxHealth());
             Weapons weapons = new Weapons(p);
             weapons.refillMax();
+            p.getInventory().setItem(31, shop);
         }
 
         if (core.teams().getDefenser().contains(p))
@@ -133,6 +147,7 @@ public class TeamsKit
             p.setHealth(p.getMaxHealth());
             Weapons weapons = new Weapons(p);
             weapons.refillMax();
+            p.getInventory().setItem(31, shop);
         }
     }
 
@@ -144,7 +159,6 @@ public class TeamsKit
         ItemMeta shopM = shop.getItemMeta();
         shopM.setDisplayName("§eBoutique D'Armement");
         shop.setItemMeta(shopM);
-        p.getInventory().setItem(31, shop);
 
         if (core.teams().getAttacker().contains(p))
         {
@@ -181,6 +195,7 @@ public class TeamsKit
 
             Weapons weapons = new Weapons(p);
             weapons.get(WeaponsList.USPS);
+            p.getInventory().setItem(31, shop);
         }
 
         if (core.teams().getDefenser().contains(p))
@@ -218,6 +233,7 @@ public class TeamsKit
 
             Weapons weapons = new Weapons(p);
             weapons.get(WeaponsList.USPS);
+            p.getInventory().setItem(31, shop);
         }
     }
 }
