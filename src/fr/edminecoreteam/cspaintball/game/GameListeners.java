@@ -2,11 +2,11 @@ package fr.edminecoreteam.cspaintball.game;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
-import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.spec.AttackerSpec;
 import fr.edminecoreteam.cspaintball.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
+import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,12 +14,9 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
@@ -152,19 +149,18 @@ public class GameListeners implements Listener
                             victim.getWorld().dropItem(victim.getLocation(), bomb);
                             victim.getInventory().remove(bomb);
                         }
-                        int[] slotsToRemove = {0, 1, 2};
-                        dropItemsFromSlots(victim, slotsToRemove);
+                        Weapons weapons = new Weapons(victim);
+                        weapons.deathCheck();
                         AttackerSpec spec = new AttackerSpec();
                         spec.setSpec(victim);
                         core.teams().getAttackerDeath().add(victim);
                         victim.spigot().respawn();
                         return;
                     }
-
                     if (core.teams().getDefenser().contains(victim))
                     {
-                        int[] slotsToRemove = {0, 1, 2};
-                        dropItemsFromSlots(victim, slotsToRemove);
+                        Weapons weapons = new Weapons(victim);
+                        weapons.deathCheck();
                         DefenserSpec spec = new DefenserSpec();
                         spec.setSpec(victim);
                         core.teams().getDefenserDeath().add(victim);
@@ -184,19 +180,18 @@ public class GameListeners implements Listener
                         victim.getWorld().dropItem(victim.getLocation(), bomb);
                         victim.getInventory().remove(bomb);
                     }
-                    int[] slotsToRemove = {0, 1, 2};
-                    dropItemsFromSlots(victim, slotsToRemove);
+                    Weapons weapons = new Weapons(victim);
+                    weapons.deathCheck();
                     AttackerSpec spec = new AttackerSpec();
                     spec.setSpec(victim);
                     core.teams().getAttackerDeath().add(victim);
                     victim.spigot().respawn();
                     return;
                 }
-
                 if (core.teams().getDefenser().contains(victim))
                 {
-                    int[] slotsToRemove = {0, 1, 2};
-                    dropItemsFromSlots(victim, slotsToRemove);
+                    Weapons weapons = new Weapons(victim);
+                    weapons.deathCheck();
                     DefenserSpec spec = new DefenserSpec();
                     spec.setSpec(victim);
                     core.teams().getDefenserDeath().add(victim);
@@ -228,39 +223,7 @@ public class GameListeners implements Listener
         return null;
     }
 
-    public void dropItemsFromSlots(Player player, int[] slotsToDrop)
-    {
-        for (int slot : slotsToDrop)
-        {
-            if (slot >= 0 && slot < player.getInventory().getSize())
-            {
-                ItemStack item = player.getInventory().getItem(slot);
-
-                if (item != null && (isIronSword(item) || isCustomHead(item)))
-                {
-                    player.getWorld().dropItem(player.getLocation(), item);
-                    player.getInventory().setItem(slot, null);
-                }
-            }
-        }
-    }
-
-    private boolean isIronSword(ItemStack item)
-    {
-        return item.getType() == Material.IRON_SWORD;
-    }
-
-    private boolean isCustomHead(ItemStack item)
-    {
-        if (item.getType() == Material.SKULL_ITEM && item.getDurability() == 3)
-        {
-            ItemMeta meta = item.getItemMeta();
-            return meta != null && meta.hasDisplayName() && meta.getDisplayName().equals("§eBoutique D'Armement");
-        }
-        return false;
-    }
-
-    @EventHandler
+    /*@EventHandler
     public void onDeath(EntityDamageEvent e)
     {
         if (e.getEntityType() == EntityType.PLAYER)
@@ -269,7 +232,7 @@ public class GameListeners implements Listener
             TeamsKit kit = new TeamsKit();
             kit.reEquip(victim);
         }
-    }
+    }*/
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
@@ -281,25 +244,13 @@ public class GameListeners implements Listener
     }
 
     @EventHandler
-    public void openInventory(InventoryOpenEvent e)
-    {
-        if (e.getInventory().getType() != InventoryType.CHEST)
-        {
-            e.setCancelled(true);
-            BuyMenu buy = new BuyMenu();
-            Player p = (Player) e.getPlayer();
-            buy.gui(p);
-        }
-    }
-
-    @EventHandler
     public void hungerBarChange(FoodLevelChangeEvent e)
     {
         if (e.getEntityType() != EntityType.PLAYER) {
             return;
         }
 
-        if (core.isState(State.INGAME)) {
+        if (core.isState(State.INGAME) || core.isState(State.FINISH)) {
             e.setCancelled(true);
         }
     }

@@ -12,10 +12,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -340,6 +344,35 @@ public class BERETTAS implements Listener
                 }
             }
         }
+    }
+
+    public void deathCheck(Player p)
+    {
+        ItemStack weaponCheck = haveWeapon(p, weapon_name);
+
+        if (weaponCheck != null)
+        {
+            p.getWorld().dropItem(p.getLocation(), weaponCheck);
+            core.weaponsMap().getMap().get(p).remove(weapon_id + "_max_bullet_count");
+            core.weaponsMap().getMap().get(p).remove(weapon_id + "_bullet_charger_count");
+        }
+    }
+
+    public ItemStack haveWeapon(Player player, String customName)
+    {
+        Inventory playerInventory = player.getInventory();
+        for (ItemStack item : playerInventory.getContents())
+        {
+            if (item != null && item.getType() == weapon)
+            {
+                ItemMeta meta = item.getItemMeta();
+                if (meta.hasDisplayName() && meta.getDisplayName().contains(customName))
+                {
+                    return item;
+                }
+            }
+        }
+        return null;
     }
 
     @EventHandler

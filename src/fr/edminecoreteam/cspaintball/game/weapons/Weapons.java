@@ -37,4 +37,13 @@ public class Weapons
         berettas.refillMax(p);
     }
 
+    public void deathCheck()
+    {
+        USPS usps = new USPS();
+        usps.deathCheck(p);
+
+        BERETTAS berettas = new BERETTAS();
+        berettas.deathCheck(p);
+    }
+
 }
