@@ -1,5 +1,7 @@
 package fr.edminecoreteam.cspaintball.game.displayname;
 
+import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -12,6 +14,8 @@ import java.util.UUID;
 
 public class TeamsTagsManager
 {
+
+    private static Core core = Core.getInstance();
     private String prefix;
     private String suffix;
     private Team team;
@@ -27,7 +31,6 @@ public class TeamsTagsManager
         TeamsTagsManager.scoreboard = current;
         this.team.setCanSeeFriendlyInvisibles(true);
         this.team.setAllowFriendlyFire(true);
-        this.team.setDisplayName("");
         int prefixLength = 0;
         int suffixLength = 0;
         if (prefix != null) {
@@ -81,13 +84,29 @@ public class TeamsTagsManager
     }
     
     public void setPrefix(String prefix) {
-        this.prefix = ChatColor.translateAlternateColorCodes('&', prefix);
-        team.setPrefix(prefix);
+        if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
+        {
+            this.prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+            team.setPrefix(prefix);
+        }
+        else if (core.isState(State.INGAME))
+        {
+            this.prefix = "§r";
+            team.setPrefix(prefix);
+        }
     }
     
     public void setSuffix(String suffix) {
-        this.suffix = ChatColor.translateAlternateColorCodes('&', suffix);
-        team.setSuffix(this.suffix);
+        if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
+        {
+            this.suffix = ChatColor.translateAlternateColorCodes('&', suffix);
+            team.setSuffix(this.suffix);
+        }
+        else if (core.isState(State.INGAME))
+        {
+            this.suffix = "§r";
+            team.setSuffix(this.suffix);
+        }
     }
     
     public String getPrefix() {

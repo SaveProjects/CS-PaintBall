@@ -517,9 +517,9 @@ public class USPS implements Listener
         ItemStack it = e.getItem();
         if (it == null) { return; }
 
-        if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
-                && (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
+        if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name))
         {
+            if (a != Action.LEFT_CLICK_AIR && a != Action.LEFT_CLICK_BLOCK){ e.setCancelled(true); return; }
             if (core.isRoundState(RoundInfo.PREPARATION)) { e.setCancelled(true); return; }
 
             WeaponsSounds sound = new WeaponsSounds(p);

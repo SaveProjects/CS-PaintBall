@@ -30,7 +30,7 @@ public class TabListTeams implements Listener
 	        	if (!p.isOnline()) { cancel(); }
 
 
-				if (core.isState(State.WAITING) || core.isState(State.STARTING))
+				if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
 				{
 					if (!core.teams().getDefenser().contains(p) && !core.teams().getAttacker().contains(p))
 					{
@@ -40,10 +40,12 @@ public class TabListTeams implements Listener
 					if (core.teams().getDefenser().contains(p))
 					{
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), Teams.powerToTeam(3).getSuffix());
+						revealPlayerName(p);
 					}
 					if (core.teams().getAttacker().contains(p))
 					{
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), Teams.powerToTeam(2).getSuffix());
+						revealPlayerName(p);
 					}
 				}
 
@@ -57,12 +59,12 @@ public class TabListTeams implements Listener
 					if (core.teams().getDefenser().contains(p))
 					{
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), Teams.powerToTeam(3).getSuffix());
-						makePlayerNameInvisible(p);
+						hidePlayerName(p);
 					}
 					if (core.teams().getAttacker().contains(p))
 					{
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), Teams.powerToTeam(2).getSuffix());
-						makePlayerNameInvisible(p);
+						hidePlayerName(p);
 					}
 				}
 
@@ -76,10 +78,13 @@ public class TabListTeams implements Listener
         }.runTaskTimer((Plugin)core, 0L, 50L);
 	}
 
-	private void makePlayerNameInvisible(Player p) {
-		String invisibleName = "‌‌"; // Ces caractères sont des caractères spéciaux, veuillez les copier directement.
+	private void hidePlayerName(Player p) {
+		p.setCustomNameVisible(false);
+		p.setCustomName("");
+	}
 
-		// Changer le pseudo du joueur
-		p.setDisplayName(invisibleName);
+	private void revealPlayerName(Player p) {
+		p.setCustomNameVisible(true);
+		p.setCustomName(p.getName());
 	}
 }
