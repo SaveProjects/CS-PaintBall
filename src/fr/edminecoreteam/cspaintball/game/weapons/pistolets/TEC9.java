@@ -3,20 +3,20 @@ package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSounds;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -25,26 +25,24 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class USPS implements Listener
+public class TEC9 implements Listener
 {
 
     private static final Core core = Core.getInstance();
 
-    private final double recoil = 0.1; //recul de tir
+    private final double recoil = 0.3; //recul de tir
     private final double speed_shoot = 3; //vitesse de tir (max 5)
-    private final int bullet_charger = 9; //nombre de balles par chargeur
-    private final int max_bullet = 27; //total de munitions
-    private final Material weapon = Material.WOOD_HOE; //materiel de l'ame
-    private final String weapon_name = "USP-s"; //titre de l'arme
-    private final String weapon_id = "usps"; //id de l'arme
+    private final int bullet_charger = 18; //nombre de balles par chargeur
+    private final int max_bullet = 90; //total de munitions
+    private final Material weapon = Material.GOLD_HOE; //materiel de l'ame
+    private final String weapon_name = "Tec-9"; //titre de l'arme
+    private final String weapon_id = "tec9"; //id de l'arme
     private final int weapon_damage = 3; //dégats de l'arme (en coeurs)
-    private final int wait_for_shoot_delay = 7; //temps d'armement (ticks)
+    private final int wait_for_shoot_delay = 4; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
-    private final int time_refill = 2; //temps de recharge (secondes)
-    private final String shoot_sound = "silent"; //Bruit de tir
+    private final int time_refill = 3; //temps de recharge (secondes)
+    private final String shoot_sound = "noisy"; //Bruit de tir
     private final String refill_sound = "2s"; //Bruit de recharge
     private final String armed_sound = "classic"; //Bruit d'armement
 
@@ -219,7 +217,7 @@ public class USPS implements Listener
     {
         if (event.getEntity() instanceof Player)
         {
-            if (event.getDamager() instanceof org.bukkit.entity.Snowball)
+            if (event.getDamager() instanceof Snowball)
             {
                 if (((Snowball) event.getDamager()).getShooter() instanceof Player)
                 {

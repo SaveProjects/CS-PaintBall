@@ -33,11 +33,25 @@ public class WeaponsSounds
                 pls.playSound(p.getLocation(), Sound.EXPLODE, 0.2f, 4.0f);
             }
         }
+        if (sound.equalsIgnoreCase("normal"))
+        {
+            for (Player pls : core.getServer().getOnlinePlayers())
+            {
+                pls.playSound(p.getLocation(), Sound.EXPLODE, 0.5f, 1.6f);
+            }
+        }
         if (sound.equalsIgnoreCase("noisy"))
         {
             for (Player pls : core.getServer().getOnlinePlayers())
             {
                 pls.playSound(p.getLocation(), Sound.EXPLODE, 0.6f, 1.2f);
+            }
+        }
+        if (sound.equalsIgnoreCase("extremenoisy"))
+        {
+            for (Player pls : core.getServer().getOnlinePlayers())
+            {
+                pls.playSound(p.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
             }
         }
         if (sound.equalsIgnoreCase("sniper"))

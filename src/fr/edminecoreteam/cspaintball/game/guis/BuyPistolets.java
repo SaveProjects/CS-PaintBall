@@ -65,6 +65,33 @@ public class BuyPistolets implements Listener
                 weapons.get(WeaponsList.BERETTAS);
                 return;
             }
+
+            if (it.getType() == Material.IRON_HOE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fP-250"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.P250);
+                return;
+            }
+
+            if (it.getType() == Material.GOLD_HOE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fTec-9"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.TEC9);
+                return;
+            }
+
+            if (it.getType() == Material.DIAMOND_HOE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fDesert-Eagle"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.DESERTEAGLE);
+                return;
+            }
         }
     }
 

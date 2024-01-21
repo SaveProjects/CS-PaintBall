@@ -518,71 +518,76 @@ public class BERETTAS implements Listener
 
         if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name))
         {
-            if (a != Action.LEFT_CLICK_AIR && a != Action.LEFT_CLICK_BLOCK){ e.setCancelled(true); return; }
             if (core.isRoundState(RoundInfo.PREPARATION)) { e.setCancelled(true); return; }
-
-            WeaponsSounds sound = new WeaponsSounds(p);
-            if (core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count") && core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_bullet_charger_count"))
+            if (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)
             {
-                e.setCancelled(true);
-                ItemStack hand = p.getInventory().getItemInHand();
-
-                if (!core.weaponsMap().getWeapon_refill().containsKey(p) || !core.weaponsMap().getWeapon_refill().get(p).equalsIgnoreCase(weapon_id))
+                WeaponsSounds sound = new WeaponsSounds(p);
+                if (core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count") && core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_bullet_charger_count"))
                 {
-                    if (!core.weaponsMap().getWeapon_wait_for_shoot().containsKey(p) || !core.weaponsMap().getWeapon_wait_for_shoot().get(p).equalsIgnoreCase(weapon_id))
+                    e.setCancelled(true);
+                    ItemStack hand = p.getInventory().getItemInHand();
+
+                    if (!core.weaponsMap().getWeapon_refill().containsKey(p) || !core.weaponsMap().getWeapon_refill().get(p).equalsIgnoreCase(weapon_id))
                     {
-                        if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") > 1)
+                        if (!core.weaponsMap().getWeapon_wait_for_shoot().containsKey(p) || !core.weaponsMap().getWeapon_wait_for_shoot().get(p).equalsIgnoreCase(weapon_id))
                         {
-                            int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
-                            core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
-                            get(p);
+                            if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") > 1)
+                            {
+                                int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
+                                core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
+                                get(p);
 
-                            Snowball snowball = p.launchProjectile(Snowball.class);
+                                Snowball snowball = p.launchProjectile(Snowball.class);
 
-                            double speed = speed_shoot;
-                            snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
-                            Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
-                            p.setVelocity(pushDirection);
-                            sound.shoot(shoot_sound);
-                            core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
-                            new BukkitRunnable() {
-                                int t = 0;
-                                int f = 0;
-                                public void run() {
+                                double speed = speed_shoot;
+                                snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
+                                Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                p.setVelocity(pushDirection);
+                                sound.shoot(shoot_sound);
+                                core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
+                                new BukkitRunnable() {
+                                    int t = 0;
+                                    int f = 0;
+                                    public void run() {
 
-                                    ++t;
-                                    ++f;
-                                    if (f == wait_for_shoot_delay) {
-                                        core.weaponsMap().getWeapon_wait_for_shoot().remove(p);
-                                        cancel();
+                                        ++t;
+                                        ++f;
+                                        if (f == wait_for_shoot_delay) {
+                                            core.weaponsMap().getWeapon_wait_for_shoot().remove(p);
+                                            cancel();
+                                        }
+
+                                        if (t == 1) {
+                                            run();
+                                        }
                                     }
+                                }.runTaskTimer((Plugin) core, 0L, 1L);
+                                return;
+                            }
+                            if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") == 1)
+                            {
+                                int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
+                                core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
+                                refill(p);
 
-                                    if (t == 1) {
-                                        run();
-                                    }
-                                }
-                            }.runTaskTimer((Plugin) core, 0L, 1L);
-                            return;
-                        }
-                        if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") == 1)
-                        {
-                            int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
-                            core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
-                            refill(p);
+                                Snowball snowball = p.launchProjectile(Snowball.class);
 
-                            Snowball snowball = p.launchProjectile(Snowball.class);
-
-                            double speed = speed_shoot;
-                            snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
-                            Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
-                            p.setVelocity(pushDirection);
-                            sound.shoot(shoot_sound);
+                                double speed = speed_shoot;
+                                snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
+                                Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                p.setVelocity(pushDirection);
+                                sound.shoot(shoot_sound);
+                            }
+                            if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") <= 0 || core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count") <= 0 || !core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count"))
+                            {
+                                get(p);
+                                sound.shoot("nobullet");
+                            }
                         }
-                        if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") <= 0 || core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count") <= 0 || !core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count"))
-                        {
-                            get(p);
-                            sound.shoot("nobullet");
-                        }
+                    }
+                    else
+                    {
+                        sound.shoot("nobullet");
                     }
                 }
                 else
@@ -590,22 +595,16 @@ public class BERETTAS implements Listener
                     sound.shoot("nobullet");
                 }
             }
-            else
+            if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK)
             {
-                sound.shoot("nobullet");
+                e.setCancelled(true);
+                if (!core.weaponsMap().getWeapon_refill().containsKey(p))
+                {
+                    refill(p);
+                    return;
+                }
+                get(p);
             }
-
-        }
-        if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name)
-                && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK))
-        {
-            e.setCancelled(true);
-            if (!core.weaponsMap().getWeapon_refill().containsKey(p))
-            {
-                refill(p);
-                return;
-            }
-            get(p);
         }
     }
 

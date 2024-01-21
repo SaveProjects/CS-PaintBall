@@ -1,7 +1,6 @@
 package fr.edminecoreteam.cspaintball.game.weapons;
 
-import fr.edminecoreteam.cspaintball.game.weapons.pistolets.BERETTAS;
-import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
+import fr.edminecoreteam.cspaintball.game.weapons.pistolets.*;
 import org.bukkit.entity.Player;
 
 public class Weapons
@@ -26,6 +25,24 @@ public class Weapons
             BERETTAS weapon = new BERETTAS();
             weapon.get(p);
         }
+
+        if (weapons == WeaponsList.DESERTEAGLE)
+        {
+            DESERTEAGLE weapon = new DESERTEAGLE();
+            weapon.get(p);
+        }
+
+        if (weapons == WeaponsList.TEC9)
+        {
+            TEC9 weapon = new TEC9();
+            weapon.get(p);
+        }
+
+        if (weapons == WeaponsList.P250)
+        {
+            P250 weapon = new P250();
+            weapon.get(p);
+        }
     }
 
     public void refillMax()
@@ -35,6 +52,15 @@ public class Weapons
 
         BERETTAS berettas = new BERETTAS();
         berettas.refillMax(p);
+
+        DESERTEAGLE deserteagle = new DESERTEAGLE();
+        deserteagle.refillMax(p);
+
+        TEC9 tec9 = new TEC9();
+        tec9.refillMax(p);
+
+        P250 p250 = new P250();
+        p250.refillMax(p);
     }
 
     public void deathCheck()
@@ -44,6 +70,15 @@ public class Weapons
 
         BERETTAS berettas = new BERETTAS();
         berettas.deathCheck(p);
+
+        DESERTEAGLE deserteagle = new DESERTEAGLE();
+        deserteagle.deathCheck(p);
+
+        TEC9 tec9 = new TEC9();
+        tec9.deathCheck(p);
+
+        P250 p250 = new P250();
+        p250.deathCheck(p);
     }
 
 }

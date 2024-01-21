@@ -12,8 +12,7 @@ import fr.edminecoreteam.cspaintball.game.utils.LoadWorld;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
-import fr.edminecoreteam.cspaintball.game.weapons.pistolets.BERETTAS;
-import fr.edminecoreteam.cspaintball.game.weapons.pistolets.USPS;
+import fr.edminecoreteam.cspaintball.game.weapons.pistolets.*;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
 import fr.edminecoreteam.cspaintball.utils.TitleBuilder;
@@ -116,6 +115,9 @@ public class Core extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BERETTAS(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new P250(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new TEC9(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new DESERTEAGLE(), (Plugin)this);
     }
 
     private void ScoreboardManager()
