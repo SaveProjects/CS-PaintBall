@@ -62,6 +62,7 @@ public class Game
         for (Player attackers : core.teams().getAttacker())
         {
             attackers.teleport(attackerSpawn);
+            attackers.setBedSpawnLocation(attackerSpawn);
             if (core.teams().getAttackerDeath().contains(attackers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -81,6 +82,7 @@ public class Game
         for (Player defensers : core.teams().getDefenser())
         {
             defensers.teleport(defenserSpawn);
+            defensers.setBedSpawnLocation(defenserSpawn);
             if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();

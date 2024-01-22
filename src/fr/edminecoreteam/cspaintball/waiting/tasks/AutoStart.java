@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.tasks.GunOrderChecker;
+import fr.edminecoreteam.cspaintball.utils.dragonbar.BarListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -131,6 +132,8 @@ public class AutoStart extends BukkitRunnable
             for (Player pls : core.getServer().getOnlinePlayers()) {
                 GunOrderChecker gunOrderChecker = new GunOrderChecker();
                 gunOrderChecker.check(pls);
+                BarListener barListener = new BarListener(pls);
+                barListener.launch();
             }
             Game game = new Game();
             game.preparationRound();

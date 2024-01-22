@@ -10,7 +10,7 @@ public class AttackerSpec
 {
     private static Core core = Core.getInstance();
 
-    Location specSpawn = new Location(Bukkit.getWorld("game"),
+    private final Location specSpawn = new Location(Bukkit.getWorld("game"),
             (float) core.getConfig().getDouble("maps." + core.world + ".spec.x"),
             (float) core.getConfig().getDouble("maps." + core.world + ".spec.y"),
             (float) core.getConfig().getDouble("maps." + core.world + ".spec.z"),

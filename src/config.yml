@@ -29,12 +29,12 @@ teams:
 
 coins:
   start: 800
-  round: 300
-  win: 1000
-  playerleave: 500
+  round: 1900
+  win: 2900
+  playerleave: 1000
   kill: 300
   bomb: 300
-  diffuse: 400
+  diffuse: 1900
 
 # Définir les timers du jeu.
 timers:
@@ -43,10 +43,10 @@ timers:
   start: 60
   startfull: 10
   round: 140
-  planting-bomb: 5
+  planting-bomb: 4
   bomb: 45
-  diffuse: 12
-  diffuse-kit: 6
+  diffuse: 8
+  diffuse-kit: 4
   waitleave: 90
 
 # Spawn du lobby principal.
@@ -57,6 +57,38 @@ spawn:
   z: 0.5
   f: -90.5
   t: -4.0
+
+#
+# Liste des variables (accens, informations, emojies):
+# Accens (alphabet):
+# - {e1} = é, {e2} = è, {e3} = ê, {i1} = î, {a1} = à, {a2} = â, {o1} ô.
+#
+# Emojies:
+# - {love} = ❤, {valide} = ✔, {unvalid} = ✘, {flocon} = ✵, {eclats} = ❁, {money} = ✪,
+# {star} = ✯, {right} = ➡, {left} = ⬅, {up} = ⬆, {down} = ⬇, {right_select} = ➟,
+# {alert} = ⚠, {separator} = », {euro} = €.
+#
+# Jeux:
+# {timer}
+#
+
+# Dragon Bar
+dragonbar:
+  game:
+    attacker:
+      starting: '&7Temps de pr{e1}paration: &b{timer}s'
+      round: '&7Temps restant: &e{timer}s'
+      bomb-planted: '&6{alert} &7Bombe plant{e1}e: &c{timer}s &6{alert}'
+      bomb-explode: '&a{valide} &7Bombe explos{e1}e ! &a{valide}'
+      bomb-difuse: '&c{unvalid} &7Bombe d{e1}samorcer ! &c{unvalid}'
+      bomb-no-planted: '&c{unvalid} &7Bombe non plant{e1}e ! &c{unvalid}'
+    defenser:
+      starting: '&7Temps de pr{e1}paration: &b{timer}s'
+      round: '&7Temps restant: &e{timer}s'
+      bomb-planted: '&6{alert} &7Bombe plant{e1}e: &c{timer}s &6{alert}'
+      bomb-explode: '&c{unvalid} &7Bombe explos{e1}e ! &c{unvalid}'
+      bomb-difuse: '&a{valide} &7Bombe d{e1}samorcer ! &a{valide}'
+      bomb-no-planted: '&a{valide} &7Bombe non plant{e1}e ! &a{valide}'
 
 # Gestion des cartes.
 maps:
