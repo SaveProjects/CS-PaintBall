@@ -26,7 +26,7 @@ public class BarUtil {
 
         EntityEnderDragon dragon = new EntityEnderDragon(world);
         dragon.setInvisible(true);
-        dragon.setLocation(loc.getX(), loc.getY() - 80, loc.getZ(), 0, 0);
+        dragon.setLocation(loc.getX(), loc.getY() - 30, loc.getZ(), 0, 0);
 
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(dragon);
 

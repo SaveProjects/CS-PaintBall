@@ -18,12 +18,12 @@ public class BarListener
 
     public void launch()
     {
-        Float healthBarStarting = convertToPercentage(core.timers, 15);
+        /*Float healthBarStarting = convertToPercentage(core.timers, 15);
         Float healthBarRound = convertToPercentage(core.timers, core.getConfig().getInt("timer.round"));
         Float healthBarBombPlanted = convertToPercentage(core.timers, core.getConfig().getInt("timer.bomb"));
         Float healthBarBombExplode = convertToPercentage(core.timers, 6);
         Float healthBarBombDifuse = convertToPercentage(core.timers, 6);
-        Float healthBarBombNoPlanted = convertToPercentage(core.timers, 6);
+        Float healthBarBombNoPlanted = convertToPercentage(core.timers, 6);*/
 
         String attackerStarting = encode(core.getConfig().getString("dragonbar.game.attacker.starting"));
         String attackerRound = encode(core.getConfig().getString("dragonbar.game.attacker.round"));
@@ -51,76 +51,83 @@ public class BarListener
 
                 if (core.isState(State.INGAME))
                 {
-                    if (core.teams().getAttacker().contains(p))
+                    if (core.isRoundState(RoundInfo.PREPARATION))
                     {
-                        if (core.isRoundState(RoundInfo.PREPARATION))
+                        if (core.teams().getAttacker().contains(p))
                         {
                             BarUtil.updateBar(p, attackerStarting, 0);
                         }
-                        else if (core.isRoundState(RoundInfo.START))
-                        {
-                            BarUtil.updateBar(p, attackerRound, 0);
-                        }
-                        else if (core.isRoundState(RoundInfo.BOMBPLANTED))
-                        {
-                            BarUtil.updateBar(p, attackerBombPlanted, 0);
-                        }
-                        else if (core.isRoundState(RoundInfo.BOMBEXPLODE))
-                        {
-                            BarUtil.updateBar(p, attackerBombExplode, 0);
-                        }
-                        else if (core.isRoundState(RoundInfo.BOMBDIFUSE))
-                        {
-                            BarUtil.updateBar(p, attackerBombDifuse, 0);
-                        }
-                        else if (core.isRoundState(RoundInfo.END))
-                        {
-                            BarUtil.updateBar(p, attackerBombNoPlanted, 0);
-                        }
-                    }
-                    else if (core.teams().getDefenser().contains(p))
-                    {
-                        if (core.isRoundState(RoundInfo.PREPARATION))
+                        if (core.teams().getDefenser().contains(p))
                         {
                             BarUtil.updateBar(p, defenserStarting, 0);
                         }
-                        else if (core.isRoundState(RoundInfo.START))
+                        BarUtil.teleportBar(p);
+                    }
+                    else if (core.isRoundState(RoundInfo.START))
+                    {
+                        if (core.teams().getAttacker().contains(p))
+                        {
+                            BarUtil.updateBar(p, attackerRound, 0);
+                        }
+                        if (core.teams().getDefenser().contains(p))
                         {
                             BarUtil.updateBar(p, defenserRound, 0);
                         }
-                        else if (core.isRoundState(RoundInfo.BOMBPLANTED))
+                        BarUtil.teleportBar(p);
+                    }
+                    else if (core.isRoundState(RoundInfo.BOMBPLANTED))
+                    {
+                        if (core.teams().getAttacker().contains(p))
+                        {
+                            BarUtil.updateBar(p, attackerBombPlanted, 0);
+                        }
+                        if (core.teams().getDefenser().contains(p))
                         {
                             BarUtil.updateBar(p, adefenserBombPlanted, 0);
                         }
-                        else if (core.isRoundState(RoundInfo.BOMBEXPLODE))
+                        BarUtil.teleportBar(p);
+                    }
+                    else if (core.isRoundState(RoundInfo.BOMBEXPLODE))
+                    {
+                        if (core.teams().getAttacker().contains(p))
+                        {
+                            BarUtil.updateBar(p, attackerBombExplode, 0);
+                        }
+                        if (core.teams().getDefenser().contains(p))
                         {
                             BarUtil.updateBar(p, defenserBombExplode, 0);
                         }
-                        else if (core.isRoundState(RoundInfo.BOMBDIFUSE))
+                        BarUtil.teleportBar(p);
+                    }
+                    else if (core.isRoundState(RoundInfo.BOMBDIFUSE))
+                    {
+                        if (core.teams().getAttacker().contains(p))
+                        {
+                            BarUtil.updateBar(p, attackerBombDifuse, 0);
+                        }
+                        if (core.teams().getDefenser().contains(p))
                         {
                             BarUtil.updateBar(p, defenserBombDifuse, 0);
                         }
-                        else if (core.isRoundState(RoundInfo.END))
+                        BarUtil.teleportBar(p);
+                    }
+                    else if (core.isRoundState(RoundInfo.END))
+                    {
+                        if (core.teams().getAttacker().contains(p))
+                        {
+                            BarUtil.updateBar(p, attackerBombNoPlanted, 0);
+                        }
+                        if (core.teams().getDefenser().contains(p))
                         {
                             BarUtil.updateBar(p, defenserBombNoPlanted, 0);
                         }
+                        BarUtil.teleportBar(p);
                     }
                 }
-                if (t == 1)
-                {
-                    run();
-                }
-
             }
         }.runTaskTimer((Plugin)Core.getInstance(), 0L, 10L);
     }
 
-    private float convertToPercentage(int time, int maxTime)
-    {
-        float percentage = ((float) time / maxTime) * 100;
-        percentage = Math.max(0, Math.min(100, percentage));
-        return percentage;
-    }
 
     private String encode(String s) {
         String encoded = s
