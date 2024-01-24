@@ -132,8 +132,6 @@ public class AutoStart extends BukkitRunnable
             for (Player pls : core.getServer().getOnlinePlayers()) {
                 GunOrderChecker gunOrderChecker = new GunOrderChecker();
                 gunOrderChecker.check(pls);
-                BarListener barListener = new BarListener(pls);
-                barListener.launch();
             }
             Game game = new Game();
             game.preparationRound();

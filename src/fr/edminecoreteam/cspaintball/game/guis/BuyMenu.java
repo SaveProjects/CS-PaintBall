@@ -10,7 +10,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -48,9 +50,28 @@ public class BuyMenu implements Listener
         if (it.getType() == Material.SKULL_ITEM && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eBoutique D'Armement"))
         {
             e.setCancelled(true);
-            p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
             gui(p);
+            p.playSound(p.getLocation(), Sound.HORSE_ARMOR, 0.5f, 1.0f);
             return;
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (e.getItem() == null) { return; }
+
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        ItemStack it = e.getItem();
+        if (it.getType() == Material.SKULL_ITEM && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
+        {
+            if (e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eBoutique D'Armement"))
+            {
+                e.setCancelled(true);
+                gui(p);
+                p.playSound(p.getLocation(), Sound.HORSE_ARMOR, 0.5f, 1.0f);
+                return;
+            }
         }
     }
 
@@ -128,21 +149,19 @@ public class BuyMenu implements Listener
                 grenades.setItemMeta(grenadesM);
                 inv.setItem(30, grenades);
 
-                ItemStack equipements = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-                LeatherArmorMeta equipementsM = (LeatherArmorMeta) equipements.getItemMeta();
-                equipementsM.setDisplayName("§fÉquipements");
-                equipementsM.setColor(Color.fromRGB(11, 38, 61));
-                equipementsM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                ArrayList<String> loreEquipements = new ArrayList<String>();
-                loreEquipements.add("");
-                loreEquipements.add(" §dInformation:");
-                loreEquipements.add(" §f▶ §7Affichez les différents");
-                loreEquipements.add(" §f▶ §7équipements disponible.");
-                loreEquipements.add("");
-                loreEquipements.add("§8➡ §fCliquez pour y accéder.");
-                equipementsM.setLore(loreEquipements);
-                equipements.setItemMeta(equipementsM);
-                inv.setItem(31, equipements);
+                ItemStack pompe = new ItemStack(Material.BLAZE_ROD, 1);
+                ItemMeta pompeM = pompe.getItemMeta();
+                pompeM.setDisplayName("§fFusils a pompe");
+                ArrayList<String> lorePompe = new ArrayList<String>();
+                lorePompe.add("");
+                lorePompe.add(" §dInformation:");
+                lorePompe.add(" §f▶ §7Affichez les différents");
+                lorePompe.add(" §f▶ §7fusils a pompe disponible.");
+                lorePompe.add("");
+                lorePompe.add("§8➡ §fCliquez pour y accéder.");
+                pompeM.setLore(lorePompe);
+                pompe.setItemMeta(pompeM);
+                inv.setItem(31, pompe);
 
                 ItemStack fusils = new ItemStack(Material.DIAMOND_AXE, 1);
                 ItemMeta fusilsM = fusils.getItemMeta();
@@ -157,6 +176,22 @@ public class BuyMenu implements Listener
                 fusilsM.setLore(loreFusils);
                 fusils.setItemMeta(fusilsM);
                 inv.setItem(32, fusils);
+
+                ItemStack equipements = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+                LeatherArmorMeta equipementsM = (LeatherArmorMeta) equipements.getItemMeta();
+                equipementsM.setDisplayName("§fÉquipements");
+                equipementsM.setColor(Color.fromRGB(11, 38, 61));
+                equipementsM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                ArrayList<String> loreEquipements = new ArrayList<String>();
+                loreEquipements.add("");
+                loreEquipements.add(" §dInformation:");
+                loreEquipements.add(" §f▶ §7Affichez les différents");
+                loreEquipements.add(" §f▶ §7équipements disponible.");
+                loreEquipements.add("");
+                loreEquipements.add("§8➡ §fCliquez pour y accéder.");
+                equipementsM.setLore(loreEquipements);
+                equipements.setItemMeta(equipementsM);
+                inv.setItem(49, equipements);
 
                 ++t;
                 if (t == 10) {

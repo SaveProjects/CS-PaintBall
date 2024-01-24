@@ -64,7 +64,7 @@ public class Bombe implements Listener
         ItemMeta bombItemM = bombItem.getItemMeta();
         bombItemM.setDisplayName(bomb_name);
         bombItem.setItemMeta(bombItemM);
-        p.getInventory().setItem(4, bombItem);
+        p.getInventory().setItem(8, bombItem);
     }
 
     @EventHandler
@@ -141,7 +141,7 @@ public class Bombe implements Listener
                                                                 armorStand.setItemInHand(bomb);
                                                                 p.getInventory().setItem(4, null);
                                                                 core.setRoundState(RoundInfo.BOMBPLANTED);
-                                                                BombPlanted bombPlanted = new BombPlanted(core);
+                                                                BombPlanted bombPlanted = new BombPlanted(core, customloc);
                                                                 bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
                                                             }
                                                         }
@@ -302,7 +302,7 @@ public class Bombe implements Listener
                                                         armorStand.setItemInHand(bomb);
                                                         p.getInventory().setItem(4, null);
                                                         core.setRoundState(RoundInfo.BOMBPLANTED);
-                                                        BombPlanted bombPlanted = new BombPlanted(core);
+                                                        BombPlanted bombPlanted = new BombPlanted(core, customloc);
                                                         bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
                                                     }
                                                 }

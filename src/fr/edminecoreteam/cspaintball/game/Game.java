@@ -11,6 +11,7 @@ import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.game.utils.BarUtil;
 import fr.edminecoreteam.cspaintball.game.utils.LoadHolograms;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
+import fr.edminecoreteam.cspaintball.utils.dragonbar.BarListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -62,7 +63,9 @@ public class Game
         for (Player attackers : core.teams().getAttacker())
         {
             attackers.teleport(attackerSpawn);
-            attackers.setBedSpawnLocation(attackerSpawn);
+            BarUtil.sendBar(attackers, "", 100);
+            BarListener barListener = new BarListener(attackers);
+            barListener.launch();
             if (core.teams().getAttackerDeath().contains(attackers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -82,7 +85,9 @@ public class Game
         for (Player defensers : core.teams().getDefenser())
         {
             defensers.teleport(defenserSpawn);
-            defensers.setBedSpawnLocation(defenserSpawn);
+            BarUtil.sendBar(defensers, "", 100);
+            BarListener barListener = new BarListener(defensers);
+            barListener.launch();
             if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -100,10 +105,6 @@ public class Game
         }
         Bombe bomb = new Bombe();
         bomb.getRandom();
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            BarUtil.sendBar(pls, "", 100);
-        }
         Preparation preparation = new Preparation(core);
         preparation.runTaskTimer((Plugin) core, 0L, 20L);
     }

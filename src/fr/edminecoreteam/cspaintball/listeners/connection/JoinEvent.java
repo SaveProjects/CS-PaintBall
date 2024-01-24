@@ -2,6 +2,7 @@ package fr.edminecoreteam.cspaintball.listeners.connection;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
+import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.tasks.AutoStart;
 import org.bukkit.Bukkit;

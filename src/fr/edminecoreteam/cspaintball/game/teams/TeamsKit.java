@@ -33,12 +33,12 @@ public class TeamsKit
 
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
             LeatherArmorMeta chestplateM = (LeatherArmorMeta) chestplate.getItemMeta();
-            chestplateM.setColor(Color.fromRGB(153, 0, 0));
+            chestplateM.setColor(Color.fromRGB(201, 158, 79));
             chestplate.setItemMeta(chestplateM);
 
             ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
             LeatherArmorMeta leggingsM = (LeatherArmorMeta) leggings.getItemMeta();
-            leggingsM.setColor(Color.fromRGB(0, 51, 102));
+            leggingsM.setColor(Color.fromRGB(110,89,41));
             leggings.setItemMeta(leggingsM);
 
             ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
@@ -50,7 +50,7 @@ public class TeamsKit
             p.getEquipment().setChestplate(chestplate);
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
-            p.getInventory().setItem(31, shop);
+            p.getInventory().setItem(3, shop);
         }
         if (core.teams().getDefenser().contains(p))
         {
@@ -75,7 +75,7 @@ public class TeamsKit
             p.getEquipment().setChestplate(chestplate);
             p.getEquipment().setLeggings(leggings);
             p.getEquipment().setBoots(boots);
-            p.getInventory().setItem(31, shop);
+            p.getInventory().setItem(3, shop);
         }
     }
 
@@ -94,12 +94,12 @@ public class TeamsKit
 
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
             LeatherArmorMeta chestplateM = (LeatherArmorMeta) chestplate.getItemMeta();
-            chestplateM.setColor(Color.fromRGB(153, 0, 0));
+            chestplateM.setColor(Color.fromRGB(201, 158, 79));
             chestplate.setItemMeta(chestplateM);
 
             ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
             LeatherArmorMeta leggingsM = (LeatherArmorMeta) leggings.getItemMeta();
-            leggingsM.setColor(Color.fromRGB(0, 51, 102));
+            leggingsM.setColor(Color.fromRGB(110,89,41));
             leggings.setItemMeta(leggingsM);
 
             ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
@@ -116,7 +116,7 @@ public class TeamsKit
             p.setHealth(p.getMaxHealth());
             Weapons weapons = new Weapons(p);
             weapons.refillMax();
-            p.getInventory().setItem(31, shop);
+            p.getInventory().setItem(3, shop);
         }
 
         if (core.teams().getDefenser().contains(p))
@@ -147,7 +147,7 @@ public class TeamsKit
             p.setHealth(p.getMaxHealth());
             Weapons weapons = new Weapons(p);
             weapons.refillMax();
-            p.getInventory().setItem(31, shop);
+            p.getInventory().setItem(3, shop);
         }
     }
 
@@ -167,12 +167,12 @@ public class TeamsKit
 
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
             LeatherArmorMeta chestplateM = (LeatherArmorMeta) chestplate.getItemMeta();
-            chestplateM.setColor(Color.fromRGB(153, 0, 0));
+            chestplateM.setColor(Color.fromRGB(201, 158, 79));
             chestplate.setItemMeta(chestplateM);
 
             ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
             LeatherArmorMeta leggingsM = (LeatherArmorMeta) leggings.getItemMeta();
-            leggingsM.setColor(Color.fromRGB(0, 51, 102));
+            leggingsM.setColor(Color.fromRGB(110,89,41));
             leggings.setItemMeta(leggingsM);
 
             ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
@@ -195,7 +195,7 @@ public class TeamsKit
 
             Weapons weapons = new Weapons(p);
             weapons.get(WeaponsList.USPS);
-            p.getInventory().setItem(31, shop);
+            p.getInventory().setItem(3, shop);
         }
 
         if (core.teams().getDefenser().contains(p))
@@ -233,7 +233,7 @@ public class TeamsKit
 
             Weapons weapons = new Weapons(p);
             weapons.get(WeaponsList.USPS);
-            p.getInventory().setItem(31, shop);
+            p.getInventory().setItem(3, shop);
         }
     }
 }

@@ -38,90 +38,90 @@ public class BarListener
         String defenserBombExplode = encode(core.getConfig().getString("dragonbar.game.defenser.bomb-explode"));
         String defenserBombDifuse = encode(core.getConfig().getString("dragonbar.game.defenser.bomb-difuse"));
         String defenserBombNoPlanted = encode(core.getConfig().getString("dragonbar.game.defenser.bomb-no-planted"));
-
-        BarUtil.sendBar(p, "", 0);
         new BukkitRunnable() {
             int t = 0;
             public void run() {
                 ++t;
-                if (Bukkit.getPlayer(p.getName()) == null)
+                if (!Bukkit.getServer().getOnlinePlayers().contains(p))
                 {
                     cancel();
                 }
 
+                if (core.isState(State.WAITING))
+                {
+                    BarUtil.updateText(p, "§aEn attente de joueurs...");
+                }
+                if (core.isState(State.STARTING))
+                {
+                    BarUtil.updateText(p, "§dPréparez vous !");
+                }
                 if (core.isState(State.INGAME))
                 {
                     if (core.isRoundState(RoundInfo.PREPARATION))
                     {
                         if (core.teams().getAttacker().contains(p))
                         {
-                            BarUtil.updateBar(p, attackerStarting, 0);
+                            BarUtil.updateText(p, attackerStarting);
                         }
                         if (core.teams().getDefenser().contains(p))
                         {
-                            BarUtil.updateBar(p, defenserStarting, 0);
+                            BarUtil.updateText(p, defenserStarting);
                         }
-                        BarUtil.teleportBar(p);
                     }
-                    else if (core.isRoundState(RoundInfo.START))
+                    if (core.isRoundState(RoundInfo.START))
                     {
                         if (core.teams().getAttacker().contains(p))
                         {
-                            BarUtil.updateBar(p, attackerRound, 0);
+                            BarUtil.updateText(p, attackerRound);
                         }
                         if (core.teams().getDefenser().contains(p))
                         {
-                            BarUtil.updateBar(p, defenserRound, 0);
+                            BarUtil.updateText(p, defenserRound);
                         }
-                        BarUtil.teleportBar(p);
                     }
-                    else if (core.isRoundState(RoundInfo.BOMBPLANTED))
+                    if (core.isRoundState(RoundInfo.BOMBPLANTED))
                     {
                         if (core.teams().getAttacker().contains(p))
                         {
-                            BarUtil.updateBar(p, attackerBombPlanted, 0);
+                            BarUtil.updateText(p, attackerBombPlanted);
                         }
                         if (core.teams().getDefenser().contains(p))
                         {
-                            BarUtil.updateBar(p, adefenserBombPlanted, 0);
+                            BarUtil.updateText(p, adefenserBombPlanted);
                         }
-                        BarUtil.teleportBar(p);
                     }
-                    else if (core.isRoundState(RoundInfo.BOMBEXPLODE))
+                    if (core.isRoundState(RoundInfo.BOMBEXPLODE))
                     {
                         if (core.teams().getAttacker().contains(p))
                         {
-                            BarUtil.updateBar(p, attackerBombExplode, 0);
+                            BarUtil.updateText(p, attackerBombExplode);
                         }
                         if (core.teams().getDefenser().contains(p))
                         {
-                            BarUtil.updateBar(p, defenserBombExplode, 0);
+                            BarUtil.updateText(p, defenserBombExplode);
                         }
-                        BarUtil.teleportBar(p);
                     }
-                    else if (core.isRoundState(RoundInfo.BOMBDIFUSE))
+                    if (core.isRoundState(RoundInfo.BOMBDIFUSE))
                     {
                         if (core.teams().getAttacker().contains(p))
                         {
-                            BarUtil.updateBar(p, attackerBombDifuse, 0);
+                            BarUtil.updateText(p, attackerBombDifuse);
                         }
                         if (core.teams().getDefenser().contains(p))
                         {
-                            BarUtil.updateBar(p, defenserBombDifuse, 0);
+                            BarUtil.updateText(p, defenserBombDifuse);
                         }
-                        BarUtil.teleportBar(p);
                     }
-                    else if (core.isRoundState(RoundInfo.END))
+                    if (core.isRoundState(RoundInfo.END))
                     {
                         if (core.teams().getAttacker().contains(p))
                         {
-                            BarUtil.updateBar(p, attackerBombNoPlanted, 0);
+                            BarUtil.updateText(p, attackerBombNoPlanted);
                         }
                         if (core.teams().getDefenser().contains(p))
                         {
-                            BarUtil.updateBar(p, defenserBombNoPlanted, 0);
+                            BarUtil.updateText(p, defenserBombNoPlanted);
                         }
-                        BarUtil.teleportBar(p);
                     }
                 }
             }
