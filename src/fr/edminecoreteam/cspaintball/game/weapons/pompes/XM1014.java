@@ -1,4 +1,4 @@
-package fr.edminecoreteam.cspaintball.game.weapons.pistolets;
+package fr.edminecoreteam.cspaintball.game.weapons.pompes;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
@@ -26,25 +26,25 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public class DESERTEAGLE implements Listener
+public class XM1014 implements Listener
 {
 
     private static final Core core = Core.getInstance();
 
-    private final double recoil = 0.6; //recul de tir
-    private final double speed_shoot = 5; //vitesse de tir (max 5)
-    private final int bullet_charger = 7; //nombre de balles par chargeur
-    private final int max_bullet = 35; //total de munitions
-    private final Material weapon = Material.DIAMOND_HOE; //materiel de l'ame
-    private final String weapon_name = "Desert-Eagle"; //titre de l'arme
-    private final String weapon_id = "deserteagle"; //id de l'arme
-    private final int weapon_damage = 8; //dégats de l'arme (en coeurs)
-    private final int wait_for_shoot_delay = 7; //temps d'armement (ticks)
-    private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
-    private final int time_refill = 3; //temps de recharge (secondes)
-    private final String shoot_sound = "extremenoisy"; //Bruit de tir
-    private final String refill_sound = "2s"; //Bruit de recharge
-    private final String armed_sound = "classic"; //Bruit d'armement
+    private final double recoil = 0.5; //recul de tir
+    private final double speed_shoot = 3; //vitesse de tir (max 5)
+    private final int bullet_charger = 8; //nombre de balles par chargeur
+    private final int max_bullet = 32; //total de munitions
+    private final Material weapon = Material.BLAZE_ROD; //materiel de l'ame
+    private final String weapon_name = "Nova"; //titre de l'arme
+    private final String weapon_id = "nova"; //id de l'arme
+    private final int weapon_damage = 7; //dégats de l'arme (en coeurs)
+    private final int wait_for_shoot_delay = 9; //temps d'armement (ticks)
+    private final int weightslow = 1; //niveau de vitesse (quand l'arme est porté)
+    private final int time_refill = 5; //temps de recharge (secondes)
+    private final String shoot_sound = "noisy"; //Bruit de tir
+    private final String refill_sound = "pompe"; //Bruit de recharge
+    private final String armed_sound = "pompe"; //Bruit d'armement
 
 
 
@@ -86,17 +86,20 @@ public class DESERTEAGLE implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    ItemStack itemToMove1 = p.getInventory().getItem(0);
+                    ItemStack itemToMove2 = p.getInventory().getItem(1);
+                    p.getInventory().setItem(0, null);
                     p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(2, itemToMove);
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getInventory().setItem(1, itemToMove1);
+                    p.getInventory().setItem(2, itemToMove2);
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
                 {
-                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(0));
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
@@ -118,17 +121,20 @@ public class DESERTEAGLE implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    ItemStack itemToMove1 = p.getInventory().getItem(0);
+                    ItemStack itemToMove2 = p.getInventory().getItem(1);
+                    p.getInventory().setItem(0, null);
                     p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(2, itemToMove);
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getInventory().setItem(1, itemToMove1);
+                    p.getInventory().setItem(2, itemToMove2);
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
                 {
-                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(0));
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
@@ -156,17 +162,20 @@ public class DESERTEAGLE implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    ItemStack itemToMove1 = p.getInventory().getItem(0);
+                    ItemStack itemToMove2 = p.getInventory().getItem(1);
+                    p.getInventory().setItem(0, null);
                     p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(2, itemToMove);
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getInventory().setItem(1, itemToMove1);
+                    p.getInventory().setItem(2, itemToMove2);
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
                 {
-                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(0));
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
@@ -536,14 +545,20 @@ public class DESERTEAGLE implements Listener
                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
                                 get(p);
 
-                                Snowball snowball = p.launchProjectile(Snowball.class);
-
-                                Vector directionSnow = snowball.getVelocity();
-                                directionSnow.setY(directionSnow.getY());
+                                Snowball snowball1 = p.launchProjectile(Snowball.class);
+                                Snowball snowball2 = p.launchProjectile(Snowball.class);
 
                                 double speedcalculator = speed_shoot - speed_shoot / 2;
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
-                                snowball.setVelocity(directionSnow.multiply(speed));
+
+                                Vector directionSnow1 = snowball1.getVelocity();
+                                directionSnow1.setY(directionSnow1.getY() - 0.1);
+
+                                Vector directionSnow2 = snowball2.getVelocity();
+                                directionSnow2.setY(directionSnow2.getY() + 0.1);
+
+                                snowball1.setVelocity(directionSnow1.multiply(speed));
+                                snowball2.setVelocity(directionSnow2.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
@@ -573,14 +588,20 @@ public class DESERTEAGLE implements Listener
                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
                                 refill(p);
 
-                                Snowball snowball = p.launchProjectile(Snowball.class);
-
-                                Vector directionSnow = snowball.getVelocity();
-                                directionSnow.setY(directionSnow.getY());
+                                Snowball snowball1 = p.launchProjectile(Snowball.class);
+                                Snowball snowball2 = p.launchProjectile(Snowball.class);
 
                                 double speedcalculator = speed_shoot - speed_shoot / 2;
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
-                                snowball.setVelocity(directionSnow.multiply(speed));
+
+                                Vector directionSnow1 = snowball1.getVelocity();
+                                directionSnow1.setY(directionSnow1.getY() - 0.1);
+
+                                Vector directionSnow2 = snowball2.getVelocity();
+                                directionSnow2.setY(directionSnow2.getY() + 0.1);
+
+                                snowball1.setVelocity(directionSnow1.multiply(speed));
+                                snowball2.setVelocity(directionSnow2.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);

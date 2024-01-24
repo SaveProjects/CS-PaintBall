@@ -5,6 +5,7 @@ import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.tasks.GunOrderChecker;
 import fr.edminecoreteam.cspaintball.utils.dragonbar.BarListener;
+import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

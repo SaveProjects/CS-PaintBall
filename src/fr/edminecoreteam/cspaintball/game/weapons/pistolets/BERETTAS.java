@@ -539,8 +539,12 @@ public class BERETTAS implements Listener
 
                                 Snowball snowball = p.launchProjectile(Snowball.class);
 
-                                double speed = speed_shoot;
-                                snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
+                                Vector directionSnow = snowball.getVelocity();
+                                directionSnow.setY(directionSnow.getY());
+
+                                double speedcalculator = speed_shoot - speed_shoot / 2;
+                                double speed = speed_shoot / speed_shoot + speedcalculator;
+                                snowball.setVelocity(directionSnow.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
@@ -572,8 +576,12 @@ public class BERETTAS implements Listener
 
                                 Snowball snowball = p.launchProjectile(Snowball.class);
 
-                                double speed = speed_shoot;
-                                snowball.setVelocity(p.getLocation().getDirection().multiply(speed));
+                                Vector directionSnow = snowball.getVelocity();
+                                directionSnow.setY(directionSnow.getY());
+
+                                double speedcalculator = speed_shoot - speed_shoot / 2;
+                                double speed = speed_shoot / speed_shoot + speedcalculator;
+                                snowball.setVelocity(directionSnow.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);

@@ -47,14 +47,7 @@ public class BarListener
                     cancel();
                 }
 
-                if (core.isState(State.WAITING))
-                {
-                    BarUtil.updateText(p, "§aEn attente de joueurs...");
-                }
-                if (core.isState(State.STARTING))
-                {
-                    BarUtil.updateText(p, "§dPréparez vous !");
-                }
+
                 if (core.isState(State.INGAME))
                 {
                     if (core.isRoundState(RoundInfo.PREPARATION))
@@ -163,9 +156,16 @@ public class BarListener
                 .replace("{inverseseparator}", "«")
                 .replace("{player_name}", p.getName())
                 .replace("{euro}", "€")
-                .replace("{timer}", "" + core.timers);
+                .replace("{timer}", "" + core.timers)
+                .replace("{timerminute}", "" + convertTime(core.timers));
 
         return encoded;
+    }
+
+    public String convertTime(int timeInSeconds) {
+        int minutes = timeInSeconds / 60;
+        int seconds = timeInSeconds % 60;
+        return String.format("%02dm %02ds", minutes, seconds);
     }
 
 }

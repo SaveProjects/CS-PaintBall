@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BarUtil {
 
-    private static Map<String, EntityEnderDragon> dragons = new ConcurrentHashMap<>();
+    private static final Map<String, EntityEnderDragon> dragons = new ConcurrentHashMap<>();
 
     public static void sendBar(Player p, String text, float healthPercent) {
         Location loc = p.getLocation();
@@ -26,7 +26,7 @@ public class BarUtil {
 
         EntityEnderDragon dragon = new EntityEnderDragon(world);
         dragon.setInvisible(true);
-        dragon.setLocation(loc.getX(), loc.getY() - 30, loc.getZ(), 0, 0);
+        dragon.setLocation(loc.getX(), loc.getY() - 40, loc.getZ(), 0, 0);
 
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(dragon);
 

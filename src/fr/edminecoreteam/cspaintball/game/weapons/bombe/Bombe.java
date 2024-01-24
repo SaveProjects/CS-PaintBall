@@ -139,7 +139,7 @@ public class Bombe implements Listener
                                                                 armorStand.setBasePlate(false);
                                                                 armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
                                                                 armorStand.setItemInHand(bomb);
-                                                                p.getInventory().setItem(4, null);
+                                                                p.getInventory().setItem(8, null);
                                                                 core.setRoundState(RoundInfo.BOMBPLANTED);
                                                                 BombPlanted bombPlanted = new BombPlanted(core, customloc);
                                                                 bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
@@ -300,7 +300,7 @@ public class Bombe implements Listener
                                                         armorStand.setBasePlate(false);
                                                         armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
                                                         armorStand.setItemInHand(bomb);
-                                                        p.getInventory().setItem(4, null);
+                                                        p.getInventory().setItem(8, null);
                                                         core.setRoundState(RoundInfo.BOMBPLANTED);
                                                         BombPlanted bombPlanted = new BombPlanted(core, customloc);
                                                         bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);

@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.game.GameListeners;
 import fr.edminecoreteam.cspaintball.game.displayname.TabListTeams;
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
+import fr.edminecoreteam.cspaintball.game.guis.BuyPompes;
 import fr.edminecoreteam.cspaintball.game.points.PointsManager;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundManager;
@@ -13,9 +14,12 @@ import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.*;
+import fr.edminecoreteam.cspaintball.game.weapons.pompes.NOVA;
+import fr.edminecoreteam.cspaintball.game.weapons.pompes.XM1014;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
 import fr.edminecoreteam.cspaintball.utils.TitleBuilder;
+import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.JoinScoreboardEvent;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.LeaveScoreboardEvent;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.ScoreboardManager;
@@ -24,6 +28,7 @@ import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -74,6 +79,7 @@ public class Core extends JavaPlugin
 
         setState(State.WAITING);
         maxplayers = getConfig().getInt("teams.attacker.players") + getConfig().getInt("teams.defenser.players");
+        barRunner();
     }
 
     @Override
@@ -102,8 +108,9 @@ public class Core extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents((Listener) new BuyMenu(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPistolets(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new BuyPompes(), (Plugin)this);
+
         Bukkit.getPluginManager().registerEvents((Listener) new TabListTeams(), (Plugin)this);
-        this.getCommand("buymenu").setExecutor((CommandExecutor) new TestCommand());
     }
 
     private void loadWeapons()
@@ -113,11 +120,16 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new WeaponsSettings(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new Bombe(), (Plugin)this);
 
+        //Pistolets
         Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BERETTAS(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new P250(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new TEC9(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new DESERTEAGLE(), (Plugin)this);
+
+        //Fufils a pompe
+        Bukkit.getPluginManager().registerEvents((Listener) new NOVA(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new XM1014(), (Plugin)this);
     }
 
     private void ScoreboardManager()
@@ -181,4 +193,27 @@ public class Core extends JavaPlugin
     public static Core getInstance() { return Core.instance; }
 
     public static Plugin getPlugin() { return Core.plugin; }
+
+    private void barRunner()
+    {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while(true) {
+                    for(String s : BarUtil.getPlayers()) {
+                        Player o = Bukkit.getPlayer(s);
+                        if(o != null) BarUtil.teleportBar(o);
+                    }
+
+                    try {
+                        Thread.sleep(1000); // 1000 = 1 sec
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }).start();
+    }
 }

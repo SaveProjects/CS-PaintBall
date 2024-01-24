@@ -3,9 +3,7 @@ package fr.edminecoreteam.cspaintball.game.tasks;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
-import fr.edminecoreteam.cspaintball.game.utils.BarUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -55,7 +53,7 @@ public class Start extends BukkitRunnable
             }
         }
 
-        int finalResult = this.getTimer - 5;
+        int finalResult = this.getTimer - 8;
 
         if (timer == finalResult)
         {

@@ -95,11 +95,158 @@ public class WeaponsSounds
                 }
             }.runTaskTimer((Plugin) core, 0L, 20L);
         }
+        if (sound.equalsIgnoreCase("3s"))
+        {
+            new BukkitRunnable() {
+                int t = 0;
+                int f = 0;
+                public void run() {
+
+                    ++t;
+                    ++f;
+                    if (f == 1) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_EXTEND, 0.5f, 1.0f);
+                        }
+                    }
+
+                    if (f == 2) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_EXTEND, 0.5f, 0.7f);
+                        }
+                    }
+
+                    if (f == 3) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_RETRACT, 0.5f, 1.0f);
+                        }
+                        cancel();
+                    }
+
+                    if (t == 1) {
+                        t = 0;
+                    }
+                }
+            }.runTaskTimer((Plugin) core, 0L, 20L);
+        }
+        if (sound.equalsIgnoreCase("pompe"))
+        {
+            new BukkitRunnable() {
+                int t = 0;
+                int f = 0;
+                public void run() {
+
+                    ++t;
+                    ++f;
+                    if (f == 1) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_EXTEND, 0.5f, 1.0f);
+                        }
+                    }
+
+                    if (f == 2) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 3) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 4) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 5) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 6) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 7) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 8) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.NOTE_STICKS, 0.5f, 0.9f);
+                        }
+                    }
+
+                    if (f == 9) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_RETRACT, 0.5f, 1.0f);
+                        }
+                        cancel();
+                    }
+
+                    if (t == 1) {
+                        t = 0;
+                    }
+                }
+            }.runTaskTimer((Plugin) core, 0L, 7L);
+        }
     }
 
     public void armed(String sound)
     {
         if (sound.equalsIgnoreCase("classic"))
+        {
+            new BukkitRunnable() {
+                int t = 0;
+                int f = 0;
+                public void run() {
+
+                    ++t;
+                    ++f;
+                    if (f == 1) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_EXTEND, 0.5f, 1.5f);
+                        }
+                    }
+
+                    if (f == 2) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_RETRACT, 0.5f, 1.5f);
+                        }
+                        cancel();
+                    }
+
+                    if (t == 1) {
+                        t = 0;
+                    }
+                }
+            }.runTaskTimer((Plugin) core, 0L, 3L);
+        }
+
+        if (sound.equalsIgnoreCase("pompe"))
         {
             new BukkitRunnable() {
                 int t = 0;

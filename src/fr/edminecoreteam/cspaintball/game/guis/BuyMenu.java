@@ -46,6 +46,14 @@ public class BuyMenu implements Listener
                 buyPistolets.gui(p);
                 return;
             }
+            if (it.getType() == Material.BLAZE_ROD && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fFusils a pompe"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                BuyPompes buyPompes = new BuyPompes();
+                buyPompes.gui(p);
+                return;
+            }
         }
         if (it.getType() == Material.SKULL_ITEM && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eBoutique D'Armement"))
         {

@@ -5,6 +5,7 @@ import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -72,7 +73,7 @@ public class BombPlanted extends BukkitRunnable
             }.runTaskTimer((Plugin) core, 0L, 10L);
         }
 
-        if (timer < 5 && timer >= 2)
+        if (timer < 5 && timer >= 3)
         {
             new BukkitRunnable() {
                 int t = 0;
@@ -109,7 +110,7 @@ public class BombPlanted extends BukkitRunnable
             }.runTaskTimer((Plugin) core, 0L, 5L);
         }
 
-        if (timer < 2 && timer >= 0)
+        if (timer < 3 && timer > 0)
         {
             new BukkitRunnable() {
                 int t = 0;
@@ -187,6 +188,8 @@ public class BombPlanted extends BukkitRunnable
             for (Player pls : core.getServer().getOnlinePlayers())
             {
                 pls.playSound(pls.getLocation(), Sound.EXPLODE, 5.0f, 0.4f);
+                simuleExplosion(pls, loc);
+                explosionDamage(pls, loc);
             }
             core.setRoundState(RoundInfo.BOMBEXPLODE);
             Game game = new Game();
@@ -195,5 +198,40 @@ public class BombPlanted extends BukkitRunnable
         }
 
         --timer;
+    }
+
+    private void simuleExplosion(Player player, Location loc) {
+        int size = 10;
+
+        for (int x = -size; x <= size; x++) {
+            for (int y = -size; y <= size; y++) {
+                for (int z = -size; z <= size; z++) {
+                    double distance = Math.sqrt(x * x + y * y + z * z);
+
+                    if (distance <= size) {
+                        Location particleLocation = loc.clone().add(x, y, z);
+                        player.getWorld().playEffect(particleLocation, org.bukkit.Effect.EXPLOSION_LARGE, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    private void explosionDamage(Player player, Location loc) {
+
+        int size = 50;
+        int damageMax = 40;
+
+        player.getWorld().createExplosion(loc, 0.0F);
+
+        for (Entity entity : player.getNearbyEntities(size, size, size)) {
+            if (entity instanceof Player) {
+                Player victim = (Player) entity;
+                double distance = loc.distance(victim.getLocation());
+
+                double damage = damageMax * (1 - distance / size);
+                victim.damage(damage);
+            }
+        }
     }
 }

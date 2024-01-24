@@ -69,7 +69,7 @@ spawn:
 # {alert} = ⚠, {separator} = », {euro} = €.
 #
 # Jeux:
-# {timer}
+# {timer} {timerminute}
 #
 
 # Dragon Bar
@@ -77,14 +77,14 @@ dragonbar:
   game:
     attacker:
       starting: '&7Temps de pr{e1}paration: &b{timer}s'
-      round: '&7Temps restant: &e{timer}s'
+      round: '&7Temps restant: &e{timerminute}'
       bomb-planted: '&6{alert} &7Bombe plant{e1}e: &c{timer}s &6{alert}'
       bomb-explode: '&a{valide} &7Bombe explos{e1}e ! &a{valide}'
       bomb-difuse: '&c{unvalid} &7Bombe d{e1}samorcer ! &c{unvalid}'
       bomb-no-planted: '&c{unvalid} &7Bombe non plant{e1}e ! &c{unvalid}'
     defenser:
       starting: '&7Temps de pr{e1}paration: &b{timer}s'
-      round: '&7Temps restant: &e{timer}s'
+      round: '&7Temps restant: &e{timerminute}'
       bomb-planted: '&6{alert} &7Bombe plant{e1}e: &c{timer}s &6{alert}'
       bomb-explode: '&c{unvalid} &7Bombe explos{e1}e ! &c{unvalid}'
       bomb-difuse: '&a{valide} &7Bombe d{e1}samorcer ! &a{valide}'

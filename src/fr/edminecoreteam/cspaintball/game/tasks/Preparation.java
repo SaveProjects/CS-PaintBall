@@ -1,11 +1,9 @@
 package fr.edminecoreteam.cspaintball.game.tasks;
 
 import fr.edminecoreteam.cspaintball.Core;
-import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
-import fr.edminecoreteam.cspaintball.game.utils.BarUtil;
-import org.bukkit.Bukkit;
+import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -69,10 +67,6 @@ public class Preparation extends BukkitRunnable
         if (timer == 0)
         {
             core.setRoundState(RoundInfo.START);
-            for (Player pls : core.getServer().getOnlinePlayers())
-            {
-                BarUtil.removeBar(pls);
-            }
             Game game = new Game();
             game.startRound();
             cancel();
