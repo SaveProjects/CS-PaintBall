@@ -3,5 +3,5 @@ version: 0.1
 author: EdmineCoreTeam
 main: fr.edminecoreteam.cspaintball.Core
 commands:
-  buymenu:
-    description: Buy weapons
+  game:
+    description: Game Manager
