@@ -36,8 +36,8 @@ public class XM1014 implements Listener
     private final int bullet_charger = 8; //nombre de balles par chargeur
     private final int max_bullet = 32; //total de munitions
     private final Material weapon = Material.BLAZE_ROD; //materiel de l'ame
-    private final String weapon_name = "Nova"; //titre de l'arme
-    private final String weapon_id = "nova"; //id de l'arme
+    private final String weapon_name = "XM1014"; //titre de l'arme
+    private final String weapon_id = "xm1014"; //id de l'arme
     private final int weapon_damage = 7; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 9; //temps d'armement (ticks)
     private final int weightslow = 1; //niveau de vitesse (quand l'arme est porté)
