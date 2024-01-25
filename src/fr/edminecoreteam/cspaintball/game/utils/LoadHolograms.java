@@ -12,23 +12,45 @@ public class LoadHolograms
     public void init()
     {
         float A_x = (float) core.getConfig().getDouble("maps." + core.world + ".a.x");
-        float A_y = (float) core.getConfig().getDouble("maps." + core.world + ".a.y") + 1;
+        float A_y = (float) core.getConfig().getDouble("maps." + core.world + ".a.y") + 3.5f;
+        double newAY = A_y - 0.3;
         float A_z = (float) core.getConfig().getDouble("maps." + core.world + ".a.z");
 
         double B_x = (float) core.getConfig().getDouble("maps." + core.world + ".b.x");
-        double B_y = (float) core.getConfig().getDouble("maps." + core.world + ".b.y") + 1;
+        double B_y = (float) core.getConfig().getDouble("maps." + core.world + ".b.y") + 3.5f;
+        double newBY = B_y - 0.3;
         double B_z = (float) core.getConfig().getDouble("maps." + core.world + ".b.z");
 
         Location customlocA = new Location(Bukkit.getWorld("game"), A_x, A_y, A_z);
         ArmorStand armorStandA = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customlocA, EntityType.ARMOR_STAND);
         armorStandA.setVisible(false);
+        armorStandA.setSmall(true);
         armorStandA.setCustomName("§8⬇ §fSite §c§lA §8⬇");
         armorStandA.setCustomNameVisible(true);
+        armorStandA.setGravity(false);
 
         Location customlocB = new Location(Bukkit.getWorld("game"), B_x, B_y, B_z);
         ArmorStand armorStandB = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customlocB, EntityType.ARMOR_STAND);
         armorStandB.setVisible(false);
+        armorStandB.setSmall(true);
         armorStandB.setCustomName("§8⬇ §fSite §c§lB §8⬇");
         armorStandB.setCustomNameVisible(true);
+        armorStandA.setGravity(false);
+
+        Location secondLocA = new Location(Bukkit.getWorld("game"), A_x, newAY, A_z);
+        ArmorStand secondArmorStandA = (ArmorStand)Bukkit.getWorld("game").spawnEntity(secondLocA, EntityType.ARMOR_STAND);
+        secondArmorStandA.setVisible(false);
+        secondArmorStandA.setSmall(true);
+        secondArmorStandA.setCustomName("§fAccroupissez-vous pour §dplanter§8/§ddésamorcer§f.");
+        secondArmorStandA.setCustomNameVisible(true);
+        secondArmorStandA.setGravity(false);
+
+        Location secondLocB = new Location(Bukkit.getWorld("game"), B_x, newBY, B_z);
+        ArmorStand secondArmorStandB = (ArmorStand)Bukkit.getWorld("game").spawnEntity(secondLocB, EntityType.ARMOR_STAND);
+        secondArmorStandB.setVisible(false);
+        secondArmorStandB.setSmall(true);
+        secondArmorStandB.setCustomName("§fAccroupissez-vous pour §dplanter§8/§ddésamorcer§f.");
+        secondArmorStandB.setCustomNameVisible(true);
+        secondArmorStandB.setGravity(false);
     }
 }

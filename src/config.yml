@@ -91,6 +91,7 @@ dragonbar:
       bomb-no-planted: '&a{valide} &7Bombe non plant{e1}e ! &a{valide}'
 
 # Gestion des cartes.
+# Ajouté 3 blocs de plus sur l'axe Y de site A et B.
 maps:
   italy:
     spec:
@@ -113,9 +114,9 @@ maps:
       t: -0
     a:
       x: 1071.5
-      y: 67.0
+      y: 70.0
       z: 920.5
     b:
       x: 1023.5
-      y: 65.0
+      y: 68.0
       z: 918.5

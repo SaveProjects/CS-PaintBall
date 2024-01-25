@@ -7,8 +7,8 @@ public enum Teams
 {
     NOTEAM("NOTEAM", 0, 0, "§l§6Rank", "§7", "§7", ""),
     SPEC("SPEC", 1, 1, "§f§6Rank", "§8SPEC", "§8§lSPEC §8", ""),
-    ATTAQUANTS("ATTAQUANTS", 2, 2, "§k§6Rank", "§cATTAQUANTS", "§c§lATTAQUANT §c", ""),
-    DEFENSEURS("DEFENSEURS", 3, 3, "§i§6Rank", "§9DEFENSEURS", "§9§lDÉFENSEUR §9", "");
+    ATTAQUANTS("ATTAQUANTS", 2, 2, "§k§6Rank", "§cATTAQ.", "§c§lATTAQ. §c", ""),
+    DEFENSEURS("DEFENSEURS", 3, 3, "§i§6Rank", "§9DEF.", "§9§lDÉF. §9", "");
     
     private int power;
     private String name;

@@ -10,10 +10,9 @@ import fr.edminecoreteam.cspaintball.game.tasks.Start;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.game.utils.LoadHolograms;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
-import fr.edminecoreteam.cspaintball.utils.dragonbar.BarListener;
-import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -63,9 +62,6 @@ public class Game
         for (Player attackers : core.teams().getAttacker())
         {
             attackers.teleport(attackerSpawn);
-            BarUtil.sendBar(attackers, "", 100);
-            BarListener barListener = new BarListener(attackers);
-            barListener.launch();
             if (core.teams().getAttackerDeath().contains(attackers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -85,9 +81,6 @@ public class Game
         for (Player defensers : core.teams().getDefenser())
         {
             defensers.teleport(defenserSpawn);
-            BarUtil.sendBar(defensers, "", 100);
-            BarListener barListener = new BarListener(defensers);
-            barListener.launch();
             if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -113,6 +106,16 @@ public class Game
     {
         LoadHolograms holograms = new LoadHolograms();
         holograms.init();
+        for (Player pls : core.teams().getAttacker())
+        {
+            pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
+            pls.sendTitle("§dGO GO GO!", "§7OBJECTIF: Planté/Protégé la bombe.");
+        }
+        for (Player pls : core.teams().getDefenser())
+        {
+            pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
+            pls.sendTitle("§dN'oubliez pas l'objectif !", "§7OBJECTIF: Protégé sites bombes.");
+        }
         Start start = new Start(core);
         start.runTaskTimer((Plugin) core, 0L, 20L);
     }
@@ -170,11 +173,15 @@ public class Game
         for (Player pls : attackers)
         {
             core.teams().joinTeam(pls, "defenser");
+            pls.sendTitle("§aChangement de camp !", "§7Vous devenez §9Défenseur§7.");
+            pls.playSound(pls.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
         }
 
         for (Player pls : defensers)
         {
             core.teams().joinTeam(pls, "attacker");
+            pls.sendTitle("§aChangement de camp !", "§7Vous devenez §cAttaquant§7.");
+            pls.playSound(pls.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
         }
 
         core.pointsManager().setAttackerPoints(defenserScore);

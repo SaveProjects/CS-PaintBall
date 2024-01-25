@@ -4,14 +4,15 @@ public enum WeaponsList
 {
     //Pistolets
     USPS("USPS", 0),
-    BERETTAS("BERETTAS", 1),
-    TEC9("TEC9", 2),
-    P250("P250", 3),
-    DESERTEAGLE("DESERTEAGLE", 4),
+    GLOCK18("GLOCK18", 1),
+    BERETTAS("BERETTAS", 2),
+    TEC9("TEC9", 3),
+    P250("P250", 4),
+    DESERTEAGLE("DESERTEAGLE", 5),
 
     //Fusils a pompe
-    NOVA("NOVA", 5),
-    XM1014("XM1014", 6);
+    NOVA("NOVA", 6),
+    XM1014("XM1014", 7);
 
     private WeaponsList(final String name, final int ordinal) {
     }

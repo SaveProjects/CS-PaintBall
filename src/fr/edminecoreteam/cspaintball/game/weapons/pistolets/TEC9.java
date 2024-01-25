@@ -38,8 +38,8 @@ public class TEC9 implements Listener
     private final Material weapon = Material.GOLD_HOE; //materiel de l'ame
     private final String weapon_name = "Tec-9"; //titre de l'arme
     private final String weapon_id = "tec9"; //id de l'arme
-    private final int weapon_damage = 3; //dégats de l'arme (en coeurs)
-    private final int wait_for_shoot_delay = 4; //temps d'armement (ticks)
+    private final int weapon_damage = 2; //dégats de l'arme (en coeurs)
+    private final int wait_for_shoot_delay = 6; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)
     private final String shoot_sound = "noisy"; //Bruit de tir
@@ -236,13 +236,12 @@ public class TEC9 implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct > 0.99) {
-                        int damage = weapon_damage * 4;
+                        int damage = weapon_damage * 3;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
-                        int damage = weapon_damage * 2;
-                        event.setDamage(damage);
+                        event.setDamage(weapon_damage);
                     } else if (dotProduct < 0.50) {
-                        int damage = weapon_damage;
+                        int damage = weapon_damage / 2;
                         event.setDamage(damage);
                     }
                 }
@@ -313,10 +312,11 @@ public class TEC9 implements Listener
 
                     if (weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇")) { return; }
 
-                    ItemStack item = weapons.getItemInHand();
-
-                    if (item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("§a") && item.getItemMeta().getDisplayName().contains(weapon_name)) {
-                        String itemName = item.getItemMeta().getDisplayName();
+                    if (weapons.getItemInHand().getItemMeta() != null)
+                    {
+                        if (weapons.getItemInHand().getType() != weapon) { return; }
+                        if (!weapons.getItemInHand().getItemMeta().getDisplayName().contains(weapon_name)) { return; }
+                        String itemName = weapons.getItemInHand().getItemMeta().getDisplayName();
                         String[] parts = itemName.split("§a");
                         if (parts.length >= 3) {
                             try {

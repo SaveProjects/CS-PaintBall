@@ -38,7 +38,7 @@ public class XM1014 implements Listener
     private final Material weapon = Material.BLAZE_ROD; //materiel de l'ame
     private final String weapon_name = "XM1014"; //titre de l'arme
     private final String weapon_id = "xm1014"; //id de l'arme
-    private final int weapon_damage = 7; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 6; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 9; //temps d'armement (ticks)
     private final int weightslow = 1; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 5; //temps de recharge (secondes)
@@ -245,13 +245,12 @@ public class XM1014 implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct > 0.99) {
-                        int damage = weapon_damage * 4;
+                        int damage = weapon_damage * 3;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
-                        int damage = weapon_damage * 2;
-                        event.setDamage(damage);
+                        event.setDamage(weapon_damage);
                     } else if (dotProduct < 0.50) {
-                        int damage = weapon_damage;
+                        int damage = weapon_damage / 2;
                         event.setDamage(damage);
                     }
                 }
@@ -318,14 +317,15 @@ public class XM1014 implements Listener
             if (weapons.getWorld() == p.getWorld()) {
                 Location loc = weapons.getLocation();
                 double distanceSquared = p.getLocation().distanceSquared(loc);
-                if (distanceSquared <= 2 * 2) {
+                if (distanceSquared <= 5 * 5) {
 
                     if (weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇")) { return; }
 
-                    ItemStack item = weapons.getItemInHand();
-
-                    if (item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("§a") && item.getItemMeta().getDisplayName().contains(weapon_name)) {
-                        String itemName = item.getItemMeta().getDisplayName();
+                    if (weapons.getItemInHand().getItemMeta() != null)
+                    {
+                        if (weapons.getItemInHand().getType() != weapon) { return; }
+                        if (!weapons.getItemInHand().getItemMeta().getDisplayName().contains(weapon_name)) { return; }
+                        String itemName = weapons.getItemInHand().getItemMeta().getDisplayName();
                         String[] parts = itemName.split("§a");
                         if (parts.length >= 3) {
                             try {
@@ -552,7 +552,7 @@ public class XM1014 implements Listener
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
 
                                 Vector directionSnow1 = snowball1.getVelocity();
-                                directionSnow1.setY(directionSnow1.getY() - 0.1);
+                                directionSnow1.setY(directionSnow1.getY());
 
                                 Vector directionSnow2 = snowball2.getVelocity();
                                 directionSnow2.setY(directionSnow2.getY() + 0.1);
@@ -595,7 +595,7 @@ public class XM1014 implements Listener
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
 
                                 Vector directionSnow1 = snowball1.getVelocity();
-                                directionSnow1.setY(directionSnow1.getY() - 0.1);
+                                directionSnow1.setY(directionSnow1.getY());
 
                                 Vector directionSnow2 = snowball2.getVelocity();
                                 directionSnow2.setY(directionSnow2.getY() + 0.1);

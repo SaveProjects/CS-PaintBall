@@ -19,7 +19,6 @@ import fr.edminecoreteam.cspaintball.game.weapons.pompes.XM1014;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
 import fr.edminecoreteam.cspaintball.listeners.connection.LeaveEvent;
 import fr.edminecoreteam.cspaintball.utils.TitleBuilder;
-import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.JoinScoreboardEvent;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.LeaveScoreboardEvent;
 import fr.edminecoreteam.cspaintball.utils.scoreboards.ScoreboardManager;
@@ -27,7 +26,6 @@ import fr.edminecoreteam.cspaintball.utils.scoreboards.WorldChangeScoreboardEven
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -79,7 +77,6 @@ public class Core extends JavaPlugin
 
         setState(State.WAITING);
         maxplayers = getConfig().getInt("teams.attacker.players") + getConfig().getInt("teams.defenser.players");
-        barRunner();
     }
 
     @Override
@@ -122,6 +119,7 @@ public class Core extends JavaPlugin
 
         //Pistolets
         Bukkit.getPluginManager().registerEvents((Listener) new USPS(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new GLOCK18(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BERETTAS(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new P250(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new TEC9(), (Plugin)this);
@@ -193,27 +191,4 @@ public class Core extends JavaPlugin
     public static Core getInstance() { return Core.instance; }
 
     public static Plugin getPlugin() { return Core.plugin; }
-
-    private void barRunner()
-    {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                while(true) {
-                    for(String s : BarUtil.getPlayers()) {
-                        Player o = Bukkit.getPlayer(s);
-                        if(o != null) BarUtil.teleportBar(o);
-                    }
-
-                    try {
-                        Thread.sleep(1000); // 1000 = 1 sec
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-        }).start();
-    }
 }

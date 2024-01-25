@@ -3,7 +3,6 @@ package fr.edminecoreteam.cspaintball.game.tasks;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
-import fr.edminecoreteam.cspaintball.utils.dragonbar.BarUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,10 +22,6 @@ public class Preparation extends BukkitRunnable
     public void run()
     {
         core.timers(timer);
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            BarUtil.updateBar(pls, "§7Temps de préparation: §a" + core.timers, 100);
-        }
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
             pls.setLevel(timer);

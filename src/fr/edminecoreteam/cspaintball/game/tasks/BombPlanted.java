@@ -33,6 +33,16 @@ public class BombPlanted extends BukkitRunnable
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {
+            for (Player pls : core.teams().getAttacker())
+            {
+                pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
+                pls.sendTitle("§a✔ §aBien joué ! §a✔", "§7Vous remportez la manche.");
+            }
+            for (Player pls : core.teams().getDefenser())
+            {
+                pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                pls.sendTitle("§c✖ §cReprenez-vous ! §c✖", "§7Vous perdez la manche.");
+            }
             core.pointsManager().addAttackerPoints();
             core.setRoundState(RoundInfo.END);
             Game game = new Game();
@@ -190,6 +200,17 @@ public class BombPlanted extends BukkitRunnable
                 pls.playSound(pls.getLocation(), Sound.EXPLODE, 5.0f, 0.4f);
                 simuleExplosion(pls, loc);
                 explosionDamage(pls, loc);
+
+            }
+            for (Player pls : core.teams().getAttacker())
+            {
+                pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
+                pls.sendTitle("§a✔ §aBombe Explosé ! §a✔", "§7Gardez la cadance.");
+            }
+            for (Player pls : core.teams().getDefenser())
+            {
+                pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
+                pls.sendTitle("§c⚠ §cBombe Explosé ! §c⚠", "§7Vous êtes entrain de perdre le contrôle !.");
             }
             core.setRoundState(RoundInfo.BOMBEXPLODE);
             Game game = new Game();
@@ -201,7 +222,7 @@ public class BombPlanted extends BukkitRunnable
     }
 
     private void simuleExplosion(Player player, Location loc) {
-        int size = 10;
+        int size = 13;
 
         for (int x = -size; x <= size; x++) {
             for (int y = -size; y <= size; y++) {

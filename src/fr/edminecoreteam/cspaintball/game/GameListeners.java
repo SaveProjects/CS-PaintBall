@@ -10,12 +10,13 @@ import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -48,11 +49,6 @@ public class GameListeners implements Listener
                     (float) core.getConfig().getDouble("maps." + core.world + ".attacker.f"),
                     (float) core.getConfig().getDouble("maps." + core.world + ".attacker.t"));
 
-            Location attackerSpawnNotEye = new Location(Bukkit.getWorld(p.getWorld().getName()),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.x"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.y"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.z"));
-
             Location defenserSpawn = new Location(Bukkit.getWorld(p.getWorld().getName()),
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.x"),
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.y"),
@@ -60,21 +56,18 @@ public class GameListeners implements Listener
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.f"),
                     (float) core.getConfig().getDouble("maps." + core.world + ".defenser.t"));
 
-            Location defenserSpawnNotEye = new Location(Bukkit.getWorld(p.getWorld().getName()),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.x"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.y"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.z"));
-
             if (core.teams().getAttacker().contains(p))
             {
-                if (!p.getLocation().equals(attackerSpawnNotEye))
+                Location pLoc = p.getLocation();
+                if (attackerSpawn.getX() != pLoc.getX() || attackerSpawn.getY() != pLoc.getY() || attackerSpawn.getZ() != pLoc.getZ())
                 {
                     p.teleport(attackerSpawn);
                 }
             }
             if (core.teams().getDefenser().contains(p))
             {
-                if (!p.getLocation().equals(defenserSpawnNotEye))
+                Location pLoc = p.getLocation();
+                if (defenserSpawn.getX() != pLoc.getX() || defenserSpawn.getY() != pLoc.getY() || defenserSpawn.getZ() != pLoc.getZ())
                 {
                     p.teleport(defenserSpawn);
                 }
@@ -83,46 +76,53 @@ public class GameListeners implements Listener
     }
 
     @EventHandler
-    public void onDeath(EntityDamageByEntityEvent e)
+    public void onDamage(EntityDamageByEntityEvent e)
     {
-        if (e.getEntityType() == EntityType.PLAYER)
+        if (core.isState(State.INGAME))
         {
-            if (e.getDamager().getType() == EntityType.SNOWBALL)
+            if (e.getEntityType() == EntityType.PLAYER)
             {
-                Player victim = (Player) e.getEntity();
-                Snowball damage = (Snowball) e.getDamager();
-                Player attacker = (Player) damage.getShooter();
-
-                if (core.teams().getTeam(victim).contains(attacker))
+                if (e.getDamager().getType() == EntityType.SNOWBALL)
                 {
-                    for(Player pls : core.teams().getTeam(victim))
-                    {
-                        pls.sendMessage("§c§l" + attacker.getName() + " §ca attaqué un allié...");
-                    }
-                }
-                TeamsKit kit = new TeamsKit();
-                kit.reEquip(victim);
-            }
-            if (e.getDamager().getType() == EntityType.PLAYER)
-            {
-                Player victim = (Player) e.getEntity();
-                Player attacker = (Player) e.getDamager();
+                    Player victim = (Player) e.getEntity();
+                    Snowball damage = (Snowball) e.getDamager();
+                    Player attacker = (Player) damage.getShooter();
 
-                if (core.teams().getTeam(victim).contains(attacker))
-                {
-                    for(Player pls : core.teams().getTeam(victim))
+                    if (core.teams().getTeam(victim).contains(attacker))
                     {
-                        pls.sendMessage("§c§l" + attacker.getName() + " §ca attaqué un allié...");
+                        for(Player pls : core.teams().getTeam(victim))
+                        {
+                            pls.sendMessage("§c§l" + attacker.getName() + " §ca attaqué un allié...");
+                        }
+                        attacker.playSound(attacker.getLocation(), Sound.VILLAGER_HIT, 1.0f, 1.0f);
                     }
+                    attacker.playSound(attacker.getLocation(), Sound.NOTE_PLING, 1.0f, 5.0f);
+                    TeamsKit kit = new TeamsKit();
+                    kit.repearArmor(victim);
                 }
-                TeamsKit kit = new TeamsKit();
-                kit.reEquip(victim);
+                if (e.getDamager().getType() == EntityType.PLAYER)
+                {
+                    Player victim = (Player) e.getEntity();
+                    Player attacker = (Player) e.getDamager();
+
+                    if (core.teams().getTeam(victim).contains(attacker))
+                    {
+                        for(Player pls : core.teams().getTeam(victim))
+                        {
+                            pls.sendMessage("§c§l" + attacker.getName() + " §ca attaqué un allié...");
+                        }
+                        attacker.playSound(attacker.getLocation(), Sound.VILLAGER_HIT, 1.0f, 1.0f);
+                    }
+                    attacker.playSound(attacker.getLocation(), Sound.NOTE_PLING, 1.0f, 5.0f);
+                    TeamsKit kit = new TeamsKit();
+                    kit.repearArmor(victim);
+                }
             }
         }
     }
 
     @EventHandler
-    public void onDeath(EntityDeathEvent e)
+    public void onDeath(PlayerDeathEvent e)
     {
         if (e.getEntityType() == EntityType.PLAYER)
         {
@@ -137,6 +137,15 @@ public class GameListeners implements Listener
                         for(Player pls : core.teams().getTeam(victim))
                         {
                             pls.sendMessage("§c§l" + attacker.getName() + " §ca tué un allié...");
+                        }
+                        attacker.playSound(attacker.getLocation(), Sound.VILLAGER_DEATH, 1.0f, 1.0f);
+                        if (core.teams().getAttacker().contains(attacker))
+                        {
+                            e.setDeathMessage("§c" + attacker.getName() + " §f➡ ☠ §c" + victim.getName());
+                        }
+                        if (core.teams().getDefenser().contains(attacker))
+                        {
+                            e.setDeathMessage("§9" + attacker.getName() + " §f➡ ☠ §9" + victim.getName());
                         }
                     }
 
@@ -155,6 +164,8 @@ public class GameListeners implements Listener
                         spec.setSpec(victim);
                         core.teams().getAttackerDeath().add(victim);
                         victim.spigot().respawn();
+                        e.setDeathMessage("§9" + attacker.getName() + " §f➡ ☠ §c" + victim.getName());
+                        attacker.playSound(attacker.getLocation(), Sound.VILLAGER_YES, 1.0f, 5.0f);
                         return;
                     }
                     if (core.teams().getDefenser().contains(victim))
@@ -165,6 +176,8 @@ public class GameListeners implements Listener
                         spec.setSpec(victim);
                         core.teams().getDefenserDeath().add(victim);
                         victim.spigot().respawn();
+                        e.setDeathMessage("§c" + attacker.getName() + " §f➡ ☠ §9" + victim.getName());
+                        attacker.playSound(attacker.getLocation(), Sound.VILLAGER_YES, 1.0f, 5.0f);
                         return;
                     }
                 }
@@ -186,6 +199,7 @@ public class GameListeners implements Listener
                     spec.setSpec(victim);
                     core.teams().getAttackerDeath().add(victim);
                     victim.spigot().respawn();
+                    e.setDeathMessage("§f☠ §c" + victim.getName());
                     return;
                 }
                 if (core.teams().getDefenser().contains(victim))
@@ -196,6 +210,7 @@ public class GameListeners implements Listener
                     spec.setSpec(victim);
                     core.teams().getDefenserDeath().add(victim);
                     victim.spigot().respawn();
+                    e.setDeathMessage("§f☠ §9" + victim.getName());
                     return;
                 }
             }
@@ -223,21 +238,10 @@ public class GameListeners implements Listener
         return null;
     }
 
-    /*@EventHandler
-    public void onDeath(EntityDamageEvent e)
-    {
-        if (e.getEntityType() == EntityType.PLAYER)
-        {
-            Player victim = (Player) e.getEntity();
-            TeamsKit kit = new TeamsKit();
-            kit.reEquip(victim);
-        }
-    }*/
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        if (core.isState(State.INGAME) || core.isState(State.FINISH))
+        if (core.isState(State.INGAME))
         {
             e.setCancelled(true);
         }
@@ -250,7 +254,7 @@ public class GameListeners implements Listener
             return;
         }
 
-        if (core.isState(State.INGAME) || core.isState(State.FINISH)) {
+        if (core.isState(State.INGAME)) {
             e.setCancelled(true);
         }
     }

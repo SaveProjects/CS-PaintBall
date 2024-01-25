@@ -32,13 +32,13 @@ public class DESERTEAGLE implements Listener
     private static final Core core = Core.getInstance();
 
     private final double recoil = 0.6; //recul de tir
-    private final double speed_shoot = 5; //vitesse de tir (max 5)
+    private final double speed_shoot = 4; //vitesse de tir (max 5)
     private final int bullet_charger = 7; //nombre de balles par chargeur
     private final int max_bullet = 35; //total de munitions
     private final Material weapon = Material.DIAMOND_HOE; //materiel de l'ame
     private final String weapon_name = "Desert-Eagle"; //titre de l'arme
     private final String weapon_id = "deserteagle"; //id de l'arme
-    private final int weapon_damage = 8; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 6; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 7; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)
@@ -236,13 +236,12 @@ public class DESERTEAGLE implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct > 0.99) {
-                        int damage = weapon_damage * 4;
+                        int damage = weapon_damage * 3;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
-                        int damage = weapon_damage * 2;
-                        event.setDamage(damage);
+                        event.setDamage(weapon_damage);
                     } else if (dotProduct < 0.50) {
-                        int damage = weapon_damage;
+                        int damage = weapon_damage / 2;
                         event.setDamage(damage);
                     }
                 }
@@ -313,10 +312,11 @@ public class DESERTEAGLE implements Listener
 
                     if (weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇")) { return; }
 
-                    ItemStack item = weapons.getItemInHand();
-
-                    if (item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("§a") && item.getItemMeta().getDisplayName().contains(weapon_name)) {
-                        String itemName = item.getItemMeta().getDisplayName();
+                    if (weapons.getItemInHand().getItemMeta() != null)
+                    {
+                        if (weapons.getItemInHand().getType() != weapon) { return; }
+                        if (!weapons.getItemInHand().getItemMeta().getDisplayName().contains(weapon_name)) { return; }
+                        String itemName = weapons.getItemInHand().getItemMeta().getDisplayName();
                         String[] parts = itemName.split("§a");
                         if (parts.length >= 3) {
                             try {

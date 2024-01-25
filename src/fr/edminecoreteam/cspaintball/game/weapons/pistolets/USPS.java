@@ -9,14 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -25,8 +22,6 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class USPS implements Listener
 {
@@ -238,13 +233,12 @@ public class USPS implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct > 0.99) {
-                        int damage = weapon_damage * 4;
+                        int damage = weapon_damage * 3;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
-                        int damage = weapon_damage * 2;
-                        event.setDamage(damage);
+                        event.setDamage(weapon_damage);
                     } else if (dotProduct < 0.50) {
-                        int damage = weapon_damage;
+                        int damage = weapon_damage / 2;
                         event.setDamage(damage);
                     }
                 }
@@ -315,10 +309,11 @@ public class USPS implements Listener
 
                     if (weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || weapons.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇")) { return; }
 
-                    ItemStack item = weapons.getItemInHand();
-
-                    if (item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("§a") && item.getItemMeta().getDisplayName().contains(weapon_name)) {
-                        String itemName = item.getItemMeta().getDisplayName();
+                    if (weapons.getItemInHand().getItemMeta() != null)
+                    {
+                        if (weapons.getItemInHand().getType() != weapon) { return; }
+                        if (!weapons.getItemInHand().getItemMeta().getDisplayName().contains(weapon_name)) { return; }
+                        String itemName = weapons.getItemInHand().getItemMeta().getDisplayName();
                         String[] parts = itemName.split("§a");
                         if (parts.length >= 3) {
                             try {

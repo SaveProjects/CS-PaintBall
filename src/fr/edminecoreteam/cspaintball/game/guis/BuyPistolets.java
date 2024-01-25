@@ -57,6 +57,15 @@ public class BuyPistolets implements Listener
                 return;
             }
 
+            if (it.getType() == Material.FISHING_ROD && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fGlock-18"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.GLOCK18);
+                return;
+            }
+
             if (it.getType() == Material.STONE_HOE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fBerettas"))
             {
                 e.setCancelled(true);
@@ -113,18 +122,36 @@ public class BuyPistolets implements Listener
                 inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
                 inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
 
-                ItemStack usps = new ItemStack(Material.WOOD_HOE, 1);
-                ItemMeta uspsM = usps.getItemMeta();
-                uspsM.setDisplayName("§fUSP-S");
-                ArrayList<String> loreusps = new ArrayList<String>();
-                loreusps.add("");
-                loreusps.add(" §dInformation:");
-                loreusps.add(" §f▶ §7Prix: §a200$");
-                loreusps.add("");
-                loreusps.add("§8➡ §fCliquez pour acheter.");
-                uspsM.setLore(loreusps);
-                usps.setItemMeta(uspsM);
-                inv.setItem(21, usps);
+                if (core.teams().getDefenser().contains(p))
+                {
+                    ItemStack usps = new ItemStack(Material.WOOD_HOE, 1);
+                    ItemMeta uspsM = usps.getItemMeta();
+                    uspsM.setDisplayName("§fUSP-S");
+                    ArrayList<String> loreusps = new ArrayList<String>();
+                    loreusps.add("");
+                    loreusps.add(" §dInformation:");
+                    loreusps.add(" §f▶ §7Prix: §a30$");
+                    loreusps.add("");
+                    loreusps.add("§8➡ §fCliquez pour acheter.");
+                    uspsM.setLore(loreusps);
+                    usps.setItemMeta(uspsM);
+                    inv.setItem(21, usps);
+                }
+                if (core.teams().getAttacker().contains(p))
+                {
+                    ItemStack glock18 = new ItemStack(Material.FISHING_ROD, 1);
+                    ItemMeta glock18M = glock18.getItemMeta();
+                    glock18M.setDisplayName("§fGlock-18");
+                    ArrayList<String> loreglock18 = new ArrayList<String>();
+                    loreglock18.add("");
+                    loreglock18.add(" §dInformation:");
+                    loreglock18.add(" §f▶ §7Prix: §a20$");
+                    loreglock18.add("");
+                    loreglock18.add("§8➡ §fCliquez pour acheter.");
+                    glock18M.setLore(loreglock18);
+                    glock18.setItemMeta(glock18M);
+                    inv.setItem(21, glock18);
+                }
 
                 ItemStack berettas = new ItemStack(Material.STONE_HOE, 1);
                 ItemMeta berettasM = berettas.getItemMeta();

@@ -16,11 +16,14 @@ public class Start extends BukkitRunnable
     private final Core core;
     private final int getTimer;
 
+    private final int finalResult;
+
     public Start(Core core)
     {
         this.core = core;
         this.timer = core.getConfig().getInt("timers.round");
         this.getTimer = this.timer;
+        this.finalResult = this.getTimer - 10;
     }
 
     public void run()
@@ -33,6 +36,16 @@ public class Start extends BukkitRunnable
         {
             if (core.isRoundState(RoundInfo.START))
             {
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
+                    pls.sendTitle("§a✔ §aBien joué ! §a✔", "§7Vous remportez la manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    pls.sendTitle("§c✖ §cReprenez-vous ! §c✖", "§7Vous perdez la manche.");
+                }
                 core.pointsManager().addAttackerPoints();
                 core.setRoundState(RoundInfo.END);
                 Game game = new Game();
@@ -45,6 +58,16 @@ public class Start extends BukkitRunnable
         {
             if (core.isRoundState(RoundInfo.START))
             {
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    pls.sendTitle("§c✖ §cOn n'aime pas ça ! §c✖", "§7Vous perdez la manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
+                    pls.sendTitle("§a✔ §aBeau travaille ! §a✔", "§7Vous remportez la manche.");
+                }
                 core.pointsManager().addDefenserPoints();
                 core.setRoundState(RoundInfo.END);
                 Game game = new Game();
@@ -52,8 +75,6 @@ public class Start extends BukkitRunnable
                 cancel();
             }
         }
-
-        int finalResult = this.getTimer - 8;
 
         if (timer == finalResult)
         {
@@ -104,6 +125,16 @@ public class Start extends BukkitRunnable
         {
             if (core.isRoundState(RoundInfo.START))
             {
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    pls.sendTitle("§c✖ §cOn n'aime pas ça ! §c✖", "§7Vous perdez la manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
+                    pls.sendTitle("§a✔ §aBeau travaille ! §a✔", "§7Vous remportez la manche.");
+                }
                 core.setRoundState(RoundInfo.END);
                 core.pointsManager().addDefenserPoints();
                 Game game = new Game();

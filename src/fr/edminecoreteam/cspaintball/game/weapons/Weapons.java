@@ -23,6 +23,12 @@ public class Weapons
             weapon.get(p);
         }
 
+        if (weapons == WeaponsList.GLOCK18)
+        {
+            GLOCK18 weapon = new GLOCK18();
+            weapon.get(p);
+        }
+
         if (weapons == WeaponsList.BERETTAS)
         {
             BERETTAS weapon = new BERETTAS();
@@ -50,14 +56,14 @@ public class Weapons
         //Fusils a pompe
         if (weapons == WeaponsList.NOVA)
         {
-            NOVA nova = new NOVA();
-            nova.get(p);
+            NOVA weapon = new NOVA();
+            weapon.get(p);
         }
 
         if (weapons == WeaponsList.XM1014)
         {
-            XM1014 xm1014 = new XM1014();
-            xm1014.get(p);
+            XM1014 weapon = new XM1014();
+            weapon.get(p);
         }
     }
 
@@ -66,6 +72,9 @@ public class Weapons
         //Pistolets
         USPS usps = new USPS();
         usps.refillMax(p);
+
+        GLOCK18 glock18 = new GLOCK18();
+        glock18.refillMax(p);
 
         BERETTAS berettas = new BERETTAS();
         berettas.refillMax(p);
@@ -92,6 +101,9 @@ public class Weapons
         //Pistolets
         USPS usps = new USPS();
         usps.deathCheck(p);
+
+        GLOCK18 glock18 = new GLOCK18();
+        glock18.deathCheck(p);
 
         BERETTAS berettas = new BERETTAS();
         berettas.deathCheck(p);

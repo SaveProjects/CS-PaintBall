@@ -4,7 +4,6 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.tasks.BombPlanted;
-import fr.edminecoreteam.cspaintball.game.tasks.End;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -70,7 +69,7 @@ public class Bombe implements Listener
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent e)
     {
-        Player p = e.getPlayer();
+        Player p = (Player) e.getPlayer();
 
         if (core.teams().getAttacker().contains(p))
         {
@@ -79,92 +78,82 @@ public class Bombe implements Listener
                     Location loc = bombGround.getLocation();
                     double distanceSquared = p.getLocation().distanceSquared(loc);
                     if (distanceSquared <= 2 * 2) {
-                        ItemStack item = bombGround.getItemInHand();
-
                         if (!bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") && !bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇"))
                         {
-                            String itemName = item.getItemMeta().getDisplayName();
-
                             if (core.isRoundState(RoundInfo.START) || core.isRoundState(RoundInfo.PREPARATION))
                             {
-                                if (itemName != null && itemName.contains(bomb_name))
-                                {
-                                    if (core.teams().getAttacker().contains(p))
-                                    {
-                                        p.sendMessage("§7Vous avez récupéré: " + bomb_name);
-                                        get(p);
-                                        bombGround.remove();
-                                    }
-                                }
+                                if (!bombGround.getItemInHand().getItemMeta().getDisplayName().contains(bomb_name)) { return; }
+
+                                p.sendMessage("§7Vous avez récupéré: " + bomb_name);
+                                get(p);
+                                bombGround.remove();
                             }
                         }
                         else if (bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇") || bombGround.getCustomName().equalsIgnoreCase("bomb.planted"))
                         {
-                            if (core.teams().getAttacker().contains(p))
+
+                            if (p.getInventory().getItemInHand().getType() != Material.AIR && p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name))
                             {
-                                if (p.getInventory().getItemInHand().getType() != Material.AIR && p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name))
-                                {
-                                    int plant_time = core.getConfig().getInt("timers.planting-bomb");
-                                    new BukkitRunnable() {
-                                        int t = plant_time;
-                                        public void run() {
+                                int plant_time = core.getConfig().getInt("timers.planting-bomb");
+                                new BukkitRunnable() {
+                                    int t = plant_time;
+                                    public void run() {
 
-                                            if (p.isSneaking())
+                                        if (p.isSneaking())
+                                        {
+                                            if (p.getInventory().getItemInHand() == null || !p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name)) { cancel(); }
+
+                                            if (bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇") || bombGround.getCustomName().equalsIgnoreCase("bomb.planted"))
                                             {
-                                                if (p.getInventory().getItemInHand() == null || !p.getInventory().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name)) { cancel(); }
-
-                                                if (bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇") || bombGround.getCustomName().equalsIgnoreCase("bomb.planted"))
+                                                double distanceSquaredd = p.getLocation().distanceSquared(loc);
+                                                if (distanceSquaredd <= 5 * 5)
                                                 {
-                                                    double distanceSquaredd = p.getLocation().distanceSquared(loc);
-                                                    if (distanceSquaredd <= 2 * 2)
+                                                    if (!core.isRoundState(RoundInfo.END))
                                                     {
-                                                        if (!core.isRoundState(RoundInfo.END))
+                                                        sendProgressBar(p, "Plantation de la bombe... ", t, plant_time);
+                                                        if (t == 0)
                                                         {
-                                                            sendProgressBar(p, "Plantation de la bombe... ", t, plant_time);
-                                                            if (t == 0)
-                                                            {
-                                                                String name = "bomb.planted";
-                                                                double newx = p.getLocation().getX();
-                                                                double newy = p.getLocation().getY() -1.2;
-                                                                double newz = p.getLocation().getZ();
-                                                                Location customloc = new Location(Bukkit.getWorld("game"), newx, newy, newz);
-                                                                ArmorStand armorStand = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customloc, EntityType.ARMOR_STAND);
-                                                                armorStand.setVisible(false);
-                                                                armorStand.setSmall(false);
-                                                                armorStand.setCanPickupItems(false);
-                                                                armorStand.setArms(true);
-                                                                armorStand.setCustomName(name);
-                                                                armorStand.setCustomNameVisible(false);
-                                                                armorStand.setGravity(false);
-                                                                armorStand.setBasePlate(false);
-                                                                armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
-                                                                armorStand.setItemInHand(bomb);
-                                                                p.getInventory().setItem(8, null);
-                                                                core.setRoundState(RoundInfo.BOMBPLANTED);
-                                                                BombPlanted bombPlanted = new BombPlanted(core, customloc);
-                                                                bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            cancel();
+                                                            String name = "bomb.planted";
+                                                            double newx = p.getLocation().getX();
+                                                            double newy = p.getLocation().getY() -1.2;
+                                                            double newz = p.getLocation().getZ();
+                                                            Location customloc = new Location(Bukkit.getWorld("game"), newx, newy, newz);
+                                                            ArmorStand armorStand = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customloc, EntityType.ARMOR_STAND);
+                                                            armorStand.setVisible(false);
+                                                            armorStand.setSmall(false);
+                                                            armorStand.setCanPickupItems(false);
+                                                            armorStand.setArms(true);
+                                                            armorStand.setCustomName(name);
+                                                            armorStand.setCustomNameVisible(false);
+                                                            armorStand.setGravity(false);
+                                                            armorStand.setBasePlate(false);
+                                                            armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
+                                                            armorStand.setItemInHand(bomb);
+                                                            p.getInventory().setItem(8, null);
+                                                            core.setRoundState(RoundInfo.BOMBPLANTED);
+                                                            BombPlanted bombPlanted = new BombPlanted(core, customloc);
+                                                            bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
                                                         }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    cancel();
+                                                    else
+                                                    {
+                                                        cancel();
+                                                    }
                                                 }
                                             }
                                             else
                                             {
                                                 cancel();
                                             }
-
-                                            --t;
                                         }
-                                    }.runTaskTimer((Plugin) core, 0L, 20L);
-                                }
+                                        else
+                                        {
+                                            cancel();
+                                        }
+
+                                        --t;
+                                    }
+                                }.runTaskTimer((Plugin) core, 0L, 20L);
                             }
                         }
                     }
@@ -179,7 +168,7 @@ public class Bombe implements Listener
                 if (bombGround.getWorld() == p.getWorld()) {
                     Location loc = bombGround.getLocation();
                     double distanceSquared = p.getLocation().distanceSquared(loc);
-                    if (distanceSquared <= 2 * 2) {
+                    if (distanceSquared <= 5 * 5) {
 
                         armorStandList.add(bombGround.getCustomName());
                     }
@@ -244,18 +233,14 @@ public class Bombe implements Listener
 
                     if (!bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") && !bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇"))
                     {
-                        String itemName = item.getItemMeta().getDisplayName();
-
                         if (core.isRoundState(RoundInfo.START) || core.isRoundState(RoundInfo.PREPARATION))
                         {
-                            if (itemName != null && itemName.contains(bomb_name))
+                            if (!item.getItemMeta().getDisplayName().contains(bomb_name)) { return; }
+                            if (core.teams().getAttacker().contains(p))
                             {
-                                if (core.teams().getAttacker().contains(p))
-                                {
-                                    p.sendMessage("§7Vous avez récupéré: " + bomb_name);
-                                    get(p);
-                                    bombGround.remove();
-                                }
+                                p.sendMessage("§7Vous avez récupéré: " + bomb_name);
+                                get(p);
+                                bombGround.remove();
                             }
                         }
                     }
@@ -279,7 +264,7 @@ public class Bombe implements Listener
                                             if (bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lA §8⬇") || bombGround.getCustomName().equalsIgnoreCase("§8⬇ §fSite §c§lB §8⬇") || bombGround.getCustomName().equalsIgnoreCase("bomb.planted"))
                                             {
                                                 double distanceSquaredd = p.getLocation().distanceSquared(loc);
-                                                if (distanceSquaredd <= 2 * 2)
+                                                if (distanceSquaredd <= 5 * 5)
                                                 {
                                                     sendProgressBar(p, "Plantation de la bombe... ", t, plant_time);
                                                     if (t == 0)
@@ -345,6 +330,16 @@ public class Bombe implements Listener
                                                     sendProgressBar(p, "Désamorçage de la bombe... ", t, diffuse_time);
                                                     if (t == 0)
                                                     {
+                                                        for (Player pls : core.teams().getAttacker())
+                                                        {
+                                                            pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                                                            pls.sendTitle("§c✖ §cProtégez mieux la bombe ! §c✖", "§7Vous perdez la manche.");
+                                                        }
+                                                        for (Player pls : core.teams().getDefenser())
+                                                        {
+                                                            pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
+                                                            pls.sendTitle("§a✔ §aBeau désamorçage ! §a✔", "§7Vous remportez la manche.");
+                                                        }
                                                         core.pointsManager().addDefenserPoints();
                                                         core.setRoundState(RoundInfo.BOMBDIFUSE);
                                                         Game game = new Game();
@@ -380,50 +375,50 @@ public class Bombe implements Listener
     public void onItemSpawn(ItemSpawnEvent event) {
         // Récupérez la position où l'item a été largué
 
-        if (event.getEntity().getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(bomb_name))
-        {
-            new BukkitRunnable() {
-                int t = 0;
-                public void run() {
+        if (event.getEntity().getItemStack().getType() != Material.SKULL_ITEM) { return; }
+        if (event.getEntity().getItemStack().getItemMeta() == null) { return; }
+        if (!event.getEntity().getItemStack().getItemMeta().getDisplayName().contains(bomb_name)) { return; }
+        new BukkitRunnable() {
+            int t = 0;
+            public void run() {
 
-                    ++t;
-                    if (event.getEntity() != null)
+                ++t;
+                if (event.getEntity() != null)
+                {
+                    if (event.getEntity().isOnGround())
                     {
-                        if (event.getEntity().isOnGround())
-                        {
-                            String name = event.getEntity().getItemStack().getItemMeta().getDisplayName();
-                            double newx = event.getEntity().getLocation().getX();
-                            double newy = event.getEntity().getLocation().getY() -1.2;
-                            double newz = event.getEntity().getLocation().getZ();
-                            Location customloc = new Location(Bukkit.getWorld(event.getEntity().getWorld().getName()), newx, newy, newz);
-                            ArmorStand armorStand = (ArmorStand)Bukkit.getWorld(event.getEntity().getWorld().getName()).spawnEntity(customloc, EntityType.ARMOR_STAND);
-                            armorStand.setVisible(false);
-                            armorStand.setSmall(false);
-                            armorStand.setCanPickupItems(false);
-                            armorStand.setArms(true);
-                            armorStand.setCustomName(name);
-                            armorStand.setCustomNameVisible(true);
-                            armorStand.setGravity(false);
-                            armorStand.setBasePlate(false);
-                            armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
-                            armorStand.setItemInHand(event.getEntity().getItemStack());
-                            event.getEntity().remove();
-                            System.out.println("Bombe DROP à la position : X" + newx + ", Y" + newy + ", Z" + newz);
-                            cancel();
-                        }
-
-                    }
-                    else
-                    {
+                        String name = event.getEntity().getItemStack().getItemMeta().getDisplayName();
+                        double newx = event.getEntity().getLocation().getX();
+                        double newy = event.getEntity().getLocation().getY() -1.2;
+                        double newz = event.getEntity().getLocation().getZ();
+                        Location customloc = new Location(Bukkit.getWorld(event.getEntity().getWorld().getName()), newx, newy, newz);
+                        ArmorStand armorStand = (ArmorStand)Bukkit.getWorld(event.getEntity().getWorld().getName()).spawnEntity(customloc, EntityType.ARMOR_STAND);
+                        armorStand.setVisible(false);
+                        armorStand.setSmall(false);
+                        armorStand.setCanPickupItems(false);
+                        armorStand.setArms(true);
+                        armorStand.setCustomName(name);
+                        armorStand.setCustomNameVisible(true);
+                        armorStand.setGravity(false);
+                        armorStand.setBasePlate(false);
+                        armorStand.setRightArmPose(new EulerAngle(Math.toRadians(180.0), Math.toRadians(0.0), Math.toRadians(90.0)));
+                        armorStand.setItemInHand(event.getEntity().getItemStack());
+                        event.getEntity().remove();
+                        System.out.println("Bombe DROP à la position : X" + newx + ", Y" + newy + ", Z" + newz);
                         cancel();
                     }
 
-                    if (t == 1) {
-                        run();
-                    }
                 }
-            }.runTaskTimer((Plugin) core, 0L, 1L);
-        }
+                else
+                {
+                    cancel();
+                }
+
+                if (t == 1) {
+                    run();
+                }
+            }
+        }.runTaskTimer((Plugin) core, 0L, 1L);
     }
 
     public boolean isPlayerNearLocation(Player player, Location location, double distance) {

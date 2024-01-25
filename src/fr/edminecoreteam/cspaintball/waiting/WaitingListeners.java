@@ -43,28 +43,15 @@ public class WaitingListeners implements Listener
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
+    public void onInventoryClick(InventoryClickEvent e)
+    {
         if (e.getCurrentItem() == null) { return; }
 
         Player p = (Player)e.getWhoClicked();
         ItemStack it = e.getCurrentItem();
-        if (it.getType() == Material.BANNER && core.isState(State.WAITING)) {
-            e.setCancelled(true);
-            ChooseTeam teamGui = new ChooseTeam();
-            teamGui.gui(p);
-            p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
-        }
-    }
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
-        if (e.getItem() == null) { return; }
-
-        Player p = e.getPlayer();
-        Action a = e.getAction();
-        ItemStack it = e.getItem();
-        if (it.getType() == Material.BANNER && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)) {
-            if (core.isState(State.WAITING) || core.isState(State.STARTING))
+        if (it.getType() == Material.BANNER)
+        {
+            if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
             {
                 e.setCancelled(true);
                 ChooseTeam teamGui = new ChooseTeam();
@@ -75,8 +62,30 @@ public class WaitingListeners implements Listener
     }
 
     @EventHandler
-    private void onDrop(PlayerDropItemEvent e) {
-        if (core.isState(State.WAITING)) {
+    public void onInteract(PlayerInteractEvent e)
+    {
+        if (e.getItem() == null) { return; }
+
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        ItemStack it = e.getItem();
+        if (it.getType() == Material.BANNER && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK))
+        {
+            if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
+            {
+                e.setCancelled(true);
+                ChooseTeam teamGui = new ChooseTeam();
+                teamGui.gui(p);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+            }
+        }
+    }
+
+    @EventHandler
+    private void onDrop(PlayerDropItemEvent e)
+    {
+        if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
+        {
             e.setCancelled(true);
         }
     }
@@ -90,11 +99,12 @@ public class WaitingListeners implements Listener
             (float) core.getConfig().getDouble("spawn.t"));
 
     @EventHandler
-    private void onDamage(EntityDamageEvent e) {
-
+    private void onDamage(EntityDamageEvent e)
+    {
         if (e.getEntity().getType() == EntityType.PLAYER)
         {
-            if (core.isState(State.WAITING)) {
+            if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
+            {
                 e.setCancelled(true);
                 if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID))
                 {
@@ -106,11 +116,14 @@ public class WaitingListeners implements Listener
     }
 
     @EventHandler
-    private void onHungerBarChange(FoodLevelChangeEvent e) {
-        if (e.getEntityType() != EntityType.PLAYER) {
+    private void onHungerBarChange(FoodLevelChangeEvent e)
+    {
+        if (e.getEntityType() != EntityType.PLAYER)
+        {
             return;
         }
-        if (core.isState(State.WAITING)) {
+        if (core.isState(State.WAITING) || core.isState(State.STARTING) || core.isState(State.FINISH))
+        {
             e.setCancelled(true);
         }
     }
