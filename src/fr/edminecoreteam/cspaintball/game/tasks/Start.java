@@ -39,12 +39,12 @@ public class Start extends BukkitRunnable
                 for (Player pls : core.teams().getAttacker())
                 {
                     pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
-                    pls.sendTitle("§a✔ §aBien joué ! §a✔", "§7Vous remportez la manche.");
+                    pls.sendTitle("§aBien joué ! §a✔", "§7Vous remportez la manche.");
                 }
                 for (Player pls : core.teams().getDefenser())
                 {
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    pls.sendTitle("§c✖ §cReprenez-vous ! §c✖", "§7Vous perdez la manche.");
+                    pls.sendTitle("§cReprenez-vous ! §c✖", "§7Vous perdez la manche.");
                 }
                 core.pointsManager().addAttackerPoints();
                 core.setRoundState(RoundInfo.END);
@@ -61,12 +61,12 @@ public class Start extends BukkitRunnable
                 for (Player pls : core.teams().getAttacker())
                 {
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    pls.sendTitle("§c✖ §cOn n'aime pas ça ! §c✖", "§7Vous perdez la manche.");
+                    pls.sendTitle("§cOn n'aime pas ça ! §c✖", "§7Vous perdez la manche.");
                 }
                 for (Player pls : core.teams().getDefenser())
                 {
                     pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
-                    pls.sendTitle("§a✔ §aBeau travaille ! §a✔", "§7Vous remportez la manche.");
+                    pls.sendTitle("§aBeau travail ! §a✔", "§7Vous remportez la manche.");
                 }
                 core.pointsManager().addDefenserPoints();
                 core.setRoundState(RoundInfo.END);
@@ -83,7 +83,7 @@ public class Start extends BukkitRunnable
                 if (core.teams().getAttacker().contains(pls) || core.teams().getDefenser().contains(pls))
                 {
                     pls.getInventory().setItem(3, new ItemStack(0));
-                    pls.sendMessage("§6Période d'achat expiré.");
+                    pls.sendMessage("§6Période d'achat expirée.");
                     pls.closeInventory();
                 }
             }
@@ -128,12 +128,12 @@ public class Start extends BukkitRunnable
                 for (Player pls : core.teams().getAttacker())
                 {
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    pls.sendTitle("§c✖ §cOn n'aime pas ça ! §c✖", "§7Vous perdez la manche.");
+                    pls.sendTitle("§cOn n'aime pas ça ! §c✖", "§7Vous perdez la manche.");
                 }
                 for (Player pls : core.teams().getDefenser())
                 {
                     pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
-                    pls.sendTitle("§a✔ §aBeau travaille ! §a✔", "§7Vous remportez la manche.");
+                    pls.sendTitle("§aBeau travail ! §a✔", "§7Vous remportez la manche.");
                 }
                 core.setRoundState(RoundInfo.END);
                 core.pointsManager().addDefenserPoints();

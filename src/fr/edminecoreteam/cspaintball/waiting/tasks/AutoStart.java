@@ -134,6 +134,16 @@ public class AutoStart extends BukkitRunnable
             }
             Game game = new Game();
             game.preparationRound();
+            for (Player pls : core.teams().getAttacker())
+            {
+                pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
+                pls.sendTitle("§ePremière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine phase.");
+            }
+            for (Player pls : core.teams().getDefenser())
+            {
+                pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
+                pls.sendTitle("§ePremière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine phase.");
+            }
             cancel();
         }
 

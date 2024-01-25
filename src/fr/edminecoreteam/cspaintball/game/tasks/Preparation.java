@@ -25,7 +25,7 @@ public class Preparation extends BukkitRunnable
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
             pls.setLevel(timer);
-            if (timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {
+            if (timer <= 15 && timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {
                 pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
             }
         }

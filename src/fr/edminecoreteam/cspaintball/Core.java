@@ -1,10 +1,12 @@
 package fr.edminecoreteam.cspaintball;
 
 import fr.edminecoreteam.cspaintball.game.GameListeners;
+import fr.edminecoreteam.cspaintball.game.displayname.ChatTeam;
 import fr.edminecoreteam.cspaintball.game.displayname.TabListTeams;
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPompes;
+import fr.edminecoreteam.cspaintball.game.pauses.Pauses;
 import fr.edminecoreteam.cspaintball.game.points.PointsManager;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundManager;
@@ -47,6 +49,7 @@ public class Core extends JavaPlugin
     private ScheduledExecutorService executorMonoThread;
     private ScheduledExecutorService scheduledExecutorService;
     private Teams teams;
+    private Pauses pauses;
     private WeaponsMap weaponsMap;
     public TitleBuilder title;
     private List<String> playersInGame;
@@ -92,6 +95,7 @@ public class Core extends JavaPlugin
     private void loadListeners()
     {
         this.teams = new Teams();
+        this.pauses = new Pauses();
         this.title = new TitleBuilder();
         this.pointsManager = new PointsManager();
         this.roundManager = new RoundManager();
@@ -108,6 +112,7 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPompes(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new TabListTeams(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new ChatTeam(), (Plugin)this);
     }
 
     private void loadWeapons()
@@ -157,6 +162,7 @@ public class Core extends JavaPlugin
     public RoundManager roundManager() { return this.roundManager; }
     public PointsManager pointsManager() { return this.pointsManager; }
     public Teams teams() { return this.teams; }
+    public Pauses pauses() { return this.pauses; }
 
     public int getMaxplayers() { return this.maxplayers; }
 

@@ -48,15 +48,67 @@ public class Game
         {
             rounds = core.getConfig().getInt("timers.rounds-short");
             finalrounds = rounds * 2;
-            if (core.roundManager().getRound() == rounds) { core.getServer().broadcastMessage("§6§l⚠ §7Vous changerez d'équipe à la prochaine manche."); }
-            if (core.roundManager().getRound() == finalrounds) { core.getServer().broadcastMessage("§6§l⚠ §7La partie s'arrête à la fin de cette manche."); }
+            if (core.roundManager().getRound() == rounds)
+            {
+                core.getServer().broadcastMessage("§6§l⚠ §7Vous changerez d'équipe à la prochaine manche.");
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine manche.");
+                }
+            }
+            if (core.roundManager().getRound() == finalrounds)
+            {
+                core.getServer().broadcastMessage("§6§l⚠ §7La partie s'arrête à la fin de cette manche.");
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la seconde phase.", "§7La partie s'arrête à la fin de cette manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la seconde phase.", "§7La partie s'arrête à la fin de cette manche.");
+                }
+            }
         }
         if (core.getConfig().getString("time").equalsIgnoreCase("long"))
         {
             rounds = core.getConfig().getInt("timers.rounds-long");
             finalrounds = rounds * 2;
-            if (core.roundManager().getRound() == rounds) { core.getServer().broadcastMessage("§6§l⚠ §7Vous changerez d'équipe à la prochaine manche."); }
-            if (core.roundManager().getRound() == finalrounds) { core.getServer().broadcastMessage("§6§l⚠ §7La partie s'arrête à la fin de cette manche."); }
+            if (core.roundManager().getRound() == rounds)
+            {
+                core.getServer().broadcastMessage("§6§l⚠ §7Vous changerez d'équipe à la prochaine manche.");
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine manche.");
+                }
+            }
+            if (core.roundManager().getRound() == finalrounds)
+            {
+                core.getServer().broadcastMessage("§6§l⚠ §7La partie s'arrête à la fin de cette manche.");
+                for (Player pls : core.teams().getAttacker())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la seconde phase.", "§7La partie s'arrête à la fin de cette manche.");
+                }
+                for (Player pls : core.teams().getDefenser())
+                {
+                    pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+                    pls.sendTitle("§eDernière manche de la seconde phase.", "§7La partie s'arrête à la fin de cette manche.");
+                }
+            }
         }
 
         for (Player attackers : core.teams().getAttacker())
@@ -109,12 +161,12 @@ public class Game
         for (Player pls : core.teams().getAttacker())
         {
             pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
-            pls.sendTitle("§dGO GO GO!", "§7OBJECTIF: Planté/Protégé la bombe.");
+            pls.sendTitle("§dGO GO GO!", "§7OBJECTIF: Planter/Protéger la bombe.");
         }
         for (Player pls : core.teams().getDefenser())
         {
             pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
-            pls.sendTitle("§dN'oubliez pas l'objectif !", "§7OBJECTIF: Protégé sites bombes.");
+            pls.sendTitle("§dN'oubliez pas l'objectif !", "§7OBJECTIF: Protéger les sites.");
         }
         Start start = new Start(core);
         start.runTaskTimer((Plugin) core, 0L, 20L);

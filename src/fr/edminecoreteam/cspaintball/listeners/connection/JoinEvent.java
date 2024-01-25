@@ -2,6 +2,10 @@ package fr.edminecoreteam.cspaintball.listeners.connection;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
+import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.spec.AttackerSpec;
+import fr.edminecoreteam.cspaintball.game.spec.DefenserSpec;
+import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.waiting.tasks.AutoStart;
 import org.bukkit.Bukkit;
@@ -27,12 +31,26 @@ public class JoinEvent implements Listener
             (float) core.getConfig().getDouble("spawn.f"),
             (float) core.getConfig().getDouble("spawn.t"));
 
+    private final Location attackerSpawn = new Location(Bukkit.getWorld("game"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".attacker.x"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".attacker.y"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".attacker.z"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".attacker.f"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".attacker.t"));
+
+    private final Location defenserSpawn = new Location(Bukkit.getWorld("game"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".defenser.x"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".defenser.y"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".defenser.z"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".defenser.f"),
+            (float) core.getConfig().getDouble("maps." + core.world + ".defenser.t"));
+
     @EventHandler
     public void event(PlayerJoinEvent e)
     {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
-        if (core.isState(State.WAITING))
+        if (core.isState(State.WAITING) || core.isState(State.STARTING))
         {
             if (core.getPlayersInGame().size() == core.getMaxplayers())
             {
@@ -67,6 +85,58 @@ public class JoinEvent implements Listener
                         start.runTaskTimer((Plugin) core, 0L, 20L);
                     }
                 }
+            }
+        }
+        if (core.isState(State.INGAME))
+        {
+            if (core.pauses().getAttackerWait().contains(p.getName()))
+            {
+                core.pauses().desactivePause();
+                core.pauses().getAttackerWait().remove(p.getName());
+                core.teams().getAttacker().add(p);
+                if (core.isRoundState(RoundInfo.PREPARATION))
+                {
+                    if (core.timers > 15)
+                    {
+                        core.timers = 15;
+                    }
+                    p.teleport(attackerSpawn);
+                    TeamsKit kit = new TeamsKit();
+                    kit.equipDefault(p);
+                }
+                else
+                {
+                    core.teams().getAttackerDeath().add(p);
+                    AttackerSpec attackerSpec = new AttackerSpec();
+                    attackerSpec.setSpec(p);
+                }
+            }
+            if (core.pauses().getDefenserWait().contains(p.getName()))
+            {
+                core.pauses().desactivePause();
+                core.pauses().getDefenserWait().remove(p.getName());
+                core.teams().getDefenser().add(p);
+                if (core.isRoundState(RoundInfo.PREPARATION))
+                {
+                    if (core.timers > 15)
+                    {
+                        core.timers = 15;
+                    }
+                    p.teleport(defenserSpawn);
+                    TeamsKit kit = new TeamsKit();
+                    kit.equipDefault(p);
+                }
+                else
+                {
+                    core.teams().getDefenserDeath().add(p);
+                    DefenserSpec defenserSpec = new DefenserSpec();
+                    defenserSpec.setSpec(p);
+                }
+            }
+
+            if (!core.pauses().getAttackerWait().contains(p.getName()) || !core.pauses().getDefenserWait().contains(p.getName()))
+            {
+                //a remplir
             }
         }
     }
