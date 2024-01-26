@@ -2,6 +2,7 @@ package fr.edminecoreteam.cspaintball.listeners.connection;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
+import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -70,6 +71,16 @@ public class LeaveEvent implements Listener
                 {
                     core.teams().getDefenserDeath().remove(p);
                 }
+            }
+
+            core.weaponsMap().getMap().get(p).remove(p);
+
+            if (core.teams().getAttacker().size() == 0 || core.teams().getDefenser().size() == 0)
+            {
+                Game game = new Game();
+                game.endGame();
+                game.endGame();
+                return;
             }
 
             final boolean[] finalIsLeaveInPreparation = {isLeaveInPreparation};
