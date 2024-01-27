@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball;
 
 import fr.edminecoreteam.cspaintball.game.GameListeners;
+import fr.edminecoreteam.cspaintball.game.SpawnListeners;
 import fr.edminecoreteam.cspaintball.game.displayname.ChatTeam;
 import fr.edminecoreteam.cspaintball.game.displayname.TabListTeams;
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
@@ -10,6 +11,8 @@ import fr.edminecoreteam.cspaintball.game.pauses.Pauses;
 import fr.edminecoreteam.cspaintball.game.points.PointsManager;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundManager;
+import fr.edminecoreteam.cspaintball.game.spec.AttackerSpec;
+import fr.edminecoreteam.cspaintball.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.game.teams.Teams;
 import fr.edminecoreteam.cspaintball.game.utils.LoadWorld;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
@@ -61,6 +64,12 @@ public class Core extends JavaPlugin
     public boolean isForceStart = false;
 
     public int timers;
+
+    private DefenserSpec defenserSpec;
+    private AttackerSpec attackerSpec;
+
+    private SpawnListeners spawnListeners;
+
     public int timers(int i) { this.timers = i; return i; }
 
 
@@ -96,9 +105,12 @@ public class Core extends JavaPlugin
     {
         this.teams = new Teams();
         this.pauses = new Pauses();
+        this.spawnListeners = new SpawnListeners();
         this.title = new TitleBuilder();
         this.pointsManager = new PointsManager();
         this.roundManager = new RoundManager();
+        this.attackerSpec = new AttackerSpec();
+        this.defenserSpec = new DefenserSpec();
         Bukkit.getPluginManager().registerEvents((Listener) new JoinEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new LeaveEvent(), (Plugin)this);
 
@@ -106,6 +118,9 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new ChooseTeam(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new GameListeners(), (Plugin)this);
+
+        Bukkit.getPluginManager().registerEvents((Listener) new AttackerSpec(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new DefenserSpec(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new BuyMenu(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPistolets(), (Plugin)this);
@@ -163,8 +178,13 @@ public class Core extends JavaPlugin
     public PointsManager pointsManager() { return this.pointsManager; }
     public Teams teams() { return this.teams; }
     public Pauses pauses() { return this.pauses; }
+    public AttackerSpec attackerSpec() { return this.attackerSpec; }
+    public DefenserSpec defenserSpec() { return this.defenserSpec; }
+
+    public SpawnListeners spawnListeners() { return this.spawnListeners; }
 
     public int getMaxplayers() { return this.maxplayers; }
+
 
     public void setState(State state) {
         this.state = state;

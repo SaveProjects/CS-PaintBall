@@ -4,18 +4,28 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class LeaveEvent implements Listener
 {
     private final static Core core = Core.getInstance();
+
+    private ItemStack haveBomb(Player player, String customName)
+    { GameUtils u = new GameUtils(); return u.haveBomb(player, customName); }
+
     @EventHandler
     public void event(PlayerQuitEvent e)
     {
@@ -52,6 +62,13 @@ public class LeaveEvent implements Listener
 
             if (core.teams().getAttacker().contains(p))
             {
+                if (haveBomb(p, "§fBombe §c§lC4") != null)
+                {
+                    ItemStack bomb = haveBomb(p, "§fBombe §c§lC4");
+
+                    p.getWorld().dropItem(p.getLocation(), bomb);
+                    p.getInventory().remove(bomb);
+                }
                 core.getServer().broadcastMessage("§c§lATTAQ. §c" + p.getName() + "§7 a quitté le jeu, il peut revenir à tout moment...");
                 core.getServer().broadcastMessage("§6⚠ Un arrêt technique sera appliqué a la prochaine manche si " + p.getName() + " §6ne se reconnecte pas.");
                 core.pauses().getAttackerWait().add(p.getName());
@@ -111,7 +128,7 @@ public class LeaveEvent implements Listener
                             {
                                 cancel();
                             }
-                            else
+                            else if (core.timers <= 15)
                             {
                                 int newtimers = core.timers + 90;
                                 core.timers = newtimers;

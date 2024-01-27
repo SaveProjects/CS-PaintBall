@@ -24,7 +24,6 @@ public class TabListTeams implements Listener
 	private void refreshTablist(Player p) {
 		
 		new BukkitRunnable() {
-            int t = 0;   
 	        public void run() {
 	        	
 	        	if (!p.isOnline()) { cancel(); }
@@ -40,51 +39,33 @@ public class TabListTeams implements Listener
 					if (core.teams().getDefenser().contains(p))
 					{
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), Teams.powerToTeam(3).getSuffix());
-						revealPlayerName(p);
 					}
 					if (core.teams().getAttacker().contains(p))
 					{
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), Teams.powerToTeam(2).getSuffix());
-						revealPlayerName(p);
 					}
 				}
 
-				if (core.isState(State.INGAME))
-				{
-					if (!core.teams().getDefenser().contains(p) && !core.teams().getAttacker().contains(p))
-					{
-						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(1).getOrderTeam(), Teams.powerToTeam(1).getDisplayName(), Teams.powerToTeam(1).getSuffix());
-					}
-
-					if (core.teams().getDefenser().contains(p))
-					{
-						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), Teams.powerToTeam(3).getSuffix());
-						hidePlayerName(p);
-					}
-					if (core.teams().getAttacker().contains(p))
-					{
-						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), Teams.powerToTeam(2).getSuffix());
-						hidePlayerName(p);
-					}
-				}
-
-
-		        
-		        ++t;
-                if (t == 50) {
-                    run();
-                }
             }
         }.runTaskTimer((Plugin)core, 0L, 50L);
 	}
 
-	private void hidePlayerName(Player p) {
-		p.setCustomNameVisible(false);
-		p.setCustomName("");
-	}
+	public void refreshGamePlayerTag(Player p) {
+		if (!core.teams().getDefenser().contains(p) && !core.teams().getAttacker().contains(p))
+		{
+			TeamsTagsManager.setNameTag(p, Teams.powerToTeam(1).getOrderTeam(), Teams.powerToTeam(1).getDisplayName(), "");
+		}
 
-	private void revealPlayerName(Player p) {
-		p.setCustomNameVisible(true);
-		p.setCustomName(p.getName());
+		if (core.teams().getDefenser().contains(p))
+		{
+			TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), "");
+		}
+		if (core.teams().getAttacker().contains(p))
+		{
+			TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), "");
+		}
+
+		p.setCustomName("§r");
+		p.setCustomNameVisible(false);
 	}
 }

@@ -6,10 +6,9 @@ import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.spec.AttackerSpec;
 import fr.edminecoreteam.cspaintball.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -20,17 +19,14 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 public class GameListeners implements Listener
 {
     private static Core core = Core.getInstance();
 
-
-
+    private ItemStack haveBomb(Player player, String customName)
+    { GameUtils u = new GameUtils(); return u.haveBomb(player, customName); }
     @EventHandler
     public void onMove(PlayerMoveEvent e)
     {
@@ -42,35 +38,12 @@ public class GameListeners implements Listener
                 return;
             }
 
-            Location attackerSpawn = new Location(Bukkit.getWorld(p.getWorld().getName()),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.x"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.y"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.z"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.f"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".attacker.t"));
+            Location playerLocation = core.spawnListeners().getPlayerLocation(p);
+            Location pLoc = p.getLocation();
 
-            Location defenserSpawn = new Location(Bukkit.getWorld(p.getWorld().getName()),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.x"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.y"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.z"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.f"),
-                    (float) core.getConfig().getDouble("maps." + core.world + ".defenser.t"));
-
-            if (core.teams().getAttacker().contains(p))
+            if (playerLocation.getX() != pLoc.getX() || playerLocation.getY() != pLoc.getY() || playerLocation.getZ() != pLoc.getZ())
             {
-                Location pLoc = p.getLocation();
-                if (attackerSpawn.getX() != pLoc.getX() || attackerSpawn.getY() != pLoc.getY() || attackerSpawn.getZ() != pLoc.getZ())
-                {
-                    p.teleport(attackerSpawn);
-                }
-            }
-            if (core.teams().getDefenser().contains(p))
-            {
-                Location pLoc = p.getLocation();
-                if (defenserSpawn.getX() != pLoc.getX() || defenserSpawn.getY() != pLoc.getY() || defenserSpawn.getZ() != pLoc.getZ())
-                {
-                    p.teleport(defenserSpawn);
-                }
+                p.teleport(playerLocation);
             }
         }
     }
@@ -215,27 +188,6 @@ public class GameListeners implements Listener
                 }
             }
         }
-    }
-
-    public ItemStack haveBomb(Player player, String customName)
-    {
-        Inventory playerInventory = player.getInventory();
-        for (ItemStack item : playerInventory.getContents())
-        {
-            if (item != null && item.getType() == Material.SKULL_ITEM)
-            {
-                ItemMeta meta = item.getItemMeta();
-                if (meta instanceof SkullMeta)
-                {
-                    SkullMeta skullMeta = (SkullMeta) meta;
-                    if (skullMeta.hasDisplayName() && skullMeta.getDisplayName().equals(customName))
-                    {
-                        return item;
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     @EventHandler

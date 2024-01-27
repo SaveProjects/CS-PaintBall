@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball.waiting.tasks;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
+import fr.edminecoreteam.cspaintball.game.displayname.HideNameTag;
 import fr.edminecoreteam.cspaintball.game.tasks.GunOrderChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;

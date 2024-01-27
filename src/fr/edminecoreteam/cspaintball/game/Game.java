@@ -3,17 +3,21 @@ package fr.edminecoreteam.cspaintball.game;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.end.EndListeners;
+import fr.edminecoreteam.cspaintball.game.displayname.HideNameTag;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.tasks.End;
 import fr.edminecoreteam.cspaintball.game.tasks.Preparation;
 import fr.edminecoreteam.cspaintball.game.tasks.Start;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import fr.edminecoreteam.cspaintball.game.utils.LoadHolograms;
+import fr.edminecoreteam.cspaintball.game.utils.TeleportUtils;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -37,6 +41,9 @@ public class Game
             (float) core.getConfig().getDouble("maps." + core.world + ".defenser.z"),
             (float) core.getConfig().getDouble("maps." + core.world + ".defenser.f"),
             (float) core.getConfig().getDouble("maps." + core.world + ".defenser.t"));
+
+    private ItemStack haveBomb(Player player, String customName)
+    { GameUtils u = new GameUtils(); return u.haveBomb(player, customName); }
 
     public void preparationRound()
     {
@@ -113,7 +120,16 @@ public class Game
 
         for (Player attackers : core.teams().getAttacker())
         {
-            attackers.teleport(attackerSpawn);
+            TeleportUtils teleportUtils = new TeleportUtils();
+            teleportUtils.teleportPlayer(attackers, attackerSpawn);
+            attackers.setFlying(false);
+            if (haveBomb(attackers, "§fBombe §c§lC4") != null)
+            {
+                ItemStack bomb = haveBomb(attackers, "§fBombe §c§lC4");
+
+                attackers.getInventory().remove(bomb);
+            }
+
             if (core.teams().getAttackerDeath().contains(attackers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -132,7 +148,9 @@ public class Game
 
         for (Player defensers : core.teams().getDefenser())
         {
-            defensers.teleport(defenserSpawn);
+            TeleportUtils teleportUtils = new TeleportUtils();
+            teleportUtils.teleportPlayer(defensers, defenserSpawn);
+            defensers.setFlying(false);
             if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -150,6 +168,11 @@ public class Game
         }
         Bombe bomb = new Bombe();
         bomb.getRandom();
+        for (Player pls : core.getServer().getOnlinePlayers())
+        {
+            GameUtils gameUtils = new GameUtils();
+            gameUtils.showAllPlayers(pls);
+        }
         Preparation preparation = new Preparation(core);
         preparation.runTaskTimer((Plugin) core, 0L, 20L);
     }

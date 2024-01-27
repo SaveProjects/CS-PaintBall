@@ -9,17 +9,19 @@ import org.bukkit.entity.EntityType;
 public class LoadHolograms
 {
     private static Core core = Core.getInstance();
+
+    float A_x = (float) core.getConfig().getDouble("maps." + core.world + ".a.x");
+    float A_y = (float) core.getConfig().getDouble("maps." + core.world + ".a.y") + 3.5f;
+    float newAY = A_y - 0.3f;
+    float A_z = (float) core.getConfig().getDouble("maps." + core.world + ".a.z");
+
+    float B_x = (float) core.getConfig().getDouble("maps." + core.world + ".b.x");
+    float B_y = (float) core.getConfig().getDouble("maps." + core.world + ".b.y") + 3.5f;
+    float newBY = B_y - 0.3f;
+    float B_z = (float) core.getConfig().getDouble("maps." + core.world + ".b.z");
+
     public void init()
     {
-        float A_x = (float) core.getConfig().getDouble("maps." + core.world + ".a.x");
-        float A_y = (float) core.getConfig().getDouble("maps." + core.world + ".a.y") + 3.5f;
-        double newAY = A_y - 0.3;
-        float A_z = (float) core.getConfig().getDouble("maps." + core.world + ".a.z");
-
-        double B_x = (float) core.getConfig().getDouble("maps." + core.world + ".b.x");
-        double B_y = (float) core.getConfig().getDouble("maps." + core.world + ".b.y") + 3.5f;
-        double newBY = B_y - 0.3;
-        double B_z = (float) core.getConfig().getDouble("maps." + core.world + ".b.z");
 
         Location customlocA = new Location(Bukkit.getWorld("game"), A_x, A_y, A_z);
         ArmorStand armorStandA = (ArmorStand)Bukkit.getWorld("game").spawnEntity(customlocA, EntityType.ARMOR_STAND);
@@ -35,7 +37,7 @@ public class LoadHolograms
         armorStandB.setSmall(true);
         armorStandB.setCustomName("§8⬇ §fSite §c§lB §8⬇");
         armorStandB.setCustomNameVisible(true);
-        armorStandA.setGravity(false);
+        armorStandB.setGravity(false);
 
         Location secondLocA = new Location(Bukkit.getWorld("game"), A_x, newAY, A_z);
         ArmorStand secondArmorStandA = (ArmorStand)Bukkit.getWorld("game").spawnEntity(secondLocA, EntityType.ARMOR_STAND);
