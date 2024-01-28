@@ -5,6 +5,7 @@ import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.tasks.BombPlanted;
 import fr.edminecoreteam.cspaintball.utils.SkullNBT;
+import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -134,6 +135,11 @@ public class Bombe implements Listener
                                                             core.setRoundState(RoundInfo.BOMBPLANTED);
                                                             BombPlanted bombPlanted = new BombPlanted(core, customloc);
                                                             bombPlanted.runTaskTimer((Plugin) core, 0L, 20L);
+
+                                                            int shortRound = core.getConfig().getInt("timers.rounds-short");
+                                                            int shortFinalRound = shortRound * 2;
+                                                            int longRound = core.getConfig().getInt("timers.rounds-long");
+                                                            int longFinalRound = longRound * 2;
                                                             for (Player pls : core.teams().getAttacker())
                                                             {
                                                                 pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
@@ -143,6 +149,18 @@ public class Bombe implements Listener
                                                             {
                                                                 pls.playSound(pls.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
                                                                 pls.sendTitle("", "§cBombe C4 plantée !");
+                                                            }
+
+                                                            for (Player pls : core.getServer().getOnlinePlayers())
+                                                            {
+                                                                if (core.getConfig().getString("time").equalsIgnoreCase("long"))
+                                                                {
+                                                                    BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + longFinalRound + " §8▏ §6Bombe plantée !", core.getConfig().getInt("timers.bomb"));
+                                                                }
+                                                                if (core.getConfig().getString("time").equalsIgnoreCase("short"))
+                                                                {
+                                                                    BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + shortFinalRound + " §8▏ §6Bombe plantée !", core.getConfig().getInt("timers.bomb"));
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -188,7 +206,10 @@ public class Bombe implements Listener
             if (armorStandList.contains("bomb.planted")) {
                 if (core.isRoundState(RoundInfo.BOMBPLANTED)) {
                     int diffuse_time = core.getConfig().getInt("timers.diffuse");
-
+                    int shortRound = core.getConfig().getInt("timers.rounds-short");
+                    int shortFinalRound = shortRound * 2;
+                    int longRound = core.getConfig().getInt("timers.rounds-long");
+                    int longFinalRound = longRound * 2;
                     new BukkitRunnable() {
                         int t = diffuse_time;
 
@@ -212,6 +233,17 @@ public class Bombe implements Listener
                                             {
                                                 pls.playSound(pls.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 1.0f);
                                                 pls.sendTitle("§aBeau travail ! §a✔", "§7Vous remportez la manche.");
+                                            }
+                                            for (Player pls : core.getServer().getOnlinePlayers())
+                                            {
+                                                if (core.getConfig().getString("time").equalsIgnoreCase("long"))
+                                                {
+                                                    BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + longFinalRound, 6);
+                                                }
+                                                if (core.getConfig().getString("time").equalsIgnoreCase("short"))
+                                                {
+                                                    BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + shortFinalRound, 6);
+                                                }
                                             }
                                             cancel();
                                         }

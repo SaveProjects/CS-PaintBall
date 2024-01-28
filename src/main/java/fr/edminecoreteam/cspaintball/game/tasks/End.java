@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.game.tasks;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Bukkit;
@@ -23,8 +24,8 @@ public class End extends BukkitRunnable
 
     public void run()
     {
+        if (!core.isState(State.INGAME)) { cancel(); }
         if (!core.isRoundState(RoundInfo.END) && !core.isRoundState(RoundInfo.BOMBEXPLODE) && !core.isRoundState(RoundInfo.BOMBDIFUSE)) { cancel(); }
-
         core.timers(timer);
 
 

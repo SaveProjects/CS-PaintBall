@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.game.tasks;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
@@ -22,6 +23,7 @@ public class Preparation extends BukkitRunnable
 
     public void run()
     {
+        if (!core.isState(State.INGAME)) { cancel(); }
         core.timers(timer);
 
         for (Player pls : core.getServer().getOnlinePlayers()) {

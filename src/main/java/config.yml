@@ -1,0 +1,122 @@
+#
+# Fichier configuration de jeux par Edmine Network.
+# Dev: N12cf
+# Version: 0.1
+#
+
+# MySQL.
+mysql:
+  host: '45.140.165.235'
+  database: '22728-database'
+  user: '22728-database'
+  password: 'S5bV5su4p9'
+
+# Type de match (ranked, unranked).
+type: 'ranked'
+
+# Type de partie (long, short).
+time: 'short'
+
+# Nombre de joueurs demandés pour lancer.
+needtostart: 8
+
+# Gestion des équipes.
+teams:
+  attacker:
+    players: 5
+  defenser:
+    players: 5
+
+coins:
+  start: 800
+  round: 1900
+  win: 2900
+  playerleave: 1000
+  kill: 300
+  bomb: 300
+  diffuse: 1900
+
+# Définir les timers du jeu.
+timers:
+  rounds-short: 8
+  rounds-long: 15
+  start: 60
+  startfull: 10
+  round: 140
+  planting-bomb: 4
+  bomb: 40
+  diffuse: 8
+  diffuse-kit: 4
+  waitleave: 90
+
+# Spawn du lobby principal.
+spawn:
+  world: 'hub'
+  x: 2.5
+  y: 31.0
+  z: 0.5
+  f: -90.5
+  t: -4.0
+
+#
+# Liste des variables (accens, informations, emojies):
+# Accens (alphabet):
+# - {e1} = é, {e2} = è, {e3} = ê, {i1} = î, {a1} = à, {a2} = â, {o1} ô.
+#
+# Emojies:
+# - {love} = ❤, {valide} = ✔, {unvalid} = ✘, {flocon} = ✵, {eclats} = ❁, {money} = ✪,
+# {star} = ✯, {right} = ➡, {left} = ⬅, {up} = ⬆, {down} = ⬇, {right_select} = ➟,
+# {alert} = ⚠, {separator} = », {euro} = €.
+#
+# Jeux:
+# {timer} {timerminute}
+#
+
+# Dragon Bar
+dragonbar:
+  game:
+    attacker:
+      starting: '&7Temps de pr{e1}paration: &b{timer}s'
+      round: '&7Temps restant: &e{timerminute}'
+      bomb-planted: '&6{alert} &7Bombe plant{e1}e: &c{timer}s &6{alert}'
+      bomb-explode: '&a{valide} &7Bombe explos{e1}e ! &a{valide}'
+      bomb-difuse: '&c{unvalid} &7Bombe d{e1}samorcer ! &c{unvalid}'
+      bomb-no-planted: '&c{unvalid} &7Bombe non plant{e1}e ! &c{unvalid}'
+    defenser:
+      starting: '&7Temps de pr{e1}paration: &b{timer}s'
+      round: '&7Temps restant: &e{timerminute}'
+      bomb-planted: '&6{alert} &7Bombe plant{e1}e: &c{timer}s &6{alert}'
+      bomb-explode: '&c{unvalid} &7Bombe explos{e1}e ! &c{unvalid}'
+      bomb-difuse: '&a{valide} &7Bombe d{e1}samorcer ! &a{valide}'
+      bomb-no-planted: '&a{valide} &7Bombe non plant{e1}e ! &a{valide}'
+
+# Gestion des cartes.
+# Ajouté 3 blocs de plus sur l'axe Y de site A et B.
+maps:
+  italy:
+    spec:
+      x: -0.5
+      y: 100.0
+      z: -52.5
+      f: -0.5
+      t: 30.0
+    attacker:
+      x: -56.5
+      y: 70.0
+      z: -21.5
+      f: -90.5
+      t: -3
+    defenser:
+      x: 53.5
+      y: 71.0
+      z: -2.5
+      f: -180.0
+      t: -0
+    a:
+      x: 1071.5
+      y: 70.0
+      z: 920.5
+    b:
+      x: 1023.5
+      y: 68.0
+      z: 918.5

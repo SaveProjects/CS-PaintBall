@@ -45,27 +45,24 @@ public class TabListTeams implements Listener
 						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), Teams.powerToTeam(2).getSuffix());
 					}
 				}
+				if (core.isState(State.INGAME))
+				{
+					if (!core.teams().getDefenser().contains(p) && !core.teams().getAttacker().contains(p))
+					{
+						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(1).getOrderTeam(), Teams.powerToTeam(1).getDisplayName(), "");
+					}
+
+					if (core.teams().getDefenser().contains(p))
+					{
+						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), "");
+					}
+					if (core.teams().getAttacker().contains(p))
+					{
+						TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), "");
+					}
+				}
 
             }
         }.runTaskTimer((Plugin)core, 0L, 50L);
-	}
-
-	public void refreshGamePlayerTag(Player p) {
-		if (!core.teams().getDefenser().contains(p) && !core.teams().getAttacker().contains(p))
-		{
-			TeamsTagsManager.setNameTag(p, Teams.powerToTeam(1).getOrderTeam(), Teams.powerToTeam(1).getDisplayName(), "");
-		}
-
-		if (core.teams().getDefenser().contains(p))
-		{
-			TeamsTagsManager.setNameTag(p, Teams.powerToTeam(3).getOrderTeam(), Teams.powerToTeam(3).getDisplayName(), "");
-		}
-		if (core.teams().getAttacker().contains(p))
-		{
-			TeamsTagsManager.setNameTag(p, Teams.powerToTeam(2).getOrderTeam(), Teams.powerToTeam(2).getDisplayName(), "");
-		}
-
-		p.setCustomName("§r");
-		p.setCustomNameVisible(false);
 	}
 }

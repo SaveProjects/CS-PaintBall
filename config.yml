@@ -44,7 +44,7 @@ timers:
   startfull: 10
   round: 140
   planting-bomb: 4
-  bomb: 45
+  bomb: 40
   diffuse: 8
   diffuse-kit: 4
   waitleave: 90

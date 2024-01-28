@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -31,6 +32,7 @@ public class TeamsTagsManager
         TeamsTagsManager.scoreboard = current;
         this.team.setCanSeeFriendlyInvisibles(true);
         this.team.setAllowFriendlyFire(true);
+        this.team.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
         int prefixLength = 0;
         int suffixLength = 0;
         if (prefix != null) {

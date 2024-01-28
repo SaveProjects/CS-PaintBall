@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package fr.edminecoreteam.cspaintball.utils;
 
 import net.minecraft.server.v1_8_R3.*;

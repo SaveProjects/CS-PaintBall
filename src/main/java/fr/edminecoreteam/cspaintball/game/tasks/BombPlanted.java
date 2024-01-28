@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.game.tasks;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Location;
@@ -27,6 +28,7 @@ public class BombPlanted extends BukkitRunnable
     public void run()
     {
 
+        if (!core.isState(State.INGAME)) { cancel(); }
         if (!core.isRoundState(RoundInfo.BOMBPLANTED)) { cancel(); }
 
         core.timers(timer);
