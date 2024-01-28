@@ -7,6 +7,7 @@ import fr.edminecoreteam.cspaintball.game.spec.AttackerSpec;
 import fr.edminecoreteam.cspaintball.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
+import fr.edminecoreteam.cspaintball.game.utils.animations.NPC;
 import fr.edminecoreteam.cspaintball.game.weapons.Weapons;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -124,6 +125,7 @@ public class GameListeners implements Listener
 
                     if (core.teams().getAttacker().contains(victim))
                     {
+                        e.setDeathMessage("§9" + attacker.getName() + " §f➡ ☠ §c" + victim.getName());
                         if (haveBomb(victim, "§fBombe §c§lC4") != null)
                         {
                             ItemStack bomb = haveBomb(victim, "§fBombe §c§lC4");
@@ -133,25 +135,22 @@ public class GameListeners implements Listener
                         }
                         Weapons weapons = new Weapons(victim);
                         weapons.deathCheck();
-                        AttackerSpec spec = new AttackerSpec();
-                        spec.setSpec(victim);
                         core.teams().getAttackerDeath().add(victim);
                         victim.spigot().respawn();
-                        e.setDeathMessage("§9" + attacker.getName() + " §f➡ ☠ §c" + victim.getName());
+                        AttackerSpec spec = new AttackerSpec();
+                        spec.setSpec(victim);
                         attacker.playSound(attacker.getLocation(), Sound.VILLAGER_YES, 1.0f, 5.0f);
-                        return;
                     }
                     if (core.teams().getDefenser().contains(victim))
                     {
+                        e.setDeathMessage("§c" + attacker.getName() + " §f➡ ☠ §9" + victim.getName());
                         Weapons weapons = new Weapons(victim);
                         weapons.deathCheck();
-                        DefenserSpec spec = new DefenserSpec();
-                        spec.setSpec(victim);
                         core.teams().getDefenserDeath().add(victim);
                         victim.spigot().respawn();
-                        e.setDeathMessage("§c" + attacker.getName() + " §f➡ ☠ §9" + victim.getName());
+                        DefenserSpec spec = new DefenserSpec();
+                        spec.setSpec(victim);
                         attacker.playSound(attacker.getLocation(), Sound.VILLAGER_YES, 1.0f, 5.0f);
-                        return;
                     }
                 }
             }
@@ -159,6 +158,7 @@ public class GameListeners implements Listener
             {
                 if (core.teams().getAttacker().contains(victim))
                 {
+                    e.setDeathMessage("§f☠ §c" + victim.getName());
                     if (haveBomb(victim, "§fBombe §c§lC4") != null)
                     {
                         ItemStack bomb = haveBomb(victim, "§fBombe §c§lC4");
@@ -168,23 +168,20 @@ public class GameListeners implements Listener
                     }
                     Weapons weapons = new Weapons(victim);
                     weapons.deathCheck();
-                    AttackerSpec spec = new AttackerSpec();
-                    spec.setSpec(victim);
                     core.teams().getAttackerDeath().add(victim);
                     victim.spigot().respawn();
-                    e.setDeathMessage("§f☠ §c" + victim.getName());
-                    return;
+                    AttackerSpec spec = new AttackerSpec();
+                    spec.setSpec(victim);
                 }
                 if (core.teams().getDefenser().contains(victim))
                 {
+                    e.setDeathMessage("§f☠ §9" + victim.getName());
                     Weapons weapons = new Weapons(victim);
                     weapons.deathCheck();
-                    DefenserSpec spec = new DefenserSpec();
-                    spec.setSpec(victim);
                     core.teams().getDefenserDeath().add(victim);
                     victim.spigot().respawn();
-                    e.setDeathMessage("§f☠ §9" + victim.getName());
-                    return;
+                    DefenserSpec spec = new DefenserSpec();
+                    spec.setSpec(victim);
                 }
             }
         }

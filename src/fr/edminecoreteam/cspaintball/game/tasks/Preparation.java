@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball.game.tasks;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,6 +29,10 @@ public class Preparation extends BukkitRunnable
             if (timer <= 15 && timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {
                 pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
             }
+        }
+        for (Player pls : core.getServer().getOnlinePlayers()) {
+            GameUtils gameUtils = new GameUtils();
+            gameUtils.showAllPlayers(pls);
         }
         if (timer == 5)
         {

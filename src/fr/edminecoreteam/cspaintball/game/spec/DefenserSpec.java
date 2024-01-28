@@ -1,14 +1,20 @@
 package fr.edminecoreteam.cspaintball.game.spec;
 
 import fr.edminecoreteam.cspaintball.Core;
+import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -31,70 +37,112 @@ public class DefenserSpec implements Listener
         p.setGameMode(GameMode.SPECTATOR);
         for (Player teams : core.teams().getDefenser())
         {
-            if (!core.teams().getDefenserDeath().contains(teams))
+            if (teams != p)
             {
-                if (!core.defenserSpec().getView.containsKey(p))
+                if (!core.teams().getDefenserDeath().contains(teams))
                 {
-                    core.defenserSpec().getView.put(p, teams);
+                    if (!core.defenserSpec().getView.containsKey(p))
+                    {
+                        core.defenserSpec().getView.put(p, teams);
+                    }
                 }
             }
         }
+        p.setFlying(true);
+        refreshInv(p);
         new BukkitRunnable() {
             int t = 0;
+            int f = 0;
             public void run() {
                 ++t;
+                ++f;
+                if (!core.isState(State.INGAME)) { cancel(); }
                 if (core.isRoundState(RoundInfo.PREPARATION)) { cancel(); }
+                if (core.teams().getDefenserDeath().contains(core.defenserSpec().getView.get(p))) { getNewViewver(p); }
+                if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size()) { cancel(); }
                 Location to = core.defenserSpec().getView.get(p).getLocation();
-                p.hidePlayer(core.defenserSpec().getView.get(p));
-                p.setFlying(true);
-                p.teleport(to.clone().add(0, 0, 0));
-                core.title.sendActionBar(p, "§fVous regardez §c" + core.defenserSpec().getView.get(p).getName());
+                p.teleport(to.clone().add(0, 0.5, 0));
+                core.title.sendActionBar(p, "§fVous regardez §9" + core.defenserSpec().getView.get(p).getName() + " §8┃ §bOuvrez votre §b§linv§b. pour naviger.");
+
+                if (f == 40)
+                {
+                    refreshInv(p);
+                    f = 0;
+                }
 
                 if (t == 1)
                 {
                     run();
                 }
             }
-        }.runTaskTimer((Plugin) core, 0L, 2L);
+        }.runTaskTimer((Plugin) core, 0L, 1L);
+    }
+
+    public void getNewViewver(Player p)
+    {
+        core.defenserSpec().getView.remove(p);
+        for (Player teams : core.teams().getDefenser())
+        {
+            if (teams != p)
+            {
+                if (!core.teams().getDefenserDeath().contains(teams))
+                {
+                    if (!core.defenserSpec().getView.containsKey(p))
+                    {
+                        core.defenserSpec().getView.put(p, teams);
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent e)
+    public void onInventoryClick(InventoryClickEvent e)
     {
-        Player p = e.getPlayer();
-        Action a = e.getAction();
+        Player p = (Player) e.getWhoClicked();
         if (core.teams().getDefenserDeath().contains(p))
         {
-            if (!core.isRoundState(RoundInfo.PREPARATION))
+            if (e.getCurrentItem() != null)
             {
-                Player target = (Player) core.defenserSpec().getView.get(p);
-                int getOrder = core.teams().getDefenser().indexOf(target);
-                if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK)
+                ItemStack it = e.getCurrentItem();
+                if (it.getType() == Material.BARRIER && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c§lFermer §7• Clique"))
                 {
-                    if (getOrder != -1 && getOrder < core.teams().getDefenser().size())
-                    {
-                        Player newTarget = core.teams().getDefenser().get(getOrder + 1);
-                        p.showPlayer(core.defenserSpec().getView.get(p));
-                        core.defenserSpec().getView.remove(p);
-                        core.defenserSpec().getView.put(p, newTarget);
-                    }
+                    p.closeInventory();
                 }
-
-                if (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)
+                if (it.getType() == Material.SKULL_ITEM)
                 {
-                    if (getOrder > 0)
-                    {
-                        Player newTarget = core.teams().getDefenser().get(getOrder - 1);
-                        p.showPlayer(core.defenserSpec().getView.get(p));
-                        core.defenserSpec().getView.remove(p);
-                        core.defenserSpec().getView.put(p, newTarget);
-                    }
+                    String pName = it.getItemMeta().getDisplayName();
+                    Player pTarget = core.getServer().getPlayer(pName);
+                    core.defenserSpec().getView.remove(p);
+                    core.defenserSpec().getView.put(p, pTarget);
+                    p.closeInventory();
                 }
-            }
-            else
-            {
-                return;
             }
         }
+    }
+
+    public void refreshInv(Player p)
+    {
+        p.getInventory().clear();
+        ItemStack leave = new ItemStack(Material.BARRIER, 1);
+        ItemMeta leaveM = leave.getItemMeta();
+        leaveM.setDisplayName("§c§lFermer §7• Clique");
+        leave.setItemMeta(leaveM);
+
+        int slot = 0;
+        for (Player pls : core.teams().getDefenser())
+        {
+            if (!core.teams().getDefenserDeath().contains(pls))
+            {
+                ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+                SkullMeta itemStackM = (SkullMeta) itemStack.getItemMeta();
+                itemStackM.setOwner(pls.getName());
+                itemStackM.setDisplayName(pls.getName());
+                itemStack.setItemMeta(itemStackM);
+                p.getInventory().setItem(slot, itemStack);
+                slot++;
+            }
+        }
+        p.getInventory().setItem(8, leave);
     }
 }

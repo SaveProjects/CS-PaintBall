@@ -168,11 +168,6 @@ public class Game
         }
         Bombe bomb = new Bombe();
         bomb.getRandom();
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            GameUtils gameUtils = new GameUtils();
-            gameUtils.showAllPlayers(pls);
-        }
         Preparation preparation = new Preparation(core);
         preparation.runTaskTimer((Plugin) core, 0L, 20L);
     }
