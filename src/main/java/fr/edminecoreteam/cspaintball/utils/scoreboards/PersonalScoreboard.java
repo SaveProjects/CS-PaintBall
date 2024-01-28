@@ -99,151 +99,73 @@ public class PersonalScoreboard {
     		{
                 if (core.teams().getAttacker().contains(player))
                 {
-                    objectiveSign.setLine(2, "  §8• §7Score §cAttaquants §7(vous): §a" + core.pointsManager().getAttackerPoints());
-                    objectiveSign.setLine(3, "  §8• §7Score §9Défenseurs§7: §a" + core.pointsManager().getDefenserPoints());
+                    objectiveSign.setLine(2, "  §8• §7Score §c§lATTAQ. §7(vous): §a" + core.pointsManager().getAttackerPoints());
+                    objectiveSign.setLine(3, "  §8• §7Score §9§lDEF.§7: §a" + core.pointsManager().getDefenserPoints());
                 }
                 else if (core.teams().getDefenser().contains(player))
                 {
-                    objectiveSign.setLine(2, "  §8• §7Score §cAttaquants§7: §a" + core.pointsManager().getAttackerPoints());
-                    objectiveSign.setLine(3, "  §8• §7Score §9Défenseurs §7(vous): §a" + core.pointsManager().getDefenserPoints());
+                    objectiveSign.setLine(2, "  §8• §7Score §c§lATTAQ.§7: §a" + core.pointsManager().getAttackerPoints());
+                    objectiveSign.setLine(3, "  §8• §7Score §9§lDEF. §7(vous): §a" + core.pointsManager().getDefenserPoints());
                 }
                 else if (!core.teams().getAttacker().contains(player) || !core.teams().getAttacker().contains(player))
                 {
-                    objectiveSign.setLine(2, "  §8• §7Score §cAttaquants§7: §a" + core.pointsManager().getAttackerPoints());
-                    objectiveSign.setLine(3, "  §8• §7Score §9Défenseurs§7: §a" + core.pointsManager().getDefenserPoints());
+                    objectiveSign.setLine(2, "  §8• §7Score §c§lATTAQ.§7: §a" + core.pointsManager().getAttackerPoints());
+                    objectiveSign.setLine(3, "  §8• §7Score §9§lDEF.§7: §a" + core.pointsManager().getDefenserPoints());
                 }
 
                 int getMaxRound = core.getConfig().getInt("timers.rounds-short") * 2;
                 objectiveSign.setLine(4, "  §8• §7Manche: §f" + core.roundManager().getRound() + "§8/§f" + getMaxRound);
-                objectiveSign.setLine(5, "§2");
-                if (core.isRoundState(RoundInfo.PREPARATION))
-                {
-                    objectiveSign.setLine(6, "  §8• §7Bombe: §c✖");
-                    objectiveSign.setLine(7, "  §8• §7Temps de préparation: §b" + core.timers + "§bs");
-                }
-                if (core.isRoundState(RoundInfo.START))
-                {
-                    objectiveSign.setLine(6, "  §8• §7Bombe: §c§l✖");
-                    objectiveSign.setLine(7, "  §8• §7Temps restant: §b" + convertTime(core.timers));
-                }
-                if (core.isRoundState(RoundInfo.BOMBPLANTED))
-                {
-                    if (core.teams().getTeam(player) == null)
-                    {
-                        objectiveSign.setLine(6, "  §8• §7Bombe: §6Plantée §6§l⚠");
-                    }
-
-                    if (core.teams().getAttacker().contains(player))
-                    {
-                        objectiveSign.setLine(6, "  §8• §7Bombe: §aProtégez la bombe §a§l✔");
-                    }
-                    if (core.teams().getDefenser().contains(player))
-                    {
-                        objectiveSign.setLine(6, "  §8• §7Bombe: §6Plantée §6§l⚠");
-                    }
-
-                    objectiveSign.setLine(7, "  §8• §7La bombe explose dans: §b" + core.timers + "§bs");
-                }
-                if (core.isRoundState(RoundInfo.BOMBDIFUSE) || core.isRoundState(RoundInfo.END) || core.isRoundState(RoundInfo.BOMBEXPLODE))
-                {
-                    if (core.teams().getTeam(player) == null)
-                    {
-                        if (core.isRoundState(RoundInfo.BOMBDIFUSE))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §aBombe désamorcé §a§l✔");
-                        }
-                        if (core.isRoundState(RoundInfo.END))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §fNon planté.");
-                        }
-                        if (core.isRoundState(RoundInfo.BOMBEXPLODE))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §fExplosée.");
-                        }
-                    }
-
-                    if (core.teams().getAttacker().contains(player))
-                    {
-                        if (core.isRoundState(RoundInfo.BOMBDIFUSE))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §cBombe désamorcé §c§l✖");
-                        }
-                        if (core.isRoundState(RoundInfo.END))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §cNon planté...");
-                        }
-                        if (core.isRoundState(RoundInfo.BOMBEXPLODE))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §aExplosée §a§l✔");
-                        }
-                    }
-                    if (core.teams().getDefenser().contains(player))
-                    {
-                        if (core.isRoundState(RoundInfo.BOMBDIFUSE))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §aBombe désamorcé §a§l✔");
-                        }
-                        if (core.isRoundState(RoundInfo.END))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §aNon planté §a§l✔");
-                        }
-                        if (core.isRoundState(RoundInfo.BOMBEXPLODE))
-                        {
-                            objectiveSign.setLine(6, "  §8• §7Bombe: §cExplosée §c§l✖");
-                        }
-                    }
-                    objectiveSign.setLine(7, "  §8• §7Prochaine Manche: §b" + core.timers + "§bs");
-                }
-                objectiveSign.setLine(8, "  §8• §7Carte: §e" + core.world);
+                objectiveSign.setLine(5, "  §8• §7Argent: §a0$");
+                objectiveSign.setLine(6, "  §8• §7Carte: §e" + core.world);
                 if (core.teams().getTeam(player) != null)
                 {
                     if (core.teams().getDeathTeam(player) != null)
                     {
                         int getAlive = core.teams().getTeam(player).size() - core.teams().getDeathTeam(player).size();
 
-                        objectiveSign.setLine(9, "§6");
-                        objectiveSign.setLine(10, " §f➡ §bVotre Équipe:");
-                        objectiveSign.setLine(11, "  §8• §7En vie(s): §e" + getAlive);
-                        objectiveSign.setLine(12, "§3");
-                        objectiveSign.setLine(13, " §8➡ " + ip);
+                        objectiveSign.setLine(7, "§6");
+                        objectiveSign.setLine(8, " §f➡ §bVotre Équipe:");
+                        objectiveSign.setLine(9, "  §8• §7En vie(s): §e" + getAlive);
+                        objectiveSign.setLine(10, "§3");
+                        objectiveSign.setLine(11, " §8➡ " + ip);
                     }
                     else if (core.teams().getDeathTeam(player) == null)
                     {
-                        objectiveSign.setLine(9, "§6");
-                        objectiveSign.setLine(10, " §f➡ §bVotre Équipe:");
-                        objectiveSign.setLine(11, "  §8• §7En vie(s): §e" + core.teams().getTeam(player).size());
-                        objectiveSign.setLine(12, "§3");
-                        objectiveSign.setLine(13, " §8➡ " + ip);
+                        objectiveSign.setLine(7, "§6");
+                        objectiveSign.setLine(8, " §f➡ §bVotre Équipe:");
+                        objectiveSign.setLine(9, "  §8• §7En vie(s): §e" + core.teams().getTeam(player).size());
+                        objectiveSign.setLine(10, "§3");
+                        objectiveSign.setLine(11, " §8➡ " + ip);
                     }
                 }
                 else if (core.teams().getTeam(player) == null)
                 {
-                    objectiveSign.setLine(9, "§6");
-                    objectiveSign.setLine(10, " §f➡ §bÉquipes:");
+                    objectiveSign.setLine(7, "§6");
+                    objectiveSign.setLine(8, " §f➡ §bÉquipes:");
                     if (core.teams().getAttackerDeath() != null)
                     {
                         int getAttackerAlive = core.teams().getAttacker().size() - core.teams().getAttackerDeath().size();
-                        objectiveSign.setLine(11, "  §8• §7Attaquants en vie(s): §e" + getAttackerAlive);
+                        objectiveSign.setLine(9, "  §8• §7ATTAQ. en vie(s): §e" + getAttackerAlive);
                     }
                     else if (core.teams().getAttackerDeath() == null)
                     {
                         int getAttackerAlive = core.teams().getAttacker().size();
-                        objectiveSign.setLine(11, "  §8• §7Attaquants en vie(s): §e" + getAttackerAlive);
+                        objectiveSign.setLine(9, "  §8• §7ATTAQ. en vie(s): §e" + getAttackerAlive);
                     }
 
                     if (core.teams().getDefenserDeath() != null)
                     {
                         int getDefenserAlive = core.teams().getDefenser().size() - core.teams().getDefenserDeath().size();
-                        objectiveSign.setLine(12, "  §8• §7Défenseurs en vie(s): §e" + getDefenserAlive);
+                        objectiveSign.setLine(10, "  §8• §7DEF. en vie(s): §e" + getDefenserAlive);
                     }
                     else if (core.teams().getDefenserDeath() == null)
                     {
                         int getDefenserAlive = core.teams().getDefenser().size();
-                        objectiveSign.setLine(12, "  §8• §7Défenseurs en vie(s): §e" + getDefenserAlive);
+                        objectiveSign.setLine(10, "  §8• §7DEF. en vie(s): §e" + getDefenserAlive);
                     }
 
-                    objectiveSign.setLine(13, "§3");
-                    objectiveSign.setLine(14, " §8➡ " + ip);
+                    objectiveSign.setLine(11, "§3");
+                    objectiveSign.setLine(12, " §8➡ " + ip);
                 }
     		}
  

@@ -12,7 +12,6 @@ import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import fr.edminecoreteam.cspaintball.game.utils.LoadHolograms;
 import fr.edminecoreteam.cspaintball.game.utils.TeleportUtils;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
-import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -152,6 +151,7 @@ public class Game
             TeleportUtils teleportUtils = new TeleportUtils();
             teleportUtils.teleportPlayer(defensers, defenserSpawn);
             defensers.setFlying(false);
+
             if (core.teams().getDefenserDeath().contains(defensers) || core.roundManager().getRound() == 1 || core.roundManager().getRound() == rounds + 1)
             {
                 TeamsKit kit = new TeamsKit();
@@ -171,22 +171,6 @@ public class Game
         bomb.getRandom();
         Preparation preparation = new Preparation(core);
         preparation.runTaskTimer((Plugin) core, 0L, 20L);
-
-        int shortRound = core.getConfig().getInt("timers.rounds-short");
-        int shortFinalRound = shortRound * 2;
-        int longRound = core.getConfig().getInt("timers.rounds-long");
-        int longFinalRound = longRound * 2;
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            if (core.getConfig().getString("time").equalsIgnoreCase("long"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + longFinalRound, 15);
-            }
-            if (core.getConfig().getString("time").equalsIgnoreCase("short"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + shortFinalRound, 15);
-            }
-        }
     }
 
     public void startRound()
@@ -205,22 +189,6 @@ public class Game
         }
         Start start = new Start(core);
         start.runTaskTimer((Plugin) core, 0L, 20L);
-
-        int shortRound = core.getConfig().getInt("timers.rounds-short");
-        int shortFinalRound = shortRound * 2;
-        int longRound = core.getConfig().getInt("timers.rounds-long");
-        int longFinalRound = longRound * 2;
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            if (core.getConfig().getString("time").equalsIgnoreCase("long"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + longFinalRound, core.getConfig().getInt("timers.round"));
-            }
-            if (core.getConfig().getString("time").equalsIgnoreCase("short"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + shortFinalRound, core.getConfig().getInt("timers.round"));
-            }
-        }
     }
 
     public void endRound()
@@ -242,22 +210,6 @@ public class Game
 
         End end = new End(core);
         end.runTaskTimer((Plugin) core, 0L, 20L);
-
-        int shortRound = core.getConfig().getInt("timers.rounds-short");
-        int shortFinalRound = shortRound * 2;
-        int longRound = core.getConfig().getInt("timers.rounds-long");
-        int longFinalRound = longRound * 2;
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            if (core.getConfig().getString("time").equalsIgnoreCase("long"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + longFinalRound, 6);
-            }
-            if (core.getConfig().getString("time").equalsIgnoreCase("short"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + shortFinalRound, 6);
-            }
-        }
     }
 
     public void changeTeam()
@@ -308,32 +260,11 @@ public class Game
 
         End end = new End(core);
         end.runTaskTimer((Plugin) core, 0L, 20L);
-
-        int shortRound = core.getConfig().getInt("timers.rounds-short");
-        int shortFinalRound = shortRound * 2;
-        int longRound = core.getConfig().getInt("timers.rounds-long");
-        int longFinalRound = longRound * 2;
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            if (core.getConfig().getString("time").equalsIgnoreCase("long"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + longFinalRound, 6);
-            }
-            if (core.getConfig().getString("time").equalsIgnoreCase("short"))
-            {
-                BarAPI.setMessage(pls, "§7Manche: §f" + core.roundManager().getRound() + "§8/§f" + shortFinalRound, 6);
-            }
-        }
     }
 
     public void endGame()
     {
         core.setState(State.FINISH);
         EndListeners end = new EndListeners();
-        end.end();
-        for (Player pls : core.getServer().getOnlinePlayers())
-        {
-            BarAPI.removeBar(pls);
-        }
     }
 }

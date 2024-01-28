@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -139,6 +140,7 @@ public class GameListeners implements Listener
                         victim.spigot().respawn();
                         AttackerSpec spec = new AttackerSpec();
                         spec.setSpec(victim);
+                        e.getDrops().clear();
                         attacker.playSound(attacker.getLocation(), Sound.VILLAGER_YES, 1.0f, 5.0f);
                     }
                     if (core.teams().getDefenser().contains(victim))
@@ -150,6 +152,7 @@ public class GameListeners implements Listener
                         victim.spigot().respawn();
                         DefenserSpec spec = new DefenserSpec();
                         spec.setSpec(victim);
+                        e.getDrops().clear();
                         attacker.playSound(attacker.getLocation(), Sound.VILLAGER_YES, 1.0f, 5.0f);
                     }
                 }
@@ -172,6 +175,7 @@ public class GameListeners implements Listener
                     victim.spigot().respawn();
                     AttackerSpec spec = new AttackerSpec();
                     spec.setSpec(victim);
+                    e.getDrops().clear();
                 }
                 if (core.teams().getDefenser().contains(victim))
                 {
@@ -182,6 +186,7 @@ public class GameListeners implements Listener
                     victim.spigot().respawn();
                     DefenserSpec spec = new DefenserSpec();
                     spec.setSpec(victim);
+                    e.getDrops().clear();
                 }
             }
         }
@@ -209,7 +214,8 @@ public class GameListeners implements Listener
     }
 
     @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractAtEntityEvent e) {
+    public void onPlayerInteractEntity(PlayerInteractAtEntityEvent e)
+    {
         Entity ent = e.getRightClicked();
         Player p = e.getPlayer();
         if (ent instanceof ArmorStand)
@@ -217,6 +223,12 @@ public class GameListeners implements Listener
             e.setCancelled(true);
             return;
         }
+    }
+
+    @EventHandler
+    public void onWorldChange(PlayerChangedWorldEvent e)
+    {
+        core.getBossBar().changeWorld(e.getPlayer());
     }
 
 }

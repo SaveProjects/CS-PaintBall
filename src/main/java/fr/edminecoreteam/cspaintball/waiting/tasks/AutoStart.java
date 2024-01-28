@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.tasks.GunOrderChecker;
+import fr.edminecoreteam.cspaintball.game.utils.BossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -143,6 +144,11 @@ public class AutoStart extends BukkitRunnable
             {
                 pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
                 pls.sendTitle("§ePremière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine phase.");
+            }
+
+            for (Player pls : core.getServer().getOnlinePlayers())
+            {
+                core.getBossBar().addPlayer(pls);
             }
             cancel();
         }

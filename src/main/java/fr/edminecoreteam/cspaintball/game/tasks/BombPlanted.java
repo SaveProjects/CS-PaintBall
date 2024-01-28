@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -18,11 +19,14 @@ public class BombPlanted extends BukkitRunnable
     private final Core core;
     private final Location loc;
 
+    private final GameUtils gameUtils;
+
     public BombPlanted(Core core, Location loc)
     {
         this.core = core;
         this.timer = core.getConfig().getInt("timers.bomb");
         this.loc = loc;
+        this.gameUtils = new GameUtils();
     }
 
     public void run()
@@ -30,8 +34,11 @@ public class BombPlanted extends BukkitRunnable
 
         if (!core.isState(State.INGAME)) { cancel(); }
         if (!core.isRoundState(RoundInfo.BOMBPLANTED)) { cancel(); }
-
         core.timers(timer);
+        for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
+        core.getBossBar().setTitle("§6§l⚠ §6Bombe Plantée: §e" + timer + "§es §6§l⚠");
+        double progress = gameUtils.getPercentage(timer, core.getConfig().getInt("timers.bomb"));
+        core.getBossBar().setProgress(progress);
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {

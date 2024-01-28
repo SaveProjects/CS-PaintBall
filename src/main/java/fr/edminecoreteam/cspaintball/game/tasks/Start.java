@@ -4,6 +4,7 @@ import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.Game;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -19,21 +20,27 @@ public class Start extends BukkitRunnable
 
     private final int finalResult;
 
+    private final GameUtils gameUtils;
+
     public Start(Core core)
     {
         this.core = core;
         this.timer = core.getConfig().getInt("timers.round");
         this.getTimer = this.timer;
         this.finalResult = this.getTimer - 10;
+        this.gameUtils = new GameUtils();
     }
 
     public void run()
     {
         if (!core.isState(State.INGAME)) { cancel(); }
+        if (!core.isRoundState(RoundInfo.START)) { cancel(); }
 
         core.timers(timer);
-
-        if (!core.isRoundState(RoundInfo.START)) { cancel(); }
+        for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
+        core.getBossBar().setTitle("§fTemps restant: §e" + gameUtils.convertTime(timer));
+        double progress = gameUtils.getPercentage(timer, core.getConfig().getInt("timers.round"));
+        core.getBossBar().setProgress(progress);
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {
@@ -81,7 +88,7 @@ public class Start extends BukkitRunnable
 
         if (timer == finalResult)
         {
-            for (Player pls : Bukkit.getOnlinePlayers())
+            for (Player pls : core.getServer().getOnlinePlayers())
             {
                 if (core.teams().getAttacker().contains(pls) || core.teams().getDefenser().contains(pls))
                 {

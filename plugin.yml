@@ -1,7 +1,0 @@
-name: Core_CS-PaintBall
-version: 0.1
-author: EdmineCoreTeam
-main: fr.edminecoreteam.cspaintball.Core
-commands:
-  game:
-    description: Game Manager

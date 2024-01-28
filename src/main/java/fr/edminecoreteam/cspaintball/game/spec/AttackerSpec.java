@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball.game.spec;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,6 +49,13 @@ public class AttackerSpec implements Listener
         }
         p.setFlying(true);
         refreshInv(p);
+
+        if (!p.getWorld().getName().equalsIgnoreCase("game"))
+        {
+            GameUtils utils = new GameUtils();
+            p.teleport(utils.getAttackerSpawn());
+        }
+
         new BukkitRunnable() {
             int t = 0;
             int f = 0;
@@ -57,10 +65,16 @@ public class AttackerSpec implements Listener
                 if (!core.isState(State.INGAME)) { cancel(); }
                 if (core.isRoundState(RoundInfo.PREPARATION)) { cancel(); }
                 if (core.teams().getAttackerDeath().contains(core.attackerSpec().getView.get(p))) { getNewViewver(p); }
-                if (core.teams().getAttacker().size() == core.teams().getAttackerDeath().size()) { cancel(); }
-                Location to = core.attackerSpec().getView.get(p).getLocation();
-                p.teleport(to.clone().add(0, 0.5, 0));
-                core.title.sendActionBar(p, "§fVous regardez §c" + core.attackerSpec().getView.get(p).getName() + " §8┃ §bOuvrez votre §b§linv§b. pour naviger.");
+                if (core.teams().getAttacker().size() != core.teams().getAttackerDeath().size())
+                {
+                    Location to = core.attackerSpec().getView.get(p).getLocation();
+                    p.teleport(to.clone().add(0, 0.5, 0));
+                    core.title.sendActionBar(p, "§fVous regardez §c" + core.attackerSpec().getView.get(p).getName() + " §8┃ §bOuvrez votre §b§linv§b. pour naviger.");
+                }
+                else
+                {
+                    cancel();
+                }
 
                 if (f == 40)
                 {

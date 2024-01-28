@@ -15,19 +15,25 @@ public class Preparation extends BukkitRunnable
 
     private Core core;
 
+    private final GameUtils gameUtils;
+
     public Preparation(Core core)
     {
         this.core = core;
         this.timer = 15;
+        this.gameUtils = new GameUtils();
     }
 
     public void run()
     {
         if (!core.isState(State.INGAME)) { cancel(); }
         core.timers(timer);
+        for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
+        core.getBossBar().setTitle("§fPréparation: §e" + timer + "§es");
+        double progress = gameUtils.getPercentage(timer, 15);
+        core.getBossBar().setProgress(progress);
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
-            pls.setLevel(timer);
             if (timer <= 15 && timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {
                 pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
             }
@@ -39,31 +45,31 @@ public class Preparation extends BukkitRunnable
         if (timer == 5)
         {
             for (Player pls : core.getServer().getOnlinePlayers()) {
-                pls.playSound(pls.getLocation(), Sound.NOTE_PLING, 1.0f, 1.5f);
+                pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.5f);
             }
         }
         if (timer == 4)
         {
             for (Player pls : core.getServer().getOnlinePlayers()) {
-                pls.playSound(pls.getLocation(), Sound.NOTE_PLING, 1.0f, 1.2f);
+                pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.2f);
             }
         }
         if (timer == 3)
         {
             for (Player pls : core.getServer().getOnlinePlayers()) {
-                pls.playSound(pls.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
+                pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
             }
         }
         if (timer == 2)
         {
             for (Player pls : core.getServer().getOnlinePlayers()) {
-                pls.playSound(pls.getLocation(), Sound.NOTE_PLING, 1.0f, 0.7f);
+                pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 0.7f);
             }
         }
         if (timer == 1)
         {
             for (Player pls : core.getServer().getOnlinePlayers()) {
-                pls.playSound(pls.getLocation(), Sound.NOTE_PLING, 1.0f, 0.5f);
+                pls.playSound(pls.getLocation(), Sound.NOTE_STICKS, 1.0f, 0.5f);
             }
         }
         if (timer == 0)
