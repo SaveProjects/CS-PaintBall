@@ -75,7 +75,7 @@ public class BossBar extends BukkitRunnable
     }
 
     public Location getWitherLocation(Location l) {
-        return l.add(l.getDirection().multiply(40));
+        return l.add(l.getDirection().multiply(20));
     }
 
     @Override

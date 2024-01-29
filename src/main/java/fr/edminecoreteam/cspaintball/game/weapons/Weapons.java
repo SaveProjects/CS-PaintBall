@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.game.weapons;
 
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.*;
+import fr.edminecoreteam.cspaintball.game.weapons.pm.MAC10;
 import fr.edminecoreteam.cspaintball.game.weapons.pompes.NOVA;
 import fr.edminecoreteam.cspaintball.game.weapons.pompes.XM1014;
 import org.bukkit.entity.Player;
@@ -65,6 +66,13 @@ public class Weapons
             XM1014 weapon = new XM1014();
             weapon.get(p);
         }
+
+        //PMs
+        if (weapons == WeaponsList.MAC10)
+        {
+            MAC10 weapon = new MAC10();
+            weapon.get(p);
+        }
     }
 
     public void refillMax()
@@ -94,6 +102,10 @@ public class Weapons
 
         XM1014 xm1014 = new XM1014();
         xm1014.refillMax(p);
+
+        //PMs
+        MAC10 weapon = new MAC10();
+        weapon.refillMax(p);
     }
 
     public void deathCheck()
@@ -123,6 +135,10 @@ public class Weapons
 
         XM1014 xm1014 = new XM1014();
         xm1014.deathCheck(p);
+
+        //PMs
+        MAC10 weapon = new MAC10();
+        weapon.refillMax(p);
     }
 
 }

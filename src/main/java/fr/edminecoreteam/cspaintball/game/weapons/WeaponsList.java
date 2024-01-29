@@ -12,7 +12,10 @@ public enum WeaponsList
 
     //Fusils a pompe
     NOVA("NOVA", 6),
-    XM1014("XM1014", 7);
+    XM1014("XM1014", 7),
+
+    //PMs
+    MAC10("MAC10", 8);
 
     private WeaponsList(final String name, final int ordinal) {
     }

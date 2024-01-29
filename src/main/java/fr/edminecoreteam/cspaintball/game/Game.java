@@ -266,5 +266,6 @@ public class Game
     {
         core.setState(State.FINISH);
         EndListeners end = new EndListeners();
+        end.end();
     }
 }

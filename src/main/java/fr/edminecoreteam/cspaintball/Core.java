@@ -5,6 +5,7 @@ import fr.edminecoreteam.cspaintball.game.SpawnListeners;
 import fr.edminecoreteam.cspaintball.game.displayname.ChatTeam;
 import fr.edminecoreteam.cspaintball.game.displayname.TabListTeams;
 import fr.edminecoreteam.cspaintball.game.guis.BuyMenu;
+import fr.edminecoreteam.cspaintball.game.guis.BuyPMs;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPistolets;
 import fr.edminecoreteam.cspaintball.game.guis.BuyPompes;
 import fr.edminecoreteam.cspaintball.game.pauses.Pauses;
@@ -20,6 +21,7 @@ import fr.edminecoreteam.cspaintball.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.game.weapons.WeaponsSettings;
 import fr.edminecoreteam.cspaintball.game.weapons.bombe.Bombe;
 import fr.edminecoreteam.cspaintball.game.weapons.pistolets.*;
+import fr.edminecoreteam.cspaintball.game.weapons.pm.MAC10;
 import fr.edminecoreteam.cspaintball.game.weapons.pompes.NOVA;
 import fr.edminecoreteam.cspaintball.game.weapons.pompes.XM1014;
 import fr.edminecoreteam.cspaintball.listeners.connection.JoinEvent;
@@ -129,6 +131,7 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new BuyMenu(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPistolets(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPompes(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new BuyPMs(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new TabListTeams(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new ChatTeam(), (Plugin)this);
@@ -152,6 +155,9 @@ public class Core extends JavaPlugin
         //Fufils a pompe
         Bukkit.getPluginManager().registerEvents((Listener) new NOVA(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new XM1014(), (Plugin)this);
+
+        //PMs
+        Bukkit.getPluginManager().registerEvents((Listener) new MAC10(), (Plugin)this);
     }
 
     private void ScoreboardManager()
