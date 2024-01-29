@@ -67,7 +67,7 @@ public class PersonalScoreboard {
                 }
                 else if (core.isState(State.STARTING))
                 {
-                    objectiveSign.setLine(2, "  §8• §7Statut: Lancement");
+                    objectiveSign.setLine(2, "  §8• §7Statut: §eLancement");
 
                     objectiveSign.setLine(7, "§2");
                     objectiveSign.setLine(8, "  §8• §7Début dans: §a" + core.timers + "§as");
