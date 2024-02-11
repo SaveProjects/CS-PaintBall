@@ -2,7 +2,6 @@ package fr.edminecoreteam.cspaintball.utils.scoreboards;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
-import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

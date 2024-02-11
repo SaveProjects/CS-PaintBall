@@ -2,20 +2,14 @@ package fr.edminecoreteam.cspaintball.listeners.connection;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
-import fr.edminecoreteam.cspaintball.game.Game;
-import fr.edminecoreteam.cspaintball.game.rounds.RoundInfo;
-import fr.edminecoreteam.cspaintball.game.utils.GameUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import fr.edminecoreteam.cspaintball.content.game.Game;
+import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
+import fr.edminecoreteam.cspaintball.utils.game.GameUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
