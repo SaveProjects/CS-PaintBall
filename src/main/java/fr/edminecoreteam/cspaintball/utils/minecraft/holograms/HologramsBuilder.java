@@ -17,11 +17,12 @@ public class HologramsBuilder
     private final static Core core = Core.getInstance();
     private final HashMap<String, List<ArmorStand>> armorStands = new HashMap<>();
     private final HashMap<Player, HashMap<String, List<EntityArmorStand>>> armorStandsNMS = new HashMap<>();
+    private final String prefix = "EDMINE-API: ";
 
-    public HologramsBuilder()
-    {
-        //To Main
-    }
+    //To Main Class
+    public HologramsBuilder() { }
+    public final HashMap<String, List<ArmorStand>> getArmorStands() { return this.armorStands; }
+    public final HashMap<Player, HashMap<String, List<EntityArmorStand>>> getArmorStandsNMS() { return this.armorStandsNMS; }
 
     public void createBukkitHologram(String id, List<String> entry, Location location)
     {
@@ -39,7 +40,7 @@ public class HologramsBuilder
             aList.add(armorStand);
         }
         armorStands.put(id, aList);
-        System.out.println("EDMINE-API: Load Hologram with ID: " + id + " | and loads " + entry.size() + " entities.");
+        System.out.println(prefix + "Load Hologram with ID: " + id + " | and loads " + entry.size() + " entities.");
     }
 
     public void removeBukkitHolgram(String id)
@@ -56,7 +57,7 @@ public class HologramsBuilder
                     entities++;
                 }
                 armorStands.remove(id);
-                System.out.println("EDMINE-API: Remove Hologram with ID: " + id + " | and removed " + entities + " entities.");
+                System.out.println(prefix + "Remove Hologram with ID: " + id + " | and removed " + entities + " entities.");
                 return;
             }
         }
@@ -72,7 +73,7 @@ public class HologramsBuilder
             {
                 ArmorStand armorStand = en.getValue().get(line);
                 armorStand.setCustomName(newLine);
-                System.out.println("EDMINE-API: Update Hologram Line (" + getLine + ") with ID: " + id);
+                System.out.println(prefix + "Update Hologram Line (" + getLine + ") with ID: " + id);
                 return;
             }
         }
@@ -95,7 +96,7 @@ public class HologramsBuilder
                     }
                 }
                 en.getValue().remove(getLine);
-                System.out.println("EDMINE-API: Remove Hologram Line (" + getLine + ") with ID: " + id);
+                System.out.println(prefix + "Remove Hologram Line (" + getLine + ") with ID: " + id);
             }
         }
     }
@@ -120,7 +121,7 @@ public class HologramsBuilder
         HashMap<String, List<EntityArmorStand>> innerMap = new HashMap<>();
         innerMap.put(id, aList);
         armorStandsNMS.put(p, innerMap);
-        System.out.println("EDMINE-API: Load Packet Hologram for player (" + p.getName() + ") with ID: " + id + " | and send " + entry.size() + " packets.");
+        System.out.println(prefix + "Load Packet Hologram for player (" + p.getName() + ") with ID: " + id + " | and send " + entry.size() + " packets.");
     }
 
     public void removePacketHologram(Player p, String id)
@@ -143,7 +144,7 @@ public class HologramsBuilder
                             packets++;
                         }
                         armorStandsNMS.remove(p, innerMap);
-                        System.out.println("EDMINE-API: Remove Packet Hologram for player (" + p.getName() + ") with ID: " + id + " | and removed " + packets + " packets.");
+                        System.out.println(prefix + "Remove Packet Hologram for player (" + p.getName() + ") with ID: " + id + " | and removed " + packets + " packets.");
                         return;
                     }
                 }
