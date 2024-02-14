@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.waiting.tasks;
 
+import fr.edminecoreteam.api.EdmineAPI;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -12,8 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class AutoStart extends BukkitRunnable
 {
     public int timer;
-
-    private Core core;
+    private static final EdmineAPI edmineAPI = EdmineAPI.getInstance();
+    private final Core core;
 
     public AutoStart(Core core)
     {
@@ -147,7 +148,7 @@ public class AutoStart extends BukkitRunnable
 
             for (Player pls : core.getServer().getOnlinePlayers())
             {
-                core.getBossBar().addPlayer(pls);
+                edmineAPI.getBossBar().putPlayer(pls);
             }
             cancel();
         }

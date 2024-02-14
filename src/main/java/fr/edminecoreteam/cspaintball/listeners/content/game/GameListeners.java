@@ -231,10 +231,4 @@ public class GameListeners implements Listener
         }
     }
 
-    @EventHandler
-    public void onWorldChange(PlayerChangedWorldEvent e)
-    {
-        core.getBossBar().changeWorld(e.getPlayer());
-    }
-
 }

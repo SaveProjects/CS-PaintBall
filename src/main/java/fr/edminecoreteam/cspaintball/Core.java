@@ -16,7 +16,6 @@ import fr.edminecoreteam.cspaintball.content.game.spec.AttackerSpec;
 import fr.edminecoreteam.cspaintball.content.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.content.game.teams.Teams;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pistolets.*;
-import fr.edminecoreteam.cspaintball.utils.minecraft.bossbar.BossBar;
 import fr.edminecoreteam.cspaintball.utils.minecraft.worlds.LoadWorld;
 import fr.edminecoreteam.cspaintball.content.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.content.game.weapons.WeaponsSettings;
@@ -70,8 +69,6 @@ public class Core extends JavaPlugin
     private DefenserSpec defenserSpec;
     private AttackerSpec attackerSpec;
 
-    private BossBar bossBar;
-
     private SpawnListeners spawnListeners;
 
     public int timers(int i) { this.timers = i; return i; }
@@ -115,7 +112,6 @@ public class Core extends JavaPlugin
         this.roundManager = new RoundManager();
         this.attackerSpec = new AttackerSpec();
         this.defenserSpec = new DefenserSpec();
-        this.bossBar = new BossBar(this, "PaintBall");
         Bukkit.getPluginManager().registerEvents((Listener) new JoinEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new LeaveEvent(), (Plugin)this);
 
@@ -189,8 +185,6 @@ public class Core extends JavaPlugin
     public Pauses pauses() { return this.pauses; }
     public AttackerSpec attackerSpec() { return this.attackerSpec; }
     public DefenserSpec defenserSpec() { return this.defenserSpec; }
-
-    public BossBar getBossBar() { return this.bossBar; }
 
     public SpawnListeners spawnListeners() { return this.spawnListeners; }
 

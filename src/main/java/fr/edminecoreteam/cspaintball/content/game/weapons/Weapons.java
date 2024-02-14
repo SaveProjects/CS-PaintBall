@@ -2,7 +2,6 @@ package fr.edminecoreteam.cspaintball.content.game.weapons;
 
 import fr.edminecoreteam.cspaintball.content.game.weapons.pistolets.*;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pompes.XM1014;
-import fr.edminecoreteam.cspaintball.content.weapons.pistolets.*;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MAC10;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pompes.NOVA;
 import org.bukkit.entity.Player;

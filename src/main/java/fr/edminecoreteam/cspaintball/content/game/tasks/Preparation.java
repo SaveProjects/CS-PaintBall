@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.game.tasks;
 
+import fr.edminecoreteam.api.EdmineAPI;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -13,7 +14,7 @@ public class Preparation extends BukkitRunnable
 {
     public int timer;
 
-    private Core core;
+    private final Core core;
 
     private final GameUtils gameUtils;
 
@@ -29,9 +30,8 @@ public class Preparation extends BukkitRunnable
         if (!core.isState(State.INGAME)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        core.getBossBar().setTitle("§fPréparation: §e" + timer + "§es");
-        double progress = gameUtils.getPercentage(timer, 15);
-        core.getBossBar().setProgress(progress);
+        EdmineAPI.getInstance().getBossBar().setTitle("§fPréparation: §e" + timer + "§es");
+        EdmineAPI.getInstance().getBossBar().setHealth(timer, 15);
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
             if (timer <= 15 && timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {

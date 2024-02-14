@@ -1,10 +1,10 @@
 package fr.edminecoreteam.cspaintball.content.game.tasks;
 
+import fr.edminecoreteam.api.EdmineAPI;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
 import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
-import fr.edminecoreteam.cspaintball.utils.game.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
@@ -14,16 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class End extends BukkitRunnable
 {
     public int timer;
+    private final Core core;
+    private static final EdmineAPI edmineAPI = EdmineAPI.getInstance();
 
-    private Core core;
-
-    private final GameUtils gameUtils;
 
     public End(Core core)
     {
         this.core = core;
         this.timer = 6;
-        this.gameUtils = new GameUtils();
     }
 
     public void run()
@@ -32,9 +30,8 @@ public class End extends BukkitRunnable
         if (!core.isRoundState(RoundInfo.END) && !core.isRoundState(RoundInfo.BOMBEXPLODE) && !core.isRoundState(RoundInfo.BOMBDIFUSE)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        core.getBossBar().setTitle("§fManche terminée: §e" + timer + "§es");
-        double progress = gameUtils.getPercentage(timer, 6);
-        core.getBossBar().setProgress(progress);
+        edmineAPI.getBossBar().setTitle("§fManche terminée: §e" + timer + "§es");
+        edmineAPI.getBossBar().setHealth(timer, 6);
 
 
         if (timer == 5)
