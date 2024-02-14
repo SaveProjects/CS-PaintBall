@@ -1,6 +1,5 @@
 package fr.edminecoreteam.cspaintball.utils.minecraft.holograms;
 
-import fr.edminecoreteam.cspaintball.Core;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,7 +13,6 @@ import java.util.*;
 
 public class HologramsBuilder
 {
-    private final static Core core = Core.getInstance();
     private final HashMap<String, List<ArmorStand>> armorStands = new HashMap<>();
     private final HashMap<Player, HashMap<String, List<EntityArmorStand>>> armorStandsNMS = new HashMap<>();
     private final String prefix = "EDMINE-API: ";
@@ -26,11 +24,12 @@ public class HologramsBuilder
 
     public void createBukkitHologram(String id, List<String> entry, Location location)
     {
+        Location newLoc = location;
         List<ArmorStand> aList = new ArrayList<>();
         for (String en : entry)
         {
-            Location loc = new Location(location.getWorld(), location.getX(), location.getY() - 0.3f, location.getZ());
-            ArmorStand armorStand = (ArmorStand) Bukkit.getWorld(location.getWorld().getName()).spawnEntity(loc, EntityType.ARMOR_STAND);
+            newLoc = new Location(newLoc.getWorld(), newLoc.getX(), newLoc.getY() - 0.3f, newLoc.getZ());
+            ArmorStand armorStand = (ArmorStand) Bukkit.getWorld(location.getWorld().getName()).spawnEntity(newLoc, EntityType.ARMOR_STAND);
             armorStand.setVisible(false);
             armorStand.setSmall(true);
             armorStand.setCustomName(en);
@@ -101,14 +100,33 @@ public class HologramsBuilder
         }
     }
 
+    public void teleportBukkitHolograms(String id, Location location)
+    {
+        Location newLoc = location;
+        for (Map.Entry<String, List<ArmorStand>> en : armorStands.entrySet())
+        {
+            String key = en.getKey();
+            if (key.equalsIgnoreCase(id))
+            {
+                for (ArmorStand stand : en.getValue())
+                {
+                    newLoc = new Location(newLoc.getWorld(), newLoc.getX(), newLoc.getY() - 0.3f, newLoc.getZ());
+                    stand.teleport(newLoc);
+                }
+            }
+        }
+    }
+
     public void createPacketHologram(Player p, String id, List<String> entry, Location location)
     {
+        Location newLoc = location;
         List<EntityArmorStand> aList = new ArrayList<>();
         for (String en : entry)
         {
-            WorldServer ws = ((CraftWorld)location.getWorld()).getHandle();
+            WorldServer ws = ((CraftWorld)newLoc.getWorld()).getHandle();
             EntityArmorStand nmsStand = new EntityArmorStand(ws);
-            nmsStand.setLocation(location.getX(), location.getY() -0.3f, location.getZ(), 0.0f, 0.0f);
+            newLoc = new Location(newLoc.getWorld(), newLoc.getX(), newLoc.getY() - 0.3f, newLoc.getZ());
+            nmsStand.setLocation(newLoc.getX(), newLoc.getY(), newLoc.getZ(), 0.0f, 0.0f);
             nmsStand.setInvisible(true);
             nmsStand.setSmall(true);
             nmsStand.setCustomName(en);
