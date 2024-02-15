@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball;
 
+import fr.edminecoreteam.api.EdmineAPI;
 import fr.edminecoreteam.cspaintball.listeners.content.game.GameListeners;
 import fr.edminecoreteam.cspaintball.listeners.content.game.SpawnListeners;
 import fr.edminecoreteam.cspaintball.content.game.displayname.ChatTeam;
@@ -48,7 +49,6 @@ public class Core extends JavaPlugin
     private static Core instance;
     private State state;
     private RoundInfo roundInfo;
-    public MySQL database;
     private ScoreboardManager scoreboardManager;
     private ScheduledExecutorService executorMonoThread;
     private ScheduledExecutorService scheduledExecutorService;
@@ -95,11 +95,6 @@ public class Core extends JavaPlugin
     @Override
     public void onDisable() {
         super.onDisable();
-    }
-
-    private void MySQLConnect() {
-        instance = this;
-        (this.database = new MySQL("jdbc:mysql://", this.getConfig().getString("mysql.host"), this.getConfig().getString("mysql.database"), this.getConfig().getString("mysql.user"), this.getConfig().getString("mysql.password"))).connexion();
     }
 
     private void loadListeners()

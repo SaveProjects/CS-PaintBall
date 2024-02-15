@@ -13,7 +13,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class AutoStart extends BukkitRunnable
 {
     public int timer;
-    private static final EdmineAPI edmineAPI = EdmineAPI.getInstance();
     private final Core core;
 
     public AutoStart(Core core)
@@ -25,6 +24,8 @@ public class AutoStart extends BukkitRunnable
     public void run()
     {
         core.timers(timer);
+        EdmineAPI.getInstance().getBossBar().setTitle("§fDébut dans: §e" + timer + "§es");
+        EdmineAPI.getInstance().getBossBar().setHealth(timer, core.getConfig().getInt("timers.start"));
 
         if (core.getConfig().getString("type").equalsIgnoreCase("ranked"))
         {
@@ -35,6 +36,8 @@ public class AutoStart extends BukkitRunnable
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                     pls.sendTitle("", "");
                 }
+                EdmineAPI.getInstance().getBossBar().setTitle("§8● §6§lPaint-Ball §8●");
+                EdmineAPI.getInstance().getBossBar().setHealth(100, 100);
                 Bukkit.broadcastMessage("§cErreur de lancement, il manque des joueurs...");
                 core.setState(State.WAITING);
                 cancel();
@@ -56,6 +59,8 @@ public class AutoStart extends BukkitRunnable
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                     pls.sendTitle("", "");
                 }
+                EdmineAPI.getInstance().getBossBar().setTitle("§8● §6§lPaint-Ball §8●");
+                EdmineAPI.getInstance().getBossBar().setHealth(100, 100);
                 Bukkit.broadcastMessage("§cErreur de lancement, il manque des joueurs...");
                 core.setState(State.WAITING);
                 cancel();
@@ -148,7 +153,7 @@ public class AutoStart extends BukkitRunnable
 
             for (Player pls : core.getServer().getOnlinePlayers())
             {
-                edmineAPI.getBossBar().putPlayer(pls);
+                EdmineAPI.getInstance().getBossBar().putPlayer(pls);
             }
             cancel();
         }

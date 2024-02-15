@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball.listeners.connection;
 
+import fr.edminecoreteam.api.EdmineAPI;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
@@ -43,6 +44,7 @@ public class JoinEvent implements Listener
     {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
+        EdmineAPI.getInstance().getBossBar().putPlayer(p);
         if (core.isState(State.WAITING) || core.isState(State.STARTING))
         {
             if (core.getPlayersInGame().size() == core.getMaxplayers())

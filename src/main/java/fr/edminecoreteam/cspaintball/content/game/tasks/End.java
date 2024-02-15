@@ -15,7 +15,6 @@ public class End extends BukkitRunnable
 {
     public int timer;
     private final Core core;
-    private static final EdmineAPI edmineAPI = EdmineAPI.getInstance();
 
 
     public End(Core core)
@@ -30,8 +29,8 @@ public class End extends BukkitRunnable
         if (!core.isRoundState(RoundInfo.END) && !core.isRoundState(RoundInfo.BOMBEXPLODE) && !core.isRoundState(RoundInfo.BOMBDIFUSE)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        edmineAPI.getBossBar().setTitle("§fManche terminée: §e" + timer + "§es");
-        edmineAPI.getBossBar().setHealth(timer, 6);
+        EdmineAPI.getInstance().getBossBar().setTitle("§fManche terminée: §e" + timer + "§es");
+        EdmineAPI.getInstance().getBossBar().setHealth(timer, 6);
 
 
         if (timer == 5)
@@ -67,6 +66,8 @@ public class End extends BukkitRunnable
         if (timer == 0)
         {
             core.roundManager().addRound();
+            EdmineAPI.getInstance().getHologramBuilder().removeBukkitHolgram("siteA");
+            EdmineAPI.getInstance().getHologramBuilder().removeBukkitHolgram("siteB");
             for (ArmorStand armorStand : Bukkit.getWorld("game").getEntitiesByClass(ArmorStand.class))
             {
                 armorStand.remove();
