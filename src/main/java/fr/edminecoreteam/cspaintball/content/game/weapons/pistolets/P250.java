@@ -38,7 +38,7 @@ public class P250 implements Listener
     private final Material weapon = Material.IRON_HOE; //materiel de l'ame
     private final String weapon_name = "P-250"; //titre de l'arme
     private final String weapon_id = "p250"; //id de l'arme
-    private final int weapon_damage = 2; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 7; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 8; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 2; //temps de recharge (secondes)

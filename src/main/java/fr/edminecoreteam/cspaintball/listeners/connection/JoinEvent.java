@@ -1,6 +1,6 @@
 package fr.edminecoreteam.cspaintball.listeners.connection;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
@@ -8,18 +8,12 @@ import fr.edminecoreteam.cspaintball.content.game.spec.AttackerSpec;
 import fr.edminecoreteam.cspaintball.content.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.content.game.teams.TeamsKit;
 import fr.edminecoreteam.cspaintball.content.waiting.Waiting;
-import fr.edminecoreteam.cspaintball.listeners.content.waiting.WaitingListeners;
-import fr.edminecoreteam.cspaintball.content.waiting.tasks.AutoStart;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.Plugin;
 
 public class JoinEvent implements Listener
 {
@@ -44,7 +38,6 @@ public class JoinEvent implements Listener
     {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
-        EdmineAPI.getInstance().getBossBar().putPlayer(p);
         if (core.isState(State.WAITING) || core.isState(State.STARTING))
         {
             if (core.getPlayersInGame().size() == core.getMaxplayers())
@@ -110,6 +103,7 @@ public class JoinEvent implements Listener
             {
                 //a remplir
             }
+            EdmineAPISpigot.getInstance().getBossBarBuilder().putPlayer(p);
         }
     }
 }

@@ -1,6 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.game.tasks;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -30,8 +30,8 @@ public class Preparation extends BukkitRunnable
         if (!core.isState(State.INGAME)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        EdmineAPI.getInstance().getBossBar().setTitle("§fPréparation: §e" + timer + "§es");
-        EdmineAPI.getInstance().getBossBar().setHealth(timer, 15);
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fPréparation: §e" + timer + "§es");
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, 15);
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
             if (timer <= 15 && timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {

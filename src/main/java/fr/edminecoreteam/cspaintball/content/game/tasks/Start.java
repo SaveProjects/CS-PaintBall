@@ -1,6 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.game.tasks;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -37,8 +37,8 @@ public class Start extends BukkitRunnable
 
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        EdmineAPI.getInstance().getBossBar().setTitle("§fTemps restant: §e" + gameUtils.convertTime(timer));
-        EdmineAPI.getInstance().getBossBar().setHealth(timer, core.getConfig().getInt("timers.round"));
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fTemps restant: §e" + gameUtils.convertTime(timer));
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.round"));
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {

@@ -1,6 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.waiting.tasks;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -24,8 +24,8 @@ public class AutoStart extends BukkitRunnable
     public void run()
     {
         core.timers(timer);
-        EdmineAPI.getInstance().getBossBar().setTitle("§fDébut dans: §e" + timer + "§es");
-        EdmineAPI.getInstance().getBossBar().setHealth(timer, core.getConfig().getInt("timers.start"));
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fDébut dans: §e" + timer + "§es");
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.start"));
 
         if (core.getConfig().getString("type").equalsIgnoreCase("ranked"))
         {
@@ -36,8 +36,8 @@ public class AutoStart extends BukkitRunnable
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                     pls.sendTitle("", "");
                 }
-                EdmineAPI.getInstance().getBossBar().setTitle("§8● §6§lPaint-Ball §8●");
-                EdmineAPI.getInstance().getBossBar().setHealth(100, 100);
+                EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§8● §6§lPaint-Ball §8●");
+                EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(100, 100);
                 Bukkit.broadcastMessage("§cErreur de lancement, il manque des joueurs...");
                 core.setState(State.WAITING);
                 cancel();
@@ -59,8 +59,8 @@ public class AutoStart extends BukkitRunnable
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                     pls.sendTitle("", "");
                 }
-                EdmineAPI.getInstance().getBossBar().setTitle("§8● §6§lPaint-Ball §8●");
-                EdmineAPI.getInstance().getBossBar().setHealth(100, 100);
+                EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§8● §6§lPaint-Ball §8●");
+                EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(100, 100);
                 Bukkit.broadcastMessage("§cErreur de lancement, il manque des joueurs...");
                 core.setState(State.WAITING);
                 cancel();
@@ -153,7 +153,7 @@ public class AutoStart extends BukkitRunnable
 
             for (Player pls : core.getServer().getOnlinePlayers())
             {
-                EdmineAPI.getInstance().getBossBar().putPlayer(pls);
+                EdmineAPISpigot.getInstance().getBossBarBuilder().putPlayer(pls);
             }
             cancel();
         }

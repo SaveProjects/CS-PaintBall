@@ -24,7 +24,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MAC10 implements Listener
 {
@@ -38,13 +40,14 @@ public class MAC10 implements Listener
     private final Material weapon = Material.WOOD_SPADE; //materiel de l'ame
     private final String weapon_name = "MAC-10"; //titre de l'arme
     private final String weapon_id = "mac10"; //id de l'arme
-    private final int weapon_damage = 2; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 5; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)
     private final String shoot_sound = "normal"; //Bruit de tir
     private final String refill_sound = "3s"; //Bruit de recharge
     private final String armed_sound = "classic"; //Bruit d'armement
+    private final List<Player> rafale = new ArrayList<>();
 
 
 
@@ -541,6 +544,16 @@ public class MAC10 implements Listener
                         {
                             if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") > 1)
                             {
+                                if (rafale.contains(p))
+                                {
+                                    rafale.remove(p);
+                                    return;
+                                }
+                                else
+                                {
+                                    rafale.add(p);
+                                }
+                                
                                 int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
                                 get(p);
@@ -567,17 +580,18 @@ public class MAC10 implements Listener
                                         if (f == wait_for_shoot_delay)
                                         {
                                             core.weaponsMap().getWeapon_wait_for_shoot().remove(p);
-                                            //if ()
-                                            //{
+                                            
+                                            if (rafale.contains(p))
+                                            {
                                                 int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
                                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
                                                 get(p);
-
+                                                
                                                 Snowball snowball = p.launchProjectile(Snowball.class);
-
+                                                
                                                 Vector directionSnow = snowball.getVelocity();
                                                 directionSnow.setY(directionSnow.getY());
-
+                                                
                                                 double speedcalculator = speed_shoot - speed_shoot / 2;
                                                 double speed = speed_shoot / speed_shoot + speedcalculator;
                                                 snowball.setVelocity(directionSnow.multiply(speed));
@@ -585,11 +599,12 @@ public class MAC10 implements Listener
                                                 p.setVelocity(pushDirection);
                                                 sound.shoot(shoot_sound);
                                                 core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
-                                            //}
-                                            //else
-                                            //{
-                                            //    cancel();
-                                            //}
+                                                f = 0;
+                                            }
+                                            else
+                                            {
+                                                cancel();
+                                            }
                                         }
 
                                         if (t == 1) {

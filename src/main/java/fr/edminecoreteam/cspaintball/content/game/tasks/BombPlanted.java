@@ -1,6 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.game.tasks;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -36,8 +36,8 @@ public class BombPlanted extends BukkitRunnable
         if (!core.isRoundState(RoundInfo.BOMBPLANTED)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        EdmineAPI.getInstance().getBossBar().setTitle("§6§l⚠ §6Bombe Plantée: §e" + timer + "§es §6§l⚠");
-        EdmineAPI.getInstance().getBossBar().setHealth(timer, core.getConfig().getInt("timers.bomb"));
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§6§l⚠ §6Bombe Plantée: §e" + timer + "§es §6§l⚠");
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.bomb"));
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {

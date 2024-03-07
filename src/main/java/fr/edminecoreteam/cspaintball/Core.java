@@ -1,6 +1,5 @@
 package fr.edminecoreteam.cspaintball;
 
-import fr.edminecoreteam.api.EdmineAPI;
 import fr.edminecoreteam.cspaintball.listeners.content.game.GameListeners;
 import fr.edminecoreteam.cspaintball.listeners.content.game.SpawnListeners;
 import fr.edminecoreteam.cspaintball.content.game.displayname.ChatTeam;

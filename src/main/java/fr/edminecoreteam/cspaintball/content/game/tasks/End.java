@@ -1,6 +1,6 @@
 package fr.edminecoreteam.cspaintball.content.game.tasks;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.State;
 import fr.edminecoreteam.cspaintball.content.game.Game;
@@ -29,8 +29,8 @@ public class End extends BukkitRunnable
         if (!core.isRoundState(RoundInfo.END) && !core.isRoundState(RoundInfo.BOMBEXPLODE) && !core.isRoundState(RoundInfo.BOMBDIFUSE)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        EdmineAPI.getInstance().getBossBar().setTitle("§fManche terminée: §e" + timer + "§es");
-        EdmineAPI.getInstance().getBossBar().setHealth(timer, 6);
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fManche terminée: §e" + timer + "§es");
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, 6);
 
 
         if (timer == 5)
@@ -66,8 +66,8 @@ public class End extends BukkitRunnable
         if (timer == 0)
         {
             core.roundManager().addRound();
-            EdmineAPI.getInstance().getHologramBuilder().removeBukkitHolgram("siteA");
-            EdmineAPI.getInstance().getHologramBuilder().removeBukkitHolgram("siteB");
+            EdmineAPISpigot.getInstance().getHologramBuilder().removeBukkitHolgram("siteA");
+            EdmineAPISpigot.getInstance().getHologramBuilder().removeBukkitHolgram("siteB");
             for (ArmorStand armorStand : Bukkit.getWorld("game").getEntitiesByClass(ArmorStand.class))
             {
                 armorStand.remove();

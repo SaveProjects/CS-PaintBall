@@ -1,11 +1,9 @@
 package fr.edminecoreteam.cspaintball.utils.minecraft;
 
-import fr.edminecoreteam.api.EdmineAPI;
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +26,12 @@ public class LoadHolograms
         List<String> textSiteA = new ArrayList<>();
         textSiteA.add("§8⬇ §fSite §c§lA §8⬇");
         textSiteA.add("§fAccroupissez-vous pour §dplanter§8/§ddésamorcer§f.");
-        EdmineAPI.getInstance().getHologramBuilder().createBukkitHologram("siteA", textSiteA, locSiteA);
+        EdmineAPISpigot.getInstance().getHologramBuilder().createBukkitHologram("siteA", textSiteA, locSiteA);
 
         Location locSiteB = new Location(Bukkit.getWorld("game"), B_x, B_y, B_z);
         List<String> textSiteB = new ArrayList<>();
         textSiteB.add("§8⬇ §fSite §c§lB §8⬇");
         textSiteB.add("§fAccroupissez-vous pour §dplanter§8/§ddésamorcer§f.");
-        EdmineAPI.getInstance().getHologramBuilder().createBukkitHologram("siteB", textSiteB, locSiteB);
+        EdmineAPISpigot.getInstance().getHologramBuilder().createBukkitHologram("siteB", textSiteB, locSiteB);
     }
 }
