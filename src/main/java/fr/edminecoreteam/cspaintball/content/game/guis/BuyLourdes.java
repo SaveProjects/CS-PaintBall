@@ -21,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
-public class BuyPompes implements Listener
+public class BuyLourdes implements Listener
 {
     private final ItemStack getSkull(String url) {
         return SkullNBT.getSkull(url);
@@ -34,7 +34,7 @@ public class BuyPompes implements Listener
 
         Player p = (Player) e.getWhoClicked();
         ItemStack it = e.getCurrentItem();
-        if (e.getView().getTopInventory().getTitle().equals("§8Menu d'achat ┃ Fusils A Pompes"))
+        if (e.getView().getTopInventory().getTitle().equals("§8Menu d'achat ┃ Lourdes"))
         {
             if (it.getType() == Material.ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8§l⬇ §7Retour §8§l⬇"))
             {
@@ -45,30 +45,12 @@ public class BuyPompes implements Listener
                 return;
             }
 
-            if (it.getType() == Material.STICK && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fNova"))
+            if (it.getType() == Material.WOOD_PICKAXE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fM249"))
             {
                 e.setCancelled(true);
                 p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
                 Weapons weapons = new Weapons(p);
-                weapons.get(WeaponsList.NOVA);
-                return;
-            }
-
-            if (it.getType() == Material.BLAZE_ROD && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fXM1014"))
-            {
-                e.setCancelled(true);
-                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
-                Weapons weapons = new Weapons(p);
-                weapons.get(WeaponsList.XM1014);
-                return;
-            }
-
-            if (it.getType() == Material.BONE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fMAG-7"))
-            {
-                e.setCancelled(true);
-                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
-                Weapons weapons = new Weapons(p);
-                weapons.get(WeaponsList.MAG7);
+                weapons.get(WeaponsList.M249);
                 return;
             }
         }
@@ -76,12 +58,12 @@ public class BuyPompes implements Listener
 
     public void gui(Player p)
     {
-        Inventory inv = Bukkit.createInventory(null, 54, "§8Menu d'achat ┃ Fusils A Pompes");
+        Inventory inv = Bukkit.createInventory(null, 54, "§8Menu d'achat ┃ Lourdes");
         new BukkitRunnable() {
             int t = 0;
             public void run() {
 
-                if (!p.getOpenInventory().getTitle().equalsIgnoreCase("§8Menu d'achat ┃ Fusils A Pompes")) { cancel(); }
+                if (!p.getOpenInventory().getTitle().equalsIgnoreCase("§8Menu d'achat ┃ Lourdes")) { cancel(); }
 
                 if (core.teams().getAttacker().contains(p))
                 {
@@ -106,44 +88,18 @@ public class BuyPompes implements Listener
                     inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
                 }
 
-                ItemStack nova = new ItemStack(Material.STICK, 1);
-                ItemMeta novaM = nova.getItemMeta();
-                novaM.setDisplayName("§fNova");
-                ArrayList<String> lorenova = new ArrayList<String>();
-                lorenova.add("");
-                lorenova.add(" §dInformation:");
-                lorenova.add(" §f▶ §7Prix: §a1050$");
-                lorenova.add("");
-                lorenova.add("§8➡ §fCliquez pour acheter.");
-                novaM.setLore(lorenova);
-                nova.setItemMeta(novaM);
-                inv.setItem(21, nova);
-
-                ItemStack xmx1014 = new ItemStack(Material.BLAZE_ROD, 1);
-                ItemMeta xmx1014M = xmx1014.getItemMeta();
-                xmx1014M.setDisplayName("§fXM1014");
-                ArrayList<String> lorexmx1014 = new ArrayList<String>();
-                lorexmx1014.add("");
-                lorexmx1014.add(" §dInformation:");
-                lorexmx1014.add(" §f▶ §7Prix: §a2000$");
-                lorexmx1014.add("");
-                lorexmx1014.add("§8➡ §fCliquez pour acheter.");
-                xmx1014M.setLore(lorexmx1014);
-                xmx1014.setItemMeta(xmx1014M);
-                inv.setItem(22, xmx1014);
-
-                ItemStack mag7 = new ItemStack(Material.BONE, 1);
-                ItemMeta mag7M = mag7.getItemMeta();
-                mag7M.setDisplayName("§fMAG-7");
-                ArrayList<String> loremag7 = new ArrayList<String>();
-                loremag7.add("");
-                loremag7.add(" §dInformation:");
-                loremag7.add(" §f▶ §7Prix: §a1300$");
-                loremag7.add("");
-                loremag7.add("§8➡ §fCliquez pour acheter.");
-                mag7M.setLore(loremag7);
-                mag7.setItemMeta(mag7M);
-                inv.setItem(23, mag7);
+                ItemStack m249 = new ItemStack(Material.WOOD_PICKAXE, 1);
+                ItemMeta m249M = m249.getItemMeta();
+                m249M.setDisplayName("§fM249");
+                ArrayList<String> lorem249 = new ArrayList<String>();
+                lorem249.add("");
+                lorem249.add(" §dInformation:");
+                lorem249.add(" §f▶ §7Prix: §a5200$");
+                lorem249.add("");
+                lorem249.add("§8➡ §fCliquez pour acheter.");
+                m249M.setLore(lorem249);
+                m249.setItemMeta(m249M);
+                inv.setItem(21, m249);
 
                 ItemStack back = new ItemStack(Material.ARROW, 1);
                 ItemMeta backM = back.getItemMeta();

@@ -38,6 +38,8 @@ public class JoinEvent implements Listener
     {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
+        EdmineAPISpigot.getInstance().getBossBarBuilder().putPlayer(p);
+        p.setMaximumNoDamageTicks(10);
         if (core.isState(State.WAITING) || core.isState(State.STARTING))
         {
             if (core.getPlayersInGame().size() == core.getMaxplayers())
@@ -103,7 +105,6 @@ public class JoinEvent implements Listener
             {
                 //a remplir
             }
-            Core.getApi().getBossBarBuilder().putPlayer(p);
         }
     }
 }

@@ -29,8 +29,8 @@ public class End extends BukkitRunnable
         if (!core.isRoundState(RoundInfo.END) && !core.isRoundState(RoundInfo.BOMBEXPLODE) && !core.isRoundState(RoundInfo.BOMBDIFUSE)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        Core.getApi().getBossBarBuilder().setTitle("§fManche terminée: §e" + timer + "§es");
-        Core.getApi().getBossBarBuilder().setHealth(timer, 6);
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fManche terminée: §e" + timer + "§es");
+        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, 6);
 
 
         if (timer == 5)
@@ -66,8 +66,8 @@ public class End extends BukkitRunnable
         if (timer == 0)
         {
             core.roundManager().addRound();
-            Core.getApi().getHologramBuilder().removeBukkitHolgram("siteA");
-            Core.getApi().getHologramBuilder().removeBukkitHolgram("siteB");
+            EdmineAPISpigot.getInstance().getHologramBuilder().removeBukkitHolgram("siteA");
+            EdmineAPISpigot.getInstance().getHologramBuilder().removeBukkitHolgram("siteB");
             for (ArmorStand armorStand : Bukkit.getWorld("game").getEntitiesByClass(ArmorStand.class))
             {
                 armorStand.remove();

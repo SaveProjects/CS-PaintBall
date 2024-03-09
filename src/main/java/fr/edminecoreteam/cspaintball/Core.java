@@ -1,14 +1,16 @@
 package fr.edminecoreteam.cspaintball;
 
 import fr.edminecoreteam.api.EdmineAPISpigot;
+import fr.edminecoreteam.cspaintball.content.game.guis.*;
+import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.M249;
+import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP7;
+import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP9;
+import fr.edminecoreteam.cspaintball.content.game.weapons.pm.P90;
+import fr.edminecoreteam.cspaintball.content.game.weapons.pompes.MAG7;
 import fr.edminecoreteam.cspaintball.listeners.content.game.GameListeners;
 import fr.edminecoreteam.cspaintball.listeners.content.game.SpawnListeners;
 import fr.edminecoreteam.cspaintball.content.game.displayname.ChatTeam;
 import fr.edminecoreteam.cspaintball.content.game.displayname.TabListTeams;
-import fr.edminecoreteam.cspaintball.content.game.guis.BuyMenu;
-import fr.edminecoreteam.cspaintball.content.game.guis.BuyPMs;
-import fr.edminecoreteam.cspaintball.content.game.guis.BuyPistolets;
-import fr.edminecoreteam.cspaintball.content.game.guis.BuyPompes;
 import fr.edminecoreteam.cspaintball.content.game.pauses.Pauses;
 import fr.edminecoreteam.cspaintball.content.game.points.PointsManager;
 import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
@@ -17,6 +19,7 @@ import fr.edminecoreteam.cspaintball.content.game.spec.AttackerSpec;
 import fr.edminecoreteam.cspaintball.content.game.spec.DefenserSpec;
 import fr.edminecoreteam.cspaintball.content.game.teams.Teams;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pistolets.*;
+import fr.edminecoreteam.cspaintball.utils.minecraft.LoadHolograms;
 import fr.edminecoreteam.cspaintball.utils.minecraft.worlds.LoadWorld;
 import fr.edminecoreteam.cspaintball.content.game.weapons.WeaponsMap;
 import fr.edminecoreteam.cspaintball.content.game.weapons.WeaponsSettings;
@@ -34,6 +37,8 @@ import fr.edminecoreteam.cspaintball.utils.scoreboards.WorldChangeScoreboardEven
 import fr.edminecoreteam.cspaintball.listeners.content.waiting.WaitingListeners;
 import fr.edminecoreteam.cspaintball.content.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,7 +52,6 @@ public class Core extends JavaPlugin
 {
 
     private static Core instance;
-    private static EdmineAPISpigot api;
     private State state;
     private RoundInfo roundInfo;
     private ScoreboardManager scoreboardManager;
@@ -86,6 +90,7 @@ public class Core extends JavaPlugin
         loadGameWorld();
         ScoreboardManager();
         loadWeapons();
+        loadHolograms();
 
         //MySQLConnect();
 
@@ -94,8 +99,15 @@ public class Core extends JavaPlugin
     }
 
     @Override
-    public void onDisable() {
-        super.onDisable();
+    public void onDisable()
+    {
+        for (World worlds : Bukkit.getWorlds())
+        {
+            for (ArmorStand stand : worlds.getEntitiesByClass(ArmorStand.class))
+            {
+                stand.remove();
+            }
+        }
     }
 
     private void loadListeners()
@@ -123,6 +135,7 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPistolets(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPompes(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPMs(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new BuyLourdes(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new TabListTeams(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new ChatTeam(), (Plugin)this);
@@ -146,9 +159,16 @@ public class Core extends JavaPlugin
         //Fufils a pompe
         Bukkit.getPluginManager().registerEvents((Listener) new NOVA(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new XM1014(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new MAG7(), (Plugin)this);
 
         //PMs
         Bukkit.getPluginManager().registerEvents((Listener) new MAC10(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new MP9(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new MP7(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new P90(), (Plugin)this);
+
+        //Lourdes
+        Bukkit.getPluginManager().registerEvents((Listener) new M249(), (Plugin)this);
     }
 
     private void ScoreboardManager()
@@ -162,6 +182,13 @@ public class Core extends JavaPlugin
         scheduledExecutorService = Executors.newScheduledThreadPool(16);
         executorMonoThread = Executors.newScheduledThreadPool(1);
         scoreboardManager = new ScoreboardManager();
+    }
+
+    private void loadHolograms()
+    {
+        LoadHolograms loadHolograms = new LoadHolograms();
+        loadHolograms.help();
+        loadHolograms.rules();
     }
 
     private void loadGameWorld()
@@ -218,6 +245,4 @@ public class Core extends JavaPlugin
     public static Core getInstance() { return Core.instance; }
 
     public static Plugin getPlugin() { return Core.plugin; }
-
-    public static EdmineAPISpigot getApi() { return Core.api; }
 }

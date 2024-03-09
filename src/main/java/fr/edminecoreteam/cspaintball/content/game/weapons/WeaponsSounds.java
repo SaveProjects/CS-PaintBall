@@ -132,6 +132,43 @@ public class WeaponsSounds
                 }
             }.runTaskTimer((Plugin) core, 0L, 20L);
         }
+        if (sound.equalsIgnoreCase("5s"))
+        {
+            new BukkitRunnable() {
+                int t = 0;
+                int f = 0;
+                public void run() {
+
+                    ++t;
+                    ++f;
+                    if (f == 1) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_EXTEND, 0.5f, 1.0f);
+                        }
+                    }
+
+                    if (f == 4) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_EXTEND, 0.5f, 0.7f);
+                        }
+                    }
+
+                    if (f == 5) {
+                        for (Player pls : core.getServer().getOnlinePlayers())
+                        {
+                            pls.playSound(p.getLocation(), Sound.PISTON_RETRACT, 0.5f, 1.0f);
+                        }
+                        cancel();
+                    }
+
+                    if (t == 1) {
+                        t = 0;
+                    }
+                }
+            }.runTaskTimer((Plugin) core, 0L, 20L);
+        }
         if (sound.equalsIgnoreCase("pompe"))
         {
             new BukkitRunnable() {

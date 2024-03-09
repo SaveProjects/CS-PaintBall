@@ -245,10 +245,11 @@ public class NOVA implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct > 0.99) {
-                        int damage = weapon_damage * 3;
+                        int damage = weapon_damage * 5;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
-                        event.setDamage(weapon_damage);
+                        int damage = weapon_damage * 2;
+                        event.setDamage(damage);
                     } else if (dotProduct < 0.50) {
                         int damage = weapon_damage / 2;
                         event.setDamage(damage);
@@ -565,6 +566,7 @@ public class NOVA implements Listener
                                 snowball2.setVelocity(directionSnow2.multiply(speed));
                                 snowball3.setVelocity(directionSnow3.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                pushDirection.setY(0);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
                                 core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
@@ -613,13 +615,13 @@ public class NOVA implements Listener
                                 snowball2.setVelocity(directionSnow2.multiply(speed));
                                 snowball3.setVelocity(directionSnow3.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                pushDirection.setY(0);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
                             }
                             if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") <= 0 || core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count") <= 0 || !core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count"))
                             {
-                                get(p);
-                                sound.shoot("nobullet");
+                                e.setCancelled(true);
                             }
                         }
                     }

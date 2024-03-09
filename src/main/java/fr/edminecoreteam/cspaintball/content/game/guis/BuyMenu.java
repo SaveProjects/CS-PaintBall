@@ -62,6 +62,14 @@ public class BuyMenu implements Listener
                 buyPMs.gui(p);
                 return;
             }
+            if (it.getType() == Material.GOLD_PICKAXE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fLourdes"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                BuyLourdes buyLourdes = new BuyLourdes();
+                buyLourdes.gui(p);
+                return;
+            }
         }
         if (it.getType() == Material.SKULL_ITEM && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eBoutique D'Armement"))
         {
@@ -100,14 +108,28 @@ public class BuyMenu implements Listener
 
                 if (!p.getOpenInventory().getTitle().equalsIgnoreCase("§8Menu d'achat")) { cancel(); }
 
-                ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
-                ItemMeta decoM = deco.getItemMeta();
-                decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-                decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
-                decoM.setDisplayName("§r");
-                deco.setItemMeta(decoM);
-                inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
-                inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                if (core.teams().getAttacker().contains(p))
+                {
+                    ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+                    ItemMeta decoM = deco.getItemMeta();
+                    decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                    decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                    decoM.setDisplayName("§r");
+                    deco.setItemMeta(decoM);
+                    inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
+                    inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                }
+                if (core.teams().getDefenser().contains(p))
+                {
+                    ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
+                    ItemMeta decoM = deco.getItemMeta();
+                    decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                    decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                    decoM.setDisplayName("§r");
+                    deco.setItemMeta(decoM);
+                    inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
+                    inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                }
 
                 ItemStack pistolets = new ItemStack(Material.WOOD_HOE, 1);
                 ItemMeta pistoletsM = pistolets.getItemMeta();

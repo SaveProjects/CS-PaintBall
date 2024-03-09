@@ -1,4 +1,4 @@
-package fr.edminecoreteam.cspaintball.content.game.weapons.pistolets;
+package fr.edminecoreteam.cspaintball.content.game.weapons.pm;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
@@ -26,24 +26,24 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public class TEC9 implements Listener
+public class P90 implements Listener
 {
 
     private static final Core core = Core.getInstance();
 
-    private final double recoil = 0.3; //recul de tir
+    private final double recoil = 0.1; //recul de tir
     private final double speed_shoot = 3; //vitesse de tir (max 5)
-    private final int bullet_charger = 18; //nombre de balles par chargeur
-    private final int max_bullet = 90; //total de munitions
-    private final Material weapon = Material.GOLD_HOE; //materiel de l'ame
-    private final String weapon_name = "Tec-9"; //titre de l'arme
-    private final String weapon_id = "tec9"; //id de l'arme
-    private final int weapon_damage = 4; //dégats de l'arme (en coeurs)
-    private final int wait_for_shoot_delay = 6; //temps d'armement (ticks)
+    private final int bullet_charger = 50; //nombre de balles par chargeur
+    private final int max_bullet = 100; //total de munitions
+    private final Material weapon = Material.GOLD_SPADE; //materiel de l'ame
+    private final String weapon_name = "P90"; //titre de l'arme
+    private final String weapon_id = "p90"; //id de l'arme
+    private final int weapon_damage = 3; //dégats de l'arme (en coeurs)
+    private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)
-    private final String shoot_sound = "noisy"; //Bruit de tir
-    private final String refill_sound = "2s"; //Bruit de recharge
+    private final String shoot_sound = "normal"; //Bruit de tir
+    private final String refill_sound = "3s"; //Bruit de recharge
     private final String armed_sound = "classic"; //Bruit d'armement
 
 
@@ -86,17 +86,20 @@ public class TEC9 implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    ItemStack itemToMove1 = p.getInventory().getItem(0);
+                    ItemStack itemToMove2 = p.getInventory().getItem(1);
+                    p.getInventory().setItem(0, null);
                     p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(2, itemToMove);
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getInventory().setItem(1, itemToMove1);
+                    p.getInventory().setItem(2, itemToMove2);
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
                 {
-                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(0));
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
@@ -118,17 +121,20 @@ public class TEC9 implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    ItemStack itemToMove1 = p.getInventory().getItem(0);
+                    ItemStack itemToMove2 = p.getInventory().getItem(1);
+                    p.getInventory().setItem(0, null);
                     p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(2, itemToMove);
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getInventory().setItem(1, itemToMove1);
+                    p.getInventory().setItem(2, itemToMove2);
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
                 {
-                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(0));
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
@@ -156,17 +162,20 @@ public class TEC9 implements Listener
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) == null)
                 {
-                    ItemStack itemToMove = p.getInventory().getItem(1);
+                    ItemStack itemToMove1 = p.getInventory().getItem(0);
+                    ItemStack itemToMove2 = p.getInventory().getItem(1);
+                    p.getInventory().setItem(0, null);
                     p.getInventory().setItem(1, null);
-                    p.getInventory().setItem(2, itemToMove);
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getInventory().setItem(1, itemToMove1);
+                    p.getInventory().setItem(2, itemToMove2);
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
                 else if (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null)
                 {
-                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(1));
-                    p.getInventory().setItem(1, gunStarter);
+                    p.getWorld().dropItemNaturally(p.getLocation(), p.getInventory().getItem(0));
+                    p.getInventory().setItem(0, gunStarter);
                     weightcheck(p);
                     return;
                 }
@@ -235,13 +244,13 @@ public class TEC9 implements Listener
                     double dotProduct = direction.dot(relativeDirection);
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
-                    if (dotProduct > 0.99) {
+                    if (dotProduct >= 0.99) {
                         int damage = weapon_damage * 5;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
                         int damage = weapon_damage * 2;
                         event.setDamage(damage);
-                    } else if (dotProduct < 0.50) {
+                    } else if (dotProduct <= 0.50) {
                         int damage = weapon_damage / 2;
                         event.setDamage(damage);
                     }
@@ -509,6 +518,42 @@ public class TEC9 implements Listener
     }
 
     @EventHandler
+    public void checkGust(PlayerInteractEvent e)
+    {
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        ItemStack it = e.getItem();
+        if (it == null) { return; }
+        if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name))
+        {
+            if (core.isRoundState(RoundInfo.PREPARATION))
+            {
+                e.setCancelled(true);
+                return;
+            }
+            if (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)
+            {
+                if (!core.weaponsMap().getGust().containsKey(p))
+                {
+                    core.weaponsMap().getGust().put(p, "a");
+                    return;
+                }
+
+                if (core.weaponsMap().getGust().get(p).equalsIgnoreCase("a"))
+                {
+                    core.weaponsMap().getGust().replace(p, "b");
+                    return;
+                }
+                if (core.weaponsMap().getGust().get(p).equalsIgnoreCase("b"))
+                {
+                    core.weaponsMap().getGust().replace(p, "a");
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e)
     {
         Player p = e.getPlayer();
@@ -533,6 +578,7 @@ public class TEC9 implements Listener
                         {
                             if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") > 1)
                             {
+                                
                                 int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
                                 get(p);
@@ -546,23 +592,47 @@ public class TEC9 implements Listener
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
                                 snowball.setVelocity(directionSnow.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                pushDirection.setY(0);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
                                 core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
                                 new BukkitRunnable() {
-                                    int t = 0;
                                     int f = 0;
                                     public void run() {
 
-                                        ++t;
                                         ++f;
-                                        if (f == wait_for_shoot_delay) {
+                                        if (f == wait_for_shoot_delay)
+                                        {
                                             core.weaponsMap().getWeapon_wait_for_shoot().remove(p);
-                                            cancel();
-                                        }
+                                            
+                                            if (core.weaponsMap().getGust().get(p).equalsIgnoreCase("a"))
+                                            {
+                                                if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") == 1) { refill(p); core.weaponsMap().getGust().replace(p, "b");}
+                                                if (p.getItemInHand().getType() != weapon) { core.weaponsMap().getGust().replace(p, "b");}
 
-                                        if (t == 1) {
-                                            run();
+                                                int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
+                                                core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
+                                                get(p);
+                                                
+                                                Snowball snowball = p.launchProjectile(Snowball.class);
+                                                
+                                                Vector directionSnow = snowball.getVelocity();
+                                                directionSnow.setY(directionSnow.getY());
+                                                
+                                                double speedcalculator = speed_shoot - speed_shoot / 2;
+                                                double speed = speed_shoot / speed_shoot + speedcalculator;
+                                                snowball.setVelocity(directionSnow.multiply(speed));
+                                                Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                                pushDirection.setY(0);
+                                                p.setVelocity(pushDirection);
+                                                sound.shoot(shoot_sound);
+                                                core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
+                                                f = 0;
+                                            }
+                                            else
+                                            {
+                                                cancel();
+                                            }
                                         }
                                     }
                                 }.runTaskTimer((Plugin) core, 0L, 1L);
@@ -583,7 +653,6 @@ public class TEC9 implements Listener
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
                                 snowball.setVelocity(directionSnow.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
-                                pushDirection.setY(0);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
                             }

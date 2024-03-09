@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public class GameListeners implements Listener
 {
@@ -228,6 +229,22 @@ public class GameListeners implements Listener
         {
             e.setCancelled(true);
             return;
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event)
+    {
+        if (event.getEntity() instanceof Player)
+        {
+            if (event.getDamager() instanceof Snowball)
+            {
+                if (((Snowball) event.getDamager()).getShooter() instanceof Player)
+                {
+                    Player victim = (Player) event.getEntity();
+                    victim.setVelocity(event.getDamager().getLocation().getDirection().setY(-10).normalize().multiply(0));
+                }
+            }
         }
     }
 

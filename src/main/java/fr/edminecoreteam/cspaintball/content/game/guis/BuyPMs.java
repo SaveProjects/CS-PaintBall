@@ -53,6 +53,33 @@ public class BuyPMs implements Listener
                 weapons.get(WeaponsList.MAC10);
                 return;
             }
+
+            if (it.getType() == Material.STONE_SPADE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fMP9"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.MP9);
+                return;
+            }
+
+            if (it.getType() == Material.IRON_SPADE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fMP7"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.MP7);
+                return;
+            }
+
+            if (it.getType() == Material.GOLD_SPADE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fP90"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.P90);
+                return;
+            }
         }
     }
 
@@ -65,27 +92,80 @@ public class BuyPMs implements Listener
 
                 if (!p.getOpenInventory().getTitle().equalsIgnoreCase("§8Menu d'achat ┃ PMs")) { cancel(); }
 
-                ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
-                ItemMeta decoM = deco.getItemMeta();
-                decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-                decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
-                decoM.setDisplayName("§r");
-                deco.setItemMeta(decoM);
-                inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
-                inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                if (core.teams().getAttacker().contains(p))
+                {
+                    ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+                    ItemMeta decoM = deco.getItemMeta();
+                    decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                    decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                    decoM.setDisplayName("§r");
+                    deco.setItemMeta(decoM);
+                    inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
+                    inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                }
+                if (core.teams().getDefenser().contains(p))
+                {
+                    ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
+                    ItemMeta decoM = deco.getItemMeta();
+                    decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                    decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                    decoM.setDisplayName("§r");
+                    deco.setItemMeta(decoM);
+                    inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
+                    inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                }
 
-                ItemStack nova = new ItemStack(Material.WOOD_SPADE, 1);
-                ItemMeta novaM = nova.getItemMeta();
-                novaM.setDisplayName("§fMAC-10");
-                ArrayList<String> lorenova = new ArrayList<String>();
-                lorenova.add("");
-                lorenova.add(" §dInformation:");
-                lorenova.add(" §f▶ §7Prix: §a1050$");
-                lorenova.add("");
-                lorenova.add("§8➡ §fCliquez pour acheter.");
-                novaM.setLore(lorenova);
-                nova.setItemMeta(novaM);
-                inv.setItem(21, nova);
+                ItemStack mac10 = new ItemStack(Material.WOOD_SPADE, 1);
+                ItemMeta mac10M = mac10.getItemMeta();
+                mac10M.setDisplayName("§fMAC-10");
+                ArrayList<String> loremac10 = new ArrayList<String>();
+                loremac10.add("");
+                loremac10.add(" §dInformation:");
+                loremac10.add(" §f▶ §7Prix: §a1050$");
+                loremac10.add("");
+                loremac10.add("§8➡ §fCliquez pour acheter.");
+                mac10M.setLore(loremac10);
+                mac10.setItemMeta(mac10M);
+                inv.setItem(21, mac10);
+
+                ItemStack mp9 = new ItemStack(Material.STONE_SPADE, 1);
+                ItemMeta mp9M = mp9.getItemMeta();
+                mp9M.setDisplayName("§fMP9");
+                ArrayList<String> loremp9 = new ArrayList<String>();
+                loremp9.add("");
+                loremp9.add(" §dInformation:");
+                loremp9.add(" §f▶ §7Prix: §a1250$");
+                loremp9.add("");
+                loremp9.add("§8➡ §fCliquez pour acheter.");
+                mp9M.setLore(loremp9);
+                mp9.setItemMeta(mp9M);
+                inv.setItem(22, mp9);
+
+                ItemStack mp7 = new ItemStack(Material.IRON_SPADE, 1);
+                ItemMeta mp7M = mp7.getItemMeta();
+                mp7M.setDisplayName("§fMP7");
+                ArrayList<String> loremp7 = new ArrayList<String>();
+                loremp7.add("");
+                loremp7.add(" §dInformation:");
+                loremp7.add(" §f▶ §7Prix: §a1700$");
+                loremp7.add("");
+                loremp7.add("§8➡ §fCliquez pour acheter.");
+                mp7M.setLore(loremp7);
+                mp7.setItemMeta(mp7M);
+                inv.setItem(23, mp7);
+
+                ItemStack p90 = new ItemStack(Material.GOLD_SPADE, 1);
+                ItemMeta p90M = p90.getItemMeta();
+                p90M.setDisplayName("§fP90");
+                ArrayList<String> lorep90 = new ArrayList<String>();
+                lorep90.add("");
+                lorep90.add(" §dInformation:");
+                lorep90.add(" §f▶ §7Prix: §a2350$");
+                lorep90.add("");
+                lorep90.add("§8➡ §fCliquez pour acheter.");
+                p90M.setLore(lorep90);
+                p90.setItemMeta(p90M);
+                inv.setItem(30, p90);
 
                 ItemStack back = new ItemStack(Material.ARROW, 1);
                 ItemMeta backM = back.getItemMeta();

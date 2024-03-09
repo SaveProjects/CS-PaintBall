@@ -2,6 +2,8 @@ name: Core CS-PaintBall
 version: 0.1
 author: EdmineCoreTeam
 main: fr.edminecoreteam.cspaintball.Core
+depend:
+  - EdmineAPI
 commands:
   game:
     description: Game Manager

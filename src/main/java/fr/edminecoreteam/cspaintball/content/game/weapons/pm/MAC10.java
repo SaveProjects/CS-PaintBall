@@ -36,18 +36,17 @@ public class MAC10 implements Listener
     private final double recoil = 0.2; //recul de tir
     private final double speed_shoot = 3; //vitesse de tir (max 5)
     private final int bullet_charger = 30; //nombre de balles par chargeur
-    private final int max_bullet = 100; //total de munitions
+    private final int max_bullet = 120; //total de munitions
     private final Material weapon = Material.WOOD_SPADE; //materiel de l'ame
     private final String weapon_name = "MAC-10"; //titre de l'arme
     private final String weapon_id = "mac10"; //id de l'arme
-    private final int weapon_damage = 5; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 4; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)
     private final String shoot_sound = "normal"; //Bruit de tir
     private final String refill_sound = "3s"; //Bruit de recharge
     private final String armed_sound = "classic"; //Bruit d'armement
-    private final List<Player> rafale = new ArrayList<>();
 
 
 
@@ -248,10 +247,11 @@ public class MAC10 implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct >= 0.99) {
-                        int damage = weapon_damage * 3;
+                        int damage = weapon_damage * 5;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
-                        event.setDamage(weapon_damage);
+                        int damage = weapon_damage * 2;
+                        event.setDamage(damage);
                     } else if (dotProduct <= 0.50) {
                         int damage = weapon_damage / 2;
                         event.setDamage(damage);
@@ -520,6 +520,42 @@ public class MAC10 implements Listener
     }
 
     @EventHandler
+    public void checkGust(PlayerInteractEvent e)
+    {
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        ItemStack it = e.getItem();
+        if (it == null) { return; }
+        if (it.getType() == weapon && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().contains(weapon_name))
+        {
+            if (core.isRoundState(RoundInfo.PREPARATION))
+            {
+                e.setCancelled(true);
+                return;
+            }
+            if (a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK)
+            {
+                if (!core.weaponsMap().getGust().containsKey(p))
+                {
+                    core.weaponsMap().getGust().put(p, "a");
+                    return;
+                }
+
+                if (core.weaponsMap().getGust().get(p).equalsIgnoreCase("a"))
+                {
+                    core.weaponsMap().getGust().replace(p, "b");
+                    return;
+                }
+                if (core.weaponsMap().getGust().get(p).equalsIgnoreCase("b"))
+                {
+                    core.weaponsMap().getGust().replace(p, "a");
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e)
     {
         Player p = e.getPlayer();
@@ -544,15 +580,6 @@ public class MAC10 implements Listener
                         {
                             if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") > 1)
                             {
-                                if (rafale.contains(p))
-                                {
-                                    rafale.remove(p);
-                                    return;
-                                }
-                                else
-                                {
-                                    rafale.add(p);
-                                }
                                 
                                 int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
@@ -567,22 +594,24 @@ public class MAC10 implements Listener
                                 double speed = speed_shoot / speed_shoot + speedcalculator;
                                 snowball.setVelocity(directionSnow.multiply(speed));
                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                pushDirection.setY(0);
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
                                 core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
                                 new BukkitRunnable() {
-                                    int t = 0;
                                     int f = 0;
                                     public void run() {
 
-                                        ++t;
                                         ++f;
                                         if (f == wait_for_shoot_delay)
                                         {
                                             core.weaponsMap().getWeapon_wait_for_shoot().remove(p);
                                             
-                                            if (rafale.contains(p))
+                                            if (core.weaponsMap().getGust().get(p).equalsIgnoreCase("a"))
                                             {
+                                                if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") == 1) { refill(p); core.weaponsMap().getGust().replace(p, "b");}
+                                                if (p.getItemInHand().getType() != weapon) { core.weaponsMap().getGust().replace(p, "b");}
+
                                                 int get_bullet_charger_count = core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") - 1;
                                                 core.weaponsMap().getMap().get(p).replace(weapon_id + "_bullet_charger_count", get_bullet_charger_count);
                                                 get(p);
@@ -596,6 +625,7 @@ public class MAC10 implements Listener
                                                 double speed = speed_shoot / speed_shoot + speedcalculator;
                                                 snowball.setVelocity(directionSnow.multiply(speed));
                                                 Vector pushDirection = p.getLocation().getDirection().multiply(-recoil);
+                                                pushDirection.setY(0);
                                                 p.setVelocity(pushDirection);
                                                 sound.shoot(shoot_sound);
                                                 core.weaponsMap().getWeapon_wait_for_shoot().put(p, weapon_id);
@@ -605,10 +635,6 @@ public class MAC10 implements Listener
                                             {
                                                 cancel();
                                             }
-                                        }
-
-                                        if (t == 1) {
-                                            run();
                                         }
                                     }
                                 }.runTaskTimer((Plugin) core, 0L, 1L);
@@ -634,8 +660,7 @@ public class MAC10 implements Listener
                             }
                             if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") <= 0 || core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count") <= 0 || !core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count"))
                             {
-                                get(p);
-                                sound.shoot("nobullet");
+                                e.setCancelled(true);
                             }
                         }
                     }

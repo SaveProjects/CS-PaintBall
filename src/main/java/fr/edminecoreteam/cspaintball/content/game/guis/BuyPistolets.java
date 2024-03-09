@@ -110,14 +110,28 @@ public class BuyPistolets implements Listener
 
                 if (!p.getOpenInventory().getTitle().equalsIgnoreCase("§8Menu d'achat ┃ Pistolets")) { cancel(); }
 
-                ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
-                ItemMeta decoM = deco.getItemMeta();
-                decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-                decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
-                decoM.setDisplayName("§r");
-                deco.setItemMeta(decoM);
-                inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
-                inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                if (core.teams().getAttacker().contains(p))
+                {
+                    ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+                    ItemMeta decoM = deco.getItemMeta();
+                    decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                    decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                    decoM.setDisplayName("§r");
+                    deco.setItemMeta(decoM);
+                    inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
+                    inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                }
+                if (core.teams().getDefenser().contains(p))
+                {
+                    ItemStack deco = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
+                    ItemMeta decoM = deco.getItemMeta();
+                    decoM.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                    decoM.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                    decoM.setDisplayName("§r");
+                    deco.setItemMeta(decoM);
+                    inv.setItem(0, deco); inv.setItem(8, deco); inv.setItem(9, deco); inv.setItem(17, deco);
+                    inv.setItem(45, deco); inv.setItem(53, deco); inv.setItem(36, deco); inv.setItem(44, deco);
+                }
 
                 if (core.teams().getDefenser().contains(p))
                 {
