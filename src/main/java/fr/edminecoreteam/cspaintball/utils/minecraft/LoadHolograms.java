@@ -26,12 +26,12 @@ public class LoadHolograms
         List<String> textSiteA = new ArrayList<>();
         textSiteA.add("§8⬇ §fSite §c§lA §8⬇");
         textSiteA.add("§fAccroupissez-vous pour §dplanter§8/§ddésamorcer§f.");
-        EdmineAPISpigot.getInstance().getHologramBuilder().createBukkitHologram("siteA", textSiteA, locSiteA);
+        Core.getApi().getHologramBuilder().createBukkitHologram("siteA", textSiteA, locSiteA);
 
         Location locSiteB = new Location(Bukkit.getWorld("game"), B_x, B_y, B_z);
         List<String> textSiteB = new ArrayList<>();
         textSiteB.add("§8⬇ §fSite §c§lB §8⬇");
         textSiteB.add("§fAccroupissez-vous pour §dplanter§8/§ddésamorcer§f.");
-        EdmineAPISpigot.getInstance().getHologramBuilder().createBukkitHologram("siteB", textSiteB, locSiteB);
+        Core.getApi().getHologramBuilder().createBukkitHologram("siteB", textSiteB, locSiteB);
     }
 }

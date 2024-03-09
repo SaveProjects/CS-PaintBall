@@ -103,7 +103,7 @@ public class JoinEvent implements Listener
             {
                 //a remplir
             }
-            EdmineAPISpigot.getInstance().getBossBarBuilder().putPlayer(p);
+            Core.getApi().getBossBarBuilder().putPlayer(p);
         }
     }
 }

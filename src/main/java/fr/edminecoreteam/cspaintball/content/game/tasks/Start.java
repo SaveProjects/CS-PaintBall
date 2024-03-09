@@ -37,8 +37,8 @@ public class Start extends BukkitRunnable
 
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fTemps restant: §e" + gameUtils.convertTime(timer));
-        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.round"));
+        Core.getApi().getBossBarBuilder().setTitle("§fTemps restant: §e" + gameUtils.convertTime(timer));
+        Core.getApi().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.round"));
 
         if (core.teams().getDefenser().size() == core.teams().getDefenserDeath().size())
         {

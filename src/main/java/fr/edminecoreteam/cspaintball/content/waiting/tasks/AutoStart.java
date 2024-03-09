@@ -24,8 +24,8 @@ public class AutoStart extends BukkitRunnable
     public void run()
     {
         core.timers(timer);
-        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fDébut dans: §e" + timer + "§es");
-        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.start"));
+        Core.getApi().getBossBarBuilder().setTitle("§fDébut dans: §e" + timer + "§es");
+        Core.getApi().getBossBarBuilder().setHealth(timer, core.getConfig().getInt("timers.start"));
 
         if (core.getConfig().getString("type").equalsIgnoreCase("ranked"))
         {
@@ -36,8 +36,8 @@ public class AutoStart extends BukkitRunnable
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                     pls.sendTitle("", "");
                 }
-                EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§8● §6§lPaint-Ball §8●");
-                EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(100, 100);
+                Core.getApi().getBossBarBuilder().setTitle("§8● §6§lPaint-Ball §8●");
+                Core.getApi().getBossBarBuilder().setHealth(100, 100);
                 Bukkit.broadcastMessage("§cErreur de lancement, il manque des joueurs...");
                 core.setState(State.WAITING);
                 cancel();
@@ -59,8 +59,8 @@ public class AutoStart extends BukkitRunnable
                     pls.playSound(pls.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                     pls.sendTitle("", "");
                 }
-                EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§8● §6§lPaint-Ball §8●");
-                EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(100, 100);
+                Core.getApi().getBossBarBuilder().setTitle("§8● §6§lPaint-Ball §8●");
+                Core.getApi().getBossBarBuilder().setHealth(100, 100);
                 Bukkit.broadcastMessage("§cErreur de lancement, il manque des joueurs...");
                 core.setState(State.WAITING);
                 cancel();
@@ -149,11 +149,6 @@ public class AutoStart extends BukkitRunnable
             {
                 pls.playSound(pls.getLocation(), Sound.VILLAGER_YES, 1.0f, 1.0f);
                 pls.sendTitle("§ePremière manche de la première phase.", "§7Vous changerez d'équipe à la prochaine phase.");
-            }
-
-            for (Player pls : core.getServer().getOnlinePlayers())
-            {
-                EdmineAPISpigot.getInstance().getBossBarBuilder().putPlayer(pls);
             }
             cancel();
         }

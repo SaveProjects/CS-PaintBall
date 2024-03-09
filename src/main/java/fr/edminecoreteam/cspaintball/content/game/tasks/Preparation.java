@@ -30,8 +30,8 @@ public class Preparation extends BukkitRunnable
         if (!core.isState(State.INGAME)) { cancel(); }
         core.timers(timer);
         for (Player pls : core.getServer().getOnlinePlayers()) { pls.setLevel(timer); }
-        EdmineAPISpigot.getInstance().getBossBarBuilder().setTitle("§fPréparation: §e" + timer + "§es");
-        EdmineAPISpigot.getInstance().getBossBarBuilder().setHealth(timer, 15);
+        Core.getApi().getBossBarBuilder().setTitle("§fPréparation: §e" + timer + "§es");
+        Core.getApi().getBossBarBuilder().setHealth(timer, 15);
 
         for (Player pls : core.getServer().getOnlinePlayers()) {
             if (timer <= 15 && timer != 5 && timer != 4 && timer != 3 && timer != 2 && timer != 1) {

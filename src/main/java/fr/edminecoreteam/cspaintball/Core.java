@@ -1,5 +1,6 @@
 package fr.edminecoreteam.cspaintball;
 
+import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.listeners.content.game.GameListeners;
 import fr.edminecoreteam.cspaintball.listeners.content.game.SpawnListeners;
 import fr.edminecoreteam.cspaintball.content.game.displayname.ChatTeam;
@@ -46,6 +47,7 @@ public class Core extends JavaPlugin
 {
 
     private static Core instance;
+    private static EdmineAPISpigot api;
     private State state;
     private RoundInfo roundInfo;
     private ScoreboardManager scoreboardManager;
@@ -216,4 +218,6 @@ public class Core extends JavaPlugin
     public static Core getInstance() { return Core.instance; }
 
     public static Plugin getPlugin() { return Core.plugin; }
+
+    public static EdmineAPISpigot getApi() { return Core.api; }
 }
