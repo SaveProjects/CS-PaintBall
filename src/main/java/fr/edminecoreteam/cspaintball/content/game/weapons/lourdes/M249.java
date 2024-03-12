@@ -106,7 +106,7 @@ public class M249 implements Listener
             }
             if (core.weaponsMap().getHashMap(p).get(weapon_id + "_bullet_charger_count") == 0)
             {
-                ItemStack gunStarter = new ItemStack(weapon, core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") + 1);
+                ItemStack gunStarter = new ItemStack(weapon, 1);
                 ItemMeta gunStarterM = gunStarter.getItemMeta();
                 gunStarterM.setDisplayName("§f" + weapon_name + " §a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") + "§8/§a" + core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count"));
                 gunStarter.setItemMeta((ItemMeta)gunStarterM);
@@ -656,9 +656,9 @@ public class M249 implements Listener
                                 p.setVelocity(pushDirection);
                                 sound.shoot(shoot_sound);
                             }
-                            if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") <= 0 || core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count") <= 0 || !core.weaponsMap().getMap().get(p).containsKey(weapon_id + "_max_bullet_count"))
+                            if (core.weaponsMap().getMap().get(p).get(weapon_id + "_bullet_charger_count") < 1 || core.weaponsMap().getMap().get(p).get(weapon_id + "_max_bullet_count") <= 0)
                             {
-                                e.setCancelled(true);
+                                get(p);
                             }
                         }
                     }
