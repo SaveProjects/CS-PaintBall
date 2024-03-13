@@ -3,6 +3,7 @@ package fr.edminecoreteam.cspaintball;
 import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.content.game.guis.*;
 import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.M249;
+import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.NEGEV;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP7;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP9;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.P90;
@@ -169,6 +170,7 @@ public class Core extends JavaPlugin
 
         //Lourdes
         Bukkit.getPluginManager().registerEvents((Listener) new M249(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new NEGEV(), (Plugin)this);
     }
 
     private void ScoreboardManager()

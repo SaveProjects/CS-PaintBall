@@ -22,7 +22,8 @@ public enum WeaponsList
     P90("P90", 12),
 
     //Lourdes
-    M249("M249", 13);
+    M249("M249", 13),
+    NEGEV("NEGEV", 14);
 
     private WeaponsList(final String name, final int ordinal) {
     }

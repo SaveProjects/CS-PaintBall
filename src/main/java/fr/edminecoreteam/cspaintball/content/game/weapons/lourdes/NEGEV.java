@@ -26,18 +26,18 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public class M249 implements Listener
+public class NEGEV implements Listener
 {
 
     private static final Core core = Core.getInstance();
 
     private final double recoil = 0.2; //recul de tir
     private final double speed_shoot = 3; //vitesse de tir (max 5)
-    private final int bullet_charger = 100; //nombre de balles par chargeur
-    private final int max_bullet = 200; //total de munitions
-    private final Material weapon = Material.WOOD_PICKAXE; //materiel de l'ame
-    private final String weapon_name = "M249"; //titre de l'arme
-    private final String weapon_id = "m249"; //id de l'arme
+    private final int bullet_charger = 150; //nombre de balles par chargeur
+    private final int max_bullet = 300; //total de munitions
+    private final Material weapon = Material.STONE_PICKAXE; //materiel de l'ame
+    private final String weapon_name = "NEGEV"; //titre de l'arme
+    private final String weapon_id = "negev"; //id de l'arme
     private final int weapon_damage = 2; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 2; //niveau de vitesse (quand l'arme est porté)

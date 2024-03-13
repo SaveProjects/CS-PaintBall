@@ -1,6 +1,7 @@
 package fr.edminecoreteam.cspaintball.content.game.weapons;
 
 import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.M249;
+import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.NEGEV;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pistolets.*;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP7;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP9;
@@ -109,6 +110,12 @@ public class Weapons
             M249 weapon = new M249();
             weapon.get(p);
         }
+        
+        if (weapons == WeaponsList.NEGEV)
+        {
+            NEGEV weapon = new NEGEV();
+            weapon.get(p);
+        }
     }
 
     public void refillMax()
@@ -158,6 +165,9 @@ public class Weapons
         //Lourdes
         M249 m249 = new M249();
         m249.refillMax(p);
+        
+        NEGEV negev = new NEGEV();
+        negev.refillMax(p);
     }
 
     public void deathCheck()
@@ -207,6 +217,9 @@ public class Weapons
         //Lourdes
         M249 m249 = new M249();
         m249.deathCheck(p);
+        
+        NEGEV negev = new NEGEV();
+        negev.deathCheck(p);
     }
 
 }

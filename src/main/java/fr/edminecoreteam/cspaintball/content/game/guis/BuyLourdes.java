@@ -53,6 +53,15 @@ public class BuyLourdes implements Listener
                 weapons.get(WeaponsList.M249);
                 return;
             }
+            
+            if (it.getType() == Material.STONE_PICKAXE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fNegev"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                Weapons weapons = new Weapons(p);
+                weapons.get(WeaponsList.NEGEV);
+                return;
+            }
         }
     }
 
@@ -100,6 +109,19 @@ public class BuyLourdes implements Listener
                 m249M.setLore(lorem249);
                 m249.setItemMeta(m249M);
                 inv.setItem(21, m249);
+                
+                ItemStack negev = new ItemStack(Material.STONE_PICKAXE, 1);
+                ItemMeta negevM = negev.getItemMeta();
+                negevM.setDisplayName("§fNegev");
+                ArrayList<String> lorenegev = new ArrayList<String>();
+                lorenegev.add("");
+                lorenegev.add(" §dInformation:");
+                lorenegev.add(" §f▶ §7Prix: §a1700$");
+                lorenegev.add("");
+                lorenegev.add("§8➡ §fCliquez pour acheter.");
+                negevM.setLore(lorenegev);
+                negev.setItemMeta(negevM);
+                inv.setItem(22, negev);
 
                 ItemStack back = new ItemStack(Material.ARROW, 1);
                 ItemMeta backM = back.getItemMeta();
