@@ -1,5 +1,7 @@
 package fr.edminecoreteam.cspaintball.content.game.weapons;
 
+import fr.edminecoreteam.cspaintball.content.game.weapons.fusils.FAMAS;
+import fr.edminecoreteam.cspaintball.content.game.weapons.fusils.GALILar;
 import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.M249;
 import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.NEGEV;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pistolets.*;
@@ -116,6 +118,19 @@ public class Weapons
             NEGEV weapon = new NEGEV();
             weapon.get(p);
         }
+        
+        //Fusils
+        if (weapons == WeaponsList.GALILAR)
+        {
+            GALILar weapon = new GALILar();
+            weapon.get(p);
+        }
+        
+        if (weapons == WeaponsList.FAMAS)
+        {
+            FAMAS weapon = new FAMAS();
+            weapon.get(p);
+        }
     }
 
     public void refillMax()
@@ -168,6 +183,13 @@ public class Weapons
         
         NEGEV negev = new NEGEV();
         negev.refillMax(p);
+        
+        //Fusils
+        GALILar galiLar = new GALILar();
+        galiLar.refillMax(p);
+        
+        FAMAS famas = new FAMAS();
+        famas.refillMax(p);
     }
 
     public void deathCheck()
@@ -220,6 +242,13 @@ public class Weapons
         
         NEGEV negev = new NEGEV();
         negev.deathCheck(p);
+        
+        //Fusils
+        GALILar galiLar = new GALILar();
+        galiLar.deathCheck(p);
+        
+        FAMAS famas = new FAMAS();
+        famas.deathCheck(p);
     }
 
 }

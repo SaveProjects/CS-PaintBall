@@ -1,7 +1,8 @@
 package fr.edminecoreteam.cspaintball;
 
-import fr.edminecoreteam.api.EdmineAPISpigot;
 import fr.edminecoreteam.cspaintball.content.game.guis.*;
+import fr.edminecoreteam.cspaintball.content.game.weapons.fusils.FAMAS;
+import fr.edminecoreteam.cspaintball.content.game.weapons.fusils.GALILar;
 import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.M249;
 import fr.edminecoreteam.cspaintball.content.game.weapons.lourdes.NEGEV;
 import fr.edminecoreteam.cspaintball.content.game.weapons.pm.MP7;
@@ -40,6 +41,7 @@ import fr.edminecoreteam.cspaintball.content.waiting.guis.ChooseTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -78,6 +80,7 @@ public class Core extends JavaPlugin
     private SpawnListeners spawnListeners;
 
     public int timers(int i) { this.timers = i; return i; }
+    private List<Player> inVelocity;
 
 
     private static Plugin plugin;
@@ -121,6 +124,7 @@ public class Core extends JavaPlugin
         this.roundManager = new RoundManager();
         this.attackerSpec = new AttackerSpec();
         this.defenserSpec = new DefenserSpec();
+        this.inVelocity = new ArrayList<>();
         Bukkit.getPluginManager().registerEvents((Listener) new JoinEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new LeaveEvent(), (Plugin)this);
 
@@ -137,6 +141,7 @@ public class Core extends JavaPlugin
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPompes(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyPMs(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new BuyLourdes(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new BuyFusils(), (Plugin)this);
 
         Bukkit.getPluginManager().registerEvents((Listener) new TabListTeams(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new ChatTeam(), (Plugin)this);
@@ -171,6 +176,10 @@ public class Core extends JavaPlugin
         //Lourdes
         Bukkit.getPluginManager().registerEvents((Listener) new M249(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener) new NEGEV(), (Plugin)this);
+        
+        //Fusils
+        Bukkit.getPluginManager().registerEvents((Listener) new GALILar(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener) new FAMAS(), (Plugin)this);
     }
 
     private void ScoreboardManager()
@@ -214,6 +223,7 @@ public class Core extends JavaPlugin
     public SpawnListeners spawnListeners() { return this.spawnListeners; }
 
     public int getMaxplayers() { return this.maxplayers; }
+    public List<Player> getInVelocity() { return this.inVelocity; }
 
 
     public void setState(State state) {

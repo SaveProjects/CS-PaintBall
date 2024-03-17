@@ -54,7 +54,7 @@ public class BuyPistolets implements Listener
                 return;
             }
 
-            if (it.getType() == Material.FISHING_ROD && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fGlock-18"))
+            if (it.getType() == Material.SHEARS && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fGlock-18"))
             {
                 e.setCancelled(true);
                 p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
@@ -142,6 +142,13 @@ public class BuyPistolets implements Listener
                     loreusps.add("");
                     loreusps.add(" §dInformation:");
                     loreusps.add(" §f▶ §7Prix: §a30$");
+                    loreusps.add(" §f▶ §7Difficulté: §e✯✯");
+                    loreusps.add("");
+                    loreusps.add(" §aDescription:");
+                    loreusps.add(" §f▶ §7Précis, silencieux et mortel.");
+                    loreusps.add("");
+                    loreusps.add(" §f▶ §7A privilégier lors de la première");
+                    loreusps.add("   §7manche de la mi-temps.");
                     loreusps.add("");
                     loreusps.add("§8➡ §fCliquez pour acheter.");
                     uspsM.setLore(loreusps);
@@ -150,13 +157,21 @@ public class BuyPistolets implements Listener
                 }
                 if (core.teams().getAttacker().contains(p))
                 {
-                    ItemStack glock18 = new ItemStack(Material.FISHING_ROD, 1);
+                    ItemStack glock18 = new ItemStack(Material.SHEARS, 1);
                     ItemMeta glock18M = glock18.getItemMeta();
                     glock18M.setDisplayName("§fGlock-18");
                     ArrayList<String> loreglock18 = new ArrayList<String>();
                     loreglock18.add("");
                     loreglock18.add(" §dInformation:");
                     loreglock18.add(" §f▶ §7Prix: §a20$");
+                    loreglock18.add(" §f▶ §7Difficulté: §e✯✯");
+                    loreglock18.add("");
+                    loreglock18.add(" §aDescription:");
+                    loreglock18.add(" §f▶ §7Mortel à bout portant, mais");
+                    loreglock18.add("   §7peut efficase à distance.");
+                    loreglock18.add("");
+                    loreglock18.add(" §f▶ §7A privilégier lors de la première");
+                    loreglock18.add("   §7manche de la mi-temps.");
                     loreglock18.add("");
                     loreglock18.add("§8➡ §fCliquez pour acheter.");
                     glock18M.setLore(loreglock18);
@@ -170,7 +185,15 @@ public class BuyPistolets implements Listener
                 ArrayList<String> loreberettas = new ArrayList<String>();
                 loreberettas.add("");
                 loreberettas.add(" §dInformation:");
-                loreberettas.add(" §f▶ §7Prix: §a500$");
+                loreberettas.add(" §f▶ §7Prix: §a300$");
+                loreberettas.add(" §f▶ §7Difficulté: §e✯✯");
+                loreberettas.add("");
+                loreberettas.add(" §aDescription:");
+                loreberettas.add(" §f▶ §7Un pistolet à tir rapide");
+                loreberettas.add("   §7à prix cassé.");
+                loreberettas.add("");
+                loreberettas.add(" §f▶ §7A privilégier lors de la première");
+                loreberettas.add("   §7manche de la mi-temps.");
                 loreberettas.add("");
                 loreberettas.add("§8➡ §fCliquez pour acheter.");
                 berettasM.setLore(loreberettas);
@@ -184,6 +207,13 @@ public class BuyPistolets implements Listener
                 lorep250.add("");
                 lorep250.add(" §dInformation:");
                 lorep250.add(" §f▶ §7Prix: §a300$");
+                lorep250.add(" §f▶ §7Difficulté: §a✯");
+                lorep250.add("");
+                lorep250.add(" §aDescription:");
+                lorep250.add(" §f▶ §7Un pistolet peu cher et populaire");
+                lorep250.add("   §7à la puissance de feu.");
+                lorep250.add("");
+                lorep250.add(" §f▶ §7A privilégier lors des manches éco.");
                 lorep250.add("");
                 lorep250.add("§8➡ §fCliquez pour acheter.");
                 p250M.setLore(lorep250);
@@ -197,6 +227,13 @@ public class BuyPistolets implements Listener
                 loretec9.add("");
                 loretec9.add(" §dInformation:");
                 loretec9.add(" §f▶ §7Prix: §a500$");
+                loretec9.add(" §f▶ §7Difficulté: §6✯✯✯");
+                loretec9.add("");
+                loretec9.add(" §aDescription:");
+                loretec9.add(" §f▶ §7Offre une haute précision en mouvement et");
+                loretec9.add("   §7une efficacité redoutable de loin comme de près.");
+                loretec9.add("");
+                loretec9.add(" §f▶ §7A privilégier lors des manches éco.");
                 loretec9.add("");
                 loretec9.add("§8➡ §fCliquez pour acheter.");
                 tec9M.setLore(loretec9);
@@ -210,6 +247,13 @@ public class BuyPistolets implements Listener
                 loredeserteagle.add("");
                 loredeserteagle.add(" §dInformation:");
                 loredeserteagle.add(" §f▶ §7Prix: §a700$");
+                loredeserteagle.add(" §f▶ §7Difficulté: §c✯✯✯✯");
+                loredeserteagle.add("");
+                loredeserteagle.add(" §aDescription:");
+                loredeserteagle.add(" §f▶ §7Un tir en pleine tête mortel à");
+                loredeserteagle.add("   §7n'importe quelle distance.");
+                loredeserteagle.add("");
+                loredeserteagle.add(" §f▶ §7A privilégier lors des manches éco.");
                 loredeserteagle.add("");
                 loredeserteagle.add("§8➡ §fCliquez pour acheter.");
                 deserteagleM.setLore(loredeserteagle);

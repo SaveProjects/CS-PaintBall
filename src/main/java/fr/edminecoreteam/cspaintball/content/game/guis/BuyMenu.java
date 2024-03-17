@@ -70,6 +70,14 @@ public class BuyMenu implements Listener
                 buyLourdes.gui(p);
                 return;
             }
+            if (it.getType() == Material.DIAMOND_AXE && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fFusils"))
+            {
+                e.setCancelled(true);
+                p.playSound(p.getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                BuyFusils buyFusils = new BuyFusils();
+                buyFusils.gui(p);
+                return;
+            }
         }
         if (it.getType() == Material.SKULL_ITEM && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eBoutique D'Armement"))
         {

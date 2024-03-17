@@ -35,7 +35,7 @@ public class USPS implements Listener
     private final Material weapon = Material.WOOD_HOE; //materiel de l'ame
     private final String weapon_name = "USP-s"; //titre de l'arme
     private final String weapon_id = "usps"; //id de l'arme
-    private final int weapon_damage = 7; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 8; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 7; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 2; //temps de recharge (secondes)

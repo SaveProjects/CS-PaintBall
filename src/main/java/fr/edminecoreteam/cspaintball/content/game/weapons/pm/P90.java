@@ -38,7 +38,7 @@ public class P90 implements Listener
     private final Material weapon = Material.GOLD_SPADE; //materiel de l'ame
     private final String weapon_name = "P90"; //titre de l'arme
     private final String weapon_id = "p90"; //id de l'arme
-    private final int weapon_damage = 3; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 5; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)

@@ -1,4 +1,4 @@
-package fr.edminecoreteam.cspaintball.content.game.weapons.pm;
+package fr.edminecoreteam.cspaintball.content.game.weapons.fusils;
 
 import fr.edminecoreteam.cspaintball.Core;
 import fr.edminecoreteam.cspaintball.content.game.rounds.RoundInfo;
@@ -26,21 +26,21 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public class MP7 implements Listener
+public class GALILar implements Listener
 {
 
     private static final Core core = Core.getInstance();
 
     private final double recoil = 0.1; //recul de tir
     private final double speed_shoot = 3; //vitesse de tir (max 5)
-    private final int bullet_charger = 30; //nombre de balles par chargeur
-    private final int max_bullet = 120; //total de munitions
-    private final Material weapon = Material.IRON_SPADE; //materiel de l'ame
-    private final String weapon_name = "MP7"; //titre de l'arme
-    private final String weapon_id = "mp7"; //id de l'arme
-    private final int weapon_damage = 7; //dégats de l'arme (en coeurs)
-    private final int wait_for_shoot_delay = 1; //temps d'armement (ticks)
-    private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
+    private final int bullet_charger = 35; //nombre de balles par chargeur
+    private final int max_bullet = 90; //total de munitions
+    private final Material weapon = Material.WOOD_AXE; //materiel de l'ame
+    private final String weapon_name = "GALIL-AR"; //titre de l'arme
+    private final String weapon_id = "galilar"; //id de l'arme
+    private final int weapon_damage = 8; //dégats de l'arme (en coeurs)
+    private final int wait_for_shoot_delay = 4; //temps d'armement (ticks)
+    private final int weightslow = 1; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)
     private final String shoot_sound = "normal"; //Bruit de tir
     private final String refill_sound = "3s"; //Bruit de recharge

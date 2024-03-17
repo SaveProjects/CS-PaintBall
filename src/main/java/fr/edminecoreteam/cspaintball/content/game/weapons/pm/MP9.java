@@ -38,7 +38,7 @@ public class MP9 implements Listener
     private final Material weapon = Material.STONE_SPADE; //materiel de l'ame
     private final String weapon_name = "MP9"; //titre de l'arme
     private final String weapon_id = "mp9"; //id de l'arme
-    private final int weapon_damage = 4; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 6; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 0; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 3; //temps de recharge (secondes)

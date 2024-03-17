@@ -21,6 +21,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -242,9 +243,23 @@ public class GameListeners implements Listener
                 if (((Snowball) event.getDamager()).getShooter() instanceof Player)
                 {
                     Player victim = (Player) event.getEntity();
-                    victim.setVelocity(event.getDamager().getLocation().getDirection().setY(-10).normalize().multiply(0));
+                    if(!core.getInVelocity().contains(victim))
+                    {
+                        core.getInVelocity().add(victim);
+                    }
                 }
             }
+        }
+    }
+    
+    @EventHandler
+    public void onVelocity(PlayerVelocityEvent e)
+    {
+        Player p = e.getPlayer();
+        if(core.getInVelocity().contains(p))
+        {
+            core.getInVelocity().remove(p);
+            e.setCancelled(true);
         }
     }
 

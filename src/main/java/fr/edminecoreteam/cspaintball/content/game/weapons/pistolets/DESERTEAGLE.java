@@ -236,7 +236,7 @@ public class DESERTEAGLE implements Listener
 
                     // Vous pouvez ajuster ces valeurs selon vos besoins pour déterminer la zone d'impact
                     if (dotProduct > 0.99) {
-                        int damage = weapon_damage * 5;
+                        int damage = weapon_damage * 7;
                         event.setDamage(damage);
                     } else if (dotProduct < 0.99 && dotProduct > 0.50) {
                         int damage = weapon_damage * 2;

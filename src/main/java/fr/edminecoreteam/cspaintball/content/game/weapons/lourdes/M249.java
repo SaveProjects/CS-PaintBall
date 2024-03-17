@@ -38,7 +38,7 @@ public class M249 implements Listener
     private final Material weapon = Material.WOOD_PICKAXE; //materiel de l'ame
     private final String weapon_name = "M249"; //titre de l'arme
     private final String weapon_id = "m249"; //id de l'arme
-    private final int weapon_damage = 2; //dégats de l'arme (en coeurs)
+    private final int weapon_damage = 8; //dégats de l'arme (en coeurs)
     private final int wait_for_shoot_delay = 2; //temps d'armement (ticks)
     private final int weightslow = 2; //niveau de vitesse (quand l'arme est porté)
     private final int time_refill = 5; //temps de recharge (secondes)

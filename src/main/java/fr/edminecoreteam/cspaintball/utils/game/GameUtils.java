@@ -10,10 +10,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameUtils
 {
     private final static Core core = Core.getInstance();
 
+    private final List<Player> inVelocity = new ArrayList<>();
     private final Location spawn = new Location(Bukkit.getWorld(
             core.getConfig().getString("spawn.world")),
             (float) core.getConfig().getDouble("spawn.x"),
